@@ -1,0 +1,65 @@
+%!TEX root = dda-my.tex
+
+\usepackage[font=small,margin=1em]{caption}
+\usepackage[T1]{fontenc}
+\usepackage[charter]{mathdesign}
+\usepackage{hyperref}
+\usepackage[UKenglish]{babel}
+\usepackage{amsmath,amsthm,booktabs,enumitem,graphicx,hyphenat,titlesec,url,xcolor}
+\usepackage{microtype}
+\usepackage[numbers,sort&compress]{natbib}
+
+\AtBeginDocument{%
+    \renewcommand{\today}{\number\day~\ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\space \number\year}%
+}
+
+\clubpenalty=10000
+\widowpenalty=10000
+\overfullrule=1mm
+
+\urlstyle{same}
+
+\definecolor{titlecolor}{rgb}{0,0,0.5}
+
+\titleformat{\chapter}[display] {\raggedright\normalfont\Large\color{titlecolor}}{\chaptertitlename\ \thechapter}{0pt}{\Huge}[\vspace{5pt}\titlerule]
+\titleformat{\section}          {\raggedright\normalfont\Large\bfseries\color{titlecolor}}{\thesection}{1ex}{}
+\titleformat{\subsection}       {\raggedright\normalfont\large\bfseries\color{titlecolor}}{\thesubsection}{1ex}{}
+\titleformat{\paragraph}[runin] {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@dottedtocline}
+  {\rightskip\@tocrmarg}
+  {\rightskip\@tocrmarg plus 4em \hyphenpenalty\@M}
+  {}{}
+\renewcommand{\@pnumwidth}{1.7em}
+\renewcommand{\@tocrmarg}{2.7em}
+\makeatother
+
+\makeatletter
+\renewcommand\maketitle{\begin{titlepage}
+    \vspace*{\stretch{1}}
+    \begin{center}
+        {\Huge \@title \par}%
+        \vspace{5em}%
+        {\LARGE \@author \par}%
+        \vspace{1.5em}
+        {\large \emph{\@date} \par}%
+        \vspace{3em}
+    \end{center}%
+    \vspace*{\stretch{1}}
+\end{titlepage}}
+\makeatother
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=[rgb]{0,0.1,0.5},
+}
+
+\pagestyle{plain}
+
+\date{\today}
+

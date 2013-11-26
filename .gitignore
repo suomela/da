@@ -2,6 +2,7 @@ dda-*.pdf
 *.aux
 *.bbl
 *.blg
+*.fls
 *.log
 *.out
 *.toc

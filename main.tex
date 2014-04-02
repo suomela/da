@@ -100,7 +100,7 @@ No prior knowledge of distributed systems is needed. A basic knowledge of discre
 
 \paragraph{Acknowledgements.}
 
-Many thanks to Mika G\"o\"os, Juho Hirvonen, Tee\-mu Kuu\-sisto, Tuo\-mo Lem\-pi\"a\-inen, and Jussi V\"ai\-s\"a\-nen for comments, and to Juho Hirvonen and Joel Kaasinen for helping me with the arrangements of this course. This work was supported by the Academy of Finland, Grant 252018. For updates and additional material, see
+Many thanks to Mika G\"o\"os, Juho Hirvonen, Tee\-mu Kuu\-sisto, Tuo\-mo Lem\-pi\"a\-inen, and Jussi V\"ai\-s\"a\-nen for comments, and to Juho Hirvonen, Joel Kaasinen, and Joel Rybicki for helping me with the arrangements of this course. This work was supported by the Academy of Finland, Grant 252018. For updates and additional material, see
 \begin{center}
     \url{http://www.cs.helsinki.fi/jukka.suomela/dda}
 \end{center}
@@ -1405,7 +1405,7 @@ Throughout this chapter, we will design algorithms for \emph{bounded-degree grap
 
 \section{Vertex Cover}\label{sec:vc2}
 
-In Exercise~\ref{ex:mmvc} we saw that if we are given a maximal matching, it is easy to find a \Apx{2} of a minimum vertex cover. Unfortunately, Corollary~\ref{lem:cycle-symmetric} shows that we cannot find a maximal matching with a distributed algorithm.
+In Exercise~\ref{ex:mmvc} we saw that if we are given a maximal matching, it is easy to find a \Apx{2} of a minimum vertex cover. Unfortunately, Corollary~\ref{cor:cycle-symmetric} shows that we cannot find a maximal matching with a distributed algorithm.
 
 In this section we will study so-called \emph{maximal edge packings}. Maximal edge packings are closely related to maximal matchings\mydash in particular, given a maximal edge packing, it is easy to find a \Apx{2} of a minimum vertex cover. However, there is one crucial difference: while it is impossible to find maximal matchings with distributed algorithms, there is a distributed algorithm $\algo{MEP}$ that is able to find maximal edge packings.
 

@@ -2250,7 +2250,7 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
 \begin{ex}[from bits to sets]\label{ex:dpset}
     Algorithm $\algo{DPBit}$ can reduce the number of colours from $2^x$ to $2x$ in one round in any directed pseudoforest, for any positive integer $x$. For example, we can reduce the number of colours as follows:
     \[
-        2^{128} \to 128 \to 16 \to 8 \to 6.
+        2^{128} \to 256 \to 16 \to 8 \to 6.
     \]
     One of the problems is that an iterated application of the algorithm slows down and eventually ``gets stuck'' at $x = 3$, i.e., at six colours.
     

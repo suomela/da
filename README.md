@@ -1,9 +1,9 @@
-A Course on Deterministic Distributed Algorithms
-================================================
+A Course on Distributed Algorithms
+==================================
 
 Online textbook by Jukka Suomela.
 
-See http://users.ics.aalto.fi/suomela/dda/ for more information.
+See http://users.ics.aalto.fi/suomela/da/ for more information.
 
 
 Compilation with latexmk
@@ -23,9 +23,9 @@ Compilation with rubber
 
 Compile everything:
 
-    rubber -Wall dda-*.tex
+    rubber -Wall da-*.tex
 
 Clean up everything:
 
-    rubber --clean dda-*.tex
+    rubber --clean da-*.tex
 

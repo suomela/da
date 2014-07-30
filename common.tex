@@ -1,4 +1,4 @@
-%!TEX root = dda-screen.tex
+%!TEX root = da-screen.tex
 
 \usepackage[font=small,margin=1em]{caption}
 \usepackage[T1]{fontenc}
@@ -21,6 +21,7 @@
 
 \definecolor{titlecolor}{rgb}{0,0,0.5}
 
+\titleformat{\part}[display] {\raggedright\normalfont\LARGE\color{titlecolor}}{Part \thepart}{0pt}{\Huge}
 \titleformat{\chapter}[display] {\raggedright\normalfont\Large\color{titlecolor}}{\chaptertitlename\ \thechapter}{0pt}{\Huge}[\vspace{5pt}\titlerule]
 \titleformat{\section}          {\raggedright\normalfont\Large\bfseries\color{titlecolor}}{\thesection}{1ex}{}
 \titleformat{\subsection}       {\raggedright\normalfont\large\bfseries\color{titlecolor}}{\thesubsection}{1ex}{}

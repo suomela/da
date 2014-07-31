@@ -133,11 +133,9 @@ FIXME
 
 \chapter{Graph-Theoretic Foundations}
 
-\section{Graphs}\label{sec:graphs}
+The study of distributed algorithms is closely related to graphs: we will interpret a computer network as a graph, and we will study computational problems related to this graph. In this section we will give a summary of graph-theoretic concepts that we will use.
 
-As we already saw in Section~\ref{ssec:prelim-model}, the study of distributed algorithms is closely related to graphs: we will interpret a computer network as a graph, and we will study computational problems related to this graph. In this section we will give a summary of graph-theoretic concepts that we will use.
-
-\subsection{Terminology}
+\section{Terminology}
 
 A \emph{simple undirected graph} is a pair $G = (V,E)$, where $V$ is the set of \emph{nodes} (\emph{vertices}) and $E$ is the set of \emph{edges}. Each edge $e \in E$ is a 2-subset of nodes, that is, $e = \{u,v\}$ where $u \in V$, $v \in V$, and $u \ne v$. Unless otherwise mentioned, we assume that $V$ is a non-empty finite set; it follows that $E$ is a finite set. Usually, we will draw graphs using circles and lines\mydash each circle represents a node, and a line that connects two nodes represents an edge.
 
@@ -218,7 +216,7 @@ An \emph{isomorphism} from graph $G_1 = (V_1,E_1)$ to graph $G_2 = (V_2,E_2)$ is
 If $G_1$ and $G_2$ are isomorphic, they have the same structure; informally, $G_2$ can be constructed by renaming the nodes of $G_1$ and vice versa.
 
 
-\subsection{Packing and Covering}\label{ssec:packingcovering}
+\section{Packing and Covering}\label{sec:packingcovering}
 
 A subset of nodes $X \subseteq V$ is
 \begin{enumerate}
@@ -236,7 +234,7 @@ See Figure~\ref{fig:packingcovering} for illustrations.
 \begin{figure}
     \centering
     \includegraphics[page=\PPackingCovering]{figs.pdf}
-    \caption{Packing and covering problems; see Section~\ref{ssec:packingcovering}.}\label{fig:packingcovering}
+    \caption{Packing and covering problems; see Section~\ref{sec:packingcovering}.}\label{fig:packingcovering}
 \end{figure}
 
 Independent sets and matchings are examples of \emph{packing problems}\mydash intuitively, we have to ``pack'' elements into set $X$ while avoiding conflicts. Packing problems are \emph{maximisation problems}. Typically, it is trivial to find a feasible solution (for example, an empty set), but it is more challenging to find a large solution.
@@ -262,7 +260,7 @@ Typically, maximal and minimal solutions are easy to find\mydash you can apply a
 A \emph{minimum maximal matching} is precisely what the name suggests: it is a maximal matching of the smallest possible cardinality. We can define a \emph{minimum maximal independent set}, etc., in an analogous manner.
 
 
-\subsection{Labellings and Partitions}\label{ssec:partitions}
+\section{Labellings and Partitions}\label{sec:partitions}
 
 We will often encounter functions of the form \[f\colon V \to \{1,2,\dotsc,k\}.\] There are two interpretations that are often helpful:
 \begin{enumerate}[label=(\roman*)]
@@ -286,7 +284,7 @@ See Figure~\ref{fig:partitions} for illustrations.
 \begin{figure}
     \centering
     \includegraphics[page=\PPartitions]{figs.pdf}
-    \caption{Partition problems; see Section~\ref{ssec:partitions}.}\label{fig:partitions}
+    \caption{Partition problems; see Section~\ref{sec:partitions}.}\label{fig:partitions}
 \end{figure}
 
 Usually, the term \emph{colouring} refers to a proper vertex colouring, and the term \emph{edge colouring} refers to a proper edge colouring. The value of $k$ is the \emph{size} of the colouring or the \emph{number of colours}. We will use the term \emph{$k$-colouring} to refer to a proper vertex colouring with $k$ colours; the term \emph{$k$-edge colouring} is defined in an analogous manner.
@@ -298,7 +296,7 @@ Graph colouring is typically interpreted as a minimisation problem. It is easy t
 On the other hand, domatic partitions are a maximisation problem. It is trivial to find a domatic partition of size $1$; however, it is difficult to find an \emph{optimal} domatic partition with the largest possible number of disjoint dominating sets.
 
 
-\subsection{Factors and Factorisations}
+\section{Factors and Factorisations}
 
 Let $G = (V,E)$ be a graph, let $X \subseteq E$ be a set of edges, and let $H = (U,X)$ be the subgraph of $G$ induced by $X$. We say that $X$ is a \emph{$d$-factor} of $G$ if $U = V$ and $\deg_H(v) = d$ for each $v \in V$.
 
@@ -323,7 +321,7 @@ We make the following observations:
 A $1$-factor is also known as a \emph{perfect matching}.
 
 
-\subsection{Approximations}
+\section{Approximations}
 
 So far we have encountered a number of maximisation problems and minimisation problems. More formally, the definition of a maximisation problem consists of two parts: a set of \emph{feasible solutions} $\calS$ and an \emph{objective function} $g\colon \calS \to \RR$. In a maximisation problem, the goal is to find a feasible solution $X \in \calS$ that maximises $g(X)$. A minimisation problem is analogous: the goal is to find a feasible solution $X \in \calS$ that minimises $g(X)$.
 
@@ -338,7 +336,7 @@ Similarly, if $(\calS,g)$ is a minimisation problem, we say that a solution $X$ 
 Note that we follow the convention that the approximation ratio $\alpha$ is always at least $1$, both in the case of minimisation problems and maximisation problems. Other conventions are also used in the literature.
 
 
-\subsection{Directed Graphs and Orientations}
+\section{Directed Graphs and Orientations}
 
 Unless otherwise mentioned, all graphs in this course are undirected. However, we will occasionally need to refer to so-called orientations, and hence we need to introduce some terminology related to directed graphs.
 

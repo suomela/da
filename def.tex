@@ -1,0 +1,77 @@
+%!TEX root = da-screen.tex
+
+%---- Lists ----
+
+\setenumerate{label=(\alph*)}
+
+\newlist{descriptionb}{description}{1}
+\setlist[descriptionb]{font=\normalfont\itshape,leftmargin=0pt,itemsep=1ex,style=unboxed}
+
+\newlist{notation}{description}{1}
+\setlist[notation]{font=\normalfont,labelindent=0em,leftmargin=6em,itemsep=0ex,style=sameline}
+
+\newlist{algorithms}{description}{1}
+\setlist[algorithms]{font=\normalfont,labelindent=0em,leftmargin=6em,itemsep=0ex,style=sameline}
+
+\newlist{subex}{enumerate}{1}
+\setlist[subex]{label=(\alph*),itemsep=0.25ex}
+
+\newcommand{\algtoprule}{\rule{\columnwidth}{\heavyrulewidth}{}}
+\newcommand{\algbottomrule}{\rule[1ex]{\columnwidth}{\heavyrulewidth}{}}
+
+%---- Theorems ----
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Exercise}[chapter]
+
+%---- Notation ----
+
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\outdegree}{outdegree}
+\DeclareMathOperator{\indegree}{indegree}
+
+\DeclareMathOperator{\Input}{Input}
+\DeclareMathOperator{\Output}{Output}
+\DeclareMathOperator{\States}{States}
+\DeclareMathOperator{\Msg}{Msg}
+\DeclareMathOperator{\Init}{init}
+\DeclareMathOperator{\Send}{send}
+\DeclareMathOperator{\Receive}{receive}
+\DeclareMathOperator{\Id}{id}
+
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+
+\newcommand{\algo}[1]{\textsf{#1}}
+\newcommand{\state}[1]{\textsf{\small #1}}
+\newcommand{\msg}[1]{`\emph{#1}'}
+\newcommand{\bin}[1]{\langle #1 \rangle}
+
+%---- Macros ----
+
+\newcommand{\Set}[1]{\{\, #1 \,\}}
+\newcommand{\bigSet}[1]{\bigl\{\, #1 \,\bigr\}}
+\newcommand{\Apx}[1]{$#1$\hyp approximation}
+\newcommand{\Fact}[1]{$#1$\hyp factorisation}
+\newcommand{\Reg}[1]{$#1$-regular}
+\newcommand{\Dpocol}{$(\Delta+\nobreak 1)$-colouring}
+\newcommand{\hint}[1]{\par\emph{Hint:} #1\par}
+\newcommand{\mydash}{ --- }
+\newcommand{\mysep}{\begin{center}$* \quad * \quad *$\end{center}}
+
+%---- Figures ----
+
+\newcounter{myexternalpagenum}
+\newcommand{\definepage}[1]{\stepcounter{myexternalpagenum}\edef#1{\arabic{myexternalpagenum}}}
+\input{figlist.tex}
+
+\hyphenation{auton-o-mous Hir-vo-nen Ju-ho Hir-vo-nen Kaa-si-nen Suo-me-la Tuo-mo Wawr-zyniak Ya-ma-shi-ta}

@@ -1,0 +1,75 @@
+%!TEX root = da-screen.tex
+
+\section*{Notation}
+
+{\raggedright
+\begin{notation}
+    \item[$|X|$] the number of elements in set $X$
+    \item[$f^{-1}(y)$] preimage of $y$, i.e., $f^{-1}(y) = \Set{ x : f(x) = y }$
+    \item[$\deg_G(v)$] degree of node $v$ in graph $G$
+    \item[$\dist_G(u,v)$] distance between nodes $u$ and $v$ in $G$
+    \item[$\ball_G(v,r)$] nodes that are within distance $r$ from $v$ in $G$
+    \item[$\diam(G)$] diameter of graph $G$
+    \item[$\NN$] the set of natural numbers, $\{0,1,2,\dotsc\}$
+    \item[$\RR$] the set of real numbers
+    \item[{$[a,b]$}] set $\{x \in \RR : a \le x \le b\}$
+    \item[$Y^{(k)}$] the collection of all $k$-subsets of $Y$
+    \item[$R_c(n;k)$] Ramsey numbers
+\end{notation}}
+
+\section*{Symbols}
+
+These conventions are usually followed in the choice of symbols.
+
+{\raggedright
+\begin{notation}
+    \item[$\alpha$] approximation factor
+    \item[$\phi$] covering map, $\phi \colon V \to V'$
+    \item[$\psi$] local isomorphism, $\psi \colon \ball_G(v,r) \to \ball_H(u,r)$
+    \item[$\Delta$] maximum degree; an upper bound of the maximum degree
+    \item[$\Pi$] graph problem
+    \item[$\calF$] graph family
+    \item[$\calS$] set of feasible solutions
+    \item[$\Id$] unique identifiers
+    \item[$A$] distributed algorithm
+    \item[$C$] vertex cover $C \subseteq V$, edge cover $C \subseteq E$
+    \item[$D$] dominating set $D \subseteq V$, edge dominating set $D \subseteq E$
+    \item[$E$] set of edges
+    \item[$G$, $H$] graphs, $G = (V,E)$
+    \item[$I$] independent set $I \subseteq V$
+    \item[$M$] matching $M \subseteq E$
+    \item[$N$] port-numbered network, $N = (V,P,p)$
+    \item[$P$] set of ports
+    \item[$T$] running time (number of rounds)
+    \item[$U$] subset of nodes
+    \item[$V$] set of nodes
+    \item[$c,d$] natural numbers
+    \item[$e$] edges, elements of $E$
+    \item[$f,g,h$] functions
+    \item[$i,j,k,\ell$] natural numbers
+    \item[$m_t$] message
+    \item[$n$] number of nodes, $n = |V|$
+    \item[$p$] connection function, involution $p \colon P \to P$
+    \item[$r$] natural numbers
+    \item[$s,t,u,v$] nodes, elements of $V$
+    \item[$t$] time step (round), $t = 0, 1, \dotsc, T$
+    \item[$w$] walk
+    \item[$x_t$] state
+\end{notation}}
+
+\section*{Algorithms}
+
+{\raggedright
+\begin{algorithms}
+    \item[$\algo{BMM}$] maximal matching in $2$-coloured graphs, Section~\ref{ssec:bmm}.
+    \item[$\algo{Colour}$] fast colour reduction in bounded-degree graphs, Section~\ref{ssec:colour}.
+    \item[$\algo{DPBit}$] fast colour reduction in directed pseudoforests, Section~\ref{ssec:dpbit}.
+    \item[$\algo{DPGreedy}$] greedy colour reduction in directed pseudoforests, Section~\ref{ssec:dpgreedy}.
+    \item[$\algo{DPSet}$] fast colour reduction in directed pseudoforests, Exercise~\ref{ex:dpset}.
+    \item[$\algo{Gather}$] gathering information in port-numbered graphs, Section~\ref{ssec:gather}.
+    \item[$\algo{Greedy}$] greedy colour reduction, Section~\ref{ssec:greedy}.
+    \item[$\algo{HSEP}$] half-saturating edge packings, Section~\ref{ssec:hsep}.
+    \item[$\algo{MEP}$] maximal edge packings, Section~\ref{ssec:mep}.
+    \item[$\algo{VC2}$] \Apx{2} of minimum vertex cover, Section~\ref{ssec:mep}.
+    \item[$\algo{VC3}$] \Apx{3} of minimum vertex cover, Section~\ref{ssec:vc3}.
+\end{algorithms}}

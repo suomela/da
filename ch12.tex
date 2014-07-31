@@ -2,6 +2,43 @@
 
 FIXME
 
+\section{Further Reading}
+
+Nancy Lynch's textbook~\cite{lynch96book} provides an excellent overview of the field of distributed algorithms. Diestel's book~\cite{diestel05graph} is a good source for graph-theoretic background, and Vazirani's book~\cite{vazirani01approximation} provides further information on approximation algorithms from the perspective of non-distributed computing.
+
+For more online material on distributed algorithms, see the following web page:
+\begin{quote}
+    Principles of Distributed Computing, \\
+    Distributed Computing Group, ETH Zurich \\[1ex]
+    \url{http://dcg.ethz.ch/lectures/podc_allstars/}
+\end{quote}
+
+
+\section{Bibliographic Notes}
+
+Many parts of this course have been directly influenced by numerous papers and textbooks; here is a brief summary of the key references.
+
+\paragraph{Graph-theoretic Foundations.}
+
+The connection between minimum maximal matchings and minimum edge dominating sets (Exercise~\ref{ex:mmeds}) is due to Allan and Laskar~\cite{allan78domination} and Yannakakis and Gavril~\cite{yannakakis80edge}, and the connection between maximal edge packings and approximations of vertex covers (Lemma~\ref{lem:mep-vc}) was identified by Bar-Yehuda and Even \cite{bar-yehuda81linear-time}. The connection between maximal matchings and approximations of vertex covers (Exercise~\ref{ex:mmvc}) is commonly attributed to Gavril and Yannakakis (see, e.g., Papadimitriou and Steiglitz~\cite{papadimitriou98combinatorial}). Exercise~\ref{ex:2fact} is a 120-year-old result due to Petersen~\cite{petersen1891dietheorie}. The definition of a weak colouring is from Naor and Stockmeyer~\cite{naor95what}. Ramsey's theorem dates back to 1930s~\cite{ramsey30problem}; our proof follows Ne{\v s}et{\v r}il~\cite{nesetril95ramsey}, and the notation is from Radziszowski~\cite{radziszowski11ramsey}.
+
+\paragraph{Model of Computing.}
+
+The model of computing that we use throughout this course\mydash running time equals the number of synchronous communication rounds\mydash is from Linial's~\cite{linial92locality} seminal paper, while the concept of a port numbering is from Angluin's~\cite{angluin80local} work.
+
+\paragraph{Algorithms.}
+
+Algorithm $\algo{DPBit}$ is based on the idea originally introduced by Cole and Vishkin~\cite{cole86deterministic} and further refined by Goldberg et al.~\cite{goldberg88parallel}. The idea of algorithm $\algo{DPSet}$ is from Naor and Stockmeyer~\cite{naor95what}. Algorithm $\algo{Colour}$ is from Goldberg et al.~\cite{goldberg88parallel} and Panconesi and Rizzi~\cite{panconesi01some}. Algorithm $\algo{BMM}$ is due to Ha\'{n}\'{c}kowiak et al.~\cite{hanckowiak98distributed}. Algorithm of Exercise~\ref{ex:greedy-domset} is from Friedman and Kogan~\cite{friedman11deterministic}.
+
+\paragraph{Lower Bounds.}
+
+The use of covering maps in the context of distributed algorithm was introduced by Angluin~\cite{angluin80local}, and local neighbourhoods were studied by, among others, by Linial~\cite{linial92locality}. The general idea of Exercise~\ref{ex:cover-three-reg-b} can be traced back to Yamashita and Kameda~\cite{yamashita96computing}, while the specific construction in Figure~\ref{fig:cover-ex-three-reg-b} is from Bondy and Murty's textbook~\cite[Figure~5.10]{bondy76graph-theory}. Lower bounds on graph colouring in the model of unique identifiers are from Linial's seminal work~\cite{linial92locality}; our presentation in Section~\ref{sec:speed-limits} uses an alternative proof based on Ramsey's theorem, following, e.g., Naor and Stockmeyer~\cite{naor95what} and Czygrinow et al.~\cite{czygrinow08fast}. In particular, the idea of Exercise~\ref{ex:is-apx-lb} is from Czygrinow et al.~\cite{czygrinow08fast}.
+
+\paragraph{Local Work.}
+
+Recent work by our research group is represented in algorithms $\algo{VC3}$~\cite{polishchuk09simple} and $\algo{VC2}$~\cite{astrand09vc2apx}. Many exercises are also inspired by our work, including Exercises \ref{ex:cover-three-reg1} and~\ref{ex:cover-four-reg} \cite{suomela10eds}, Exercise~\ref{ex:cover-complete} \cite{astrand10weakly-coloured}, Exercise~\ref{ex:domset} \cite{astrand10weakly-coloured}, and Exercises \ref{ex:edsfirst}--\ref{ex:edslast}~\cite{suomela10eds}.
+
+
 \section{Exercises}
 
 In the following exercises, we will study distributed approximation algorithms for the edge dominating set problem. We will first show that the problem is easy to approximate within factor $4$ in general graphs. Then we will have a look at some special cases, and derive tight upper and lower bounds for the approximation ratio. We use the abbreviation \emph{MEDS} for a minimum edge dominating set.

@@ -4,40 +4,51 @@ FIXME
 
 \section{Exercises}
 
-FIXME: deterministic distributed algorithms, port-numbering model
-
 In the following exercises, we will study distributed approximation algorithms for the edge dominating set problem. We will first show that the problem is easy to approximate within factor $4$ in general graphs. Then we will have a look at some special cases, and derive tight upper and lower bounds for the approximation ratio. We use the abbreviation \emph{MEDS} for a minimum edge dominating set.
 
 \begin{ex}[general case]\label{ex:edsfirst}
-    Design a distributed algorithm that finds a \Apx{4} of MEDS.
+    Design a $\PN$-algorithm that finds a \Apx{4} of MEDS.
     
     \hint{Use the idea of Section~\ref{ssec:vc3}. Show that the edge set $M \subseteq E$ defined in \eqref{eq:vc3-M} is a $4$-approximation of MEDS. To this end, consider an optimal solution $D^*$ and show that each edge of $D^*$ is adjacent to at most $4$ edges of~$M$.}
 \end{ex}
 
-\begin{ex}[\Reg{2}]
-    Show that it is possible to find a \Apx{3} of MEDS in \Reg{2} graphs, in constant time. Show that it is not possible to find a \Apx{2.999} of MEDS in \Reg{2} graphs.
+\begin{ex}[\Reg{2}, upper bounds]
+    Show that the following is possible in \Reg{2} graphs:
+    \begin{subex}
+        \item finding a \Apx{3} of MEDS in $O(1)$ time in the $\PN$ model
+        \item finding a \Apx{2} of MEDS in $O(\log^* n)$ time in the $\LOCAL$ model
+        \item finding a \Apx{2} of MEDS with a randomised algorithm in the $\PN$ model
+    \end{subex}
+\end{ex}
+
+\begin{ex}[\Reg{2}, lower bounds]
+    Show that the following is not possible in \Reg{2} graphs:
+    \begin{subex}
+        \item finding a \Apx{2.999} of MEDS in the $\PN$ model
+        \item finding a \Apx{2.999} of MEDS in $O(1)$ time in the $\LOCAL$ model
+    \end{subex}
 \end{ex}
 
 \begin{ex}[\Reg{4}, upper bound]
-    Show that it is possible to find a \Apx{3.5} of MEDS in \Reg{4} graphs, in constant time.
+    Show that it is possible to find a \Apx{3.5} of MEDS in \Reg{4} graphs in constant time in the $\PN$ model.
     
     \hint{Consider an algorithm that selects all edges that have port number $1$ in at least one end. Derive an upper bound on the size of the solution and a lower bound on the size of an optimal solution, as a function of $|V|$.}
 \end{ex}
 
 \begin{ex}[\Reg{4}, lower bound]
-    Show that it is not possible to find a \Apx{3.499} of MEDS in \Reg{4} graphs.
+    Show that it is not possible to find a \Apx{3.499} of MEDS in \Reg{4} graphs in the $\PN$ model.
     
     \hint{Use the construction of Exercise~\ref{ex:cover-four-reg}.}
 \end{ex}
 
 \begin{ex}[\Reg{3}, lower bound]
-    Show that it is not possible to find a \Apx{2.499} of MEDS in \Reg{3} graphs.
+    Show that it is not possible to find a \Apx{2.499} of MEDS in \Reg{3} graphs in the $\PN$ model.
     
     \hint{Use the construction of Exercise~\ref{ex:cover-three-reg1}.}
 \end{ex}
 
 \begin{ex}[\Reg{3}, upper bound]\label{ex:edslast}
-    Show that it is possible to find a \Apx{2.5} of MEDS in \Reg{3} graphs, in constant time.
+    Show that it is possible to find a \Apx{2.5} of MEDS in \Reg{3} graphs in constant time in the $\PN$ model.
     
     \hint{Let $G = (V,E)$ be a $3$-regular graph. We say that a set $D \subseteq E$ is \emph{good} if it satisfies the following properties:
     \begin{enumerate}

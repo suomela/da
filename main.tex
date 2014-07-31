@@ -100,7 +100,7 @@ No prior knowledge of distributed systems is needed. A basic knowledge of discre
 
 \paragraph{About the Course.}
 
-This textbook is written to support the lecture course \emph{ICS-E5020 Distributed Algorithms} at Aalto University. The course is worth 5 ETCS credits. There are 12 weeks of lectures: each week there is one 2-hour lecture and one 2-hour exercise session. Each week we will cover roughly one chapter of this book.
+This textbook was written to support the lecture course \emph{ICS-E5020 Distributed Algorithms} at Aalto University. The course is worth 5 ETCS credits. There are 12 weeks of lectures: each week there is one 2-hour lecture and one 2-hour exercise session. Each week we will cover roughly one chapter of this book.
 
 Prior versions of this textbook have been used at the course \emph{Deterministic Distributed Algorithms}, which I lectured at the University of Helsinki in 2010, 2012, and 2014.
 
@@ -132,108 +132,6 @@ FIXME
 \part{Models of Computing}
 
 \chapter{Graph-Theoretic Foundations}
-
-FIXME
-
-\chapter{Port-numbering Model}
-
-FIXME
-
-\chapter{Unique Identifiers}
-
-FIXME
-
-\chapter{Randomised Algorithms}
-
-FIXME
-
-\chapter{Bandwidth Limitations}
-
-FIXME
-
-\part{Proving Impossibility Results}
-
-\chapter{Covering Maps}
-
-FIXME
-
-\chapter{Local Neighbourhoods}
-
-FIXME
-
-\chapter{Ramsey Theory}
-
-FIXME
-
-\chapter{Applications of Ramsey's Theorem}
-
-FIXME
-
-\part{Conclusions}
-
-\chapter{Conclusions}
-
-FIXME
-
-
-\chapter{Introduction and Preliminaries}
-
-\section{Scope}
-
-This course focuses on the \emph{theoretical foundations of distributed systems}. Our approach is similar to typical courses on models of computation, computational complexity, and design and analysis of algorithms. The main difference is in the models of computation that we study: instead of traditional models, such as finite state machines, Turing machines, RAM machines, or Boolean circuits, our model of choice is a \emph{distributed system}.
-
-\subsection{Distributed Systems as a Model of Computation}\label{ssec:prelim-model}
-
-A distributed system consists of multiple machines that are connected to each other through communication links. We usually view a distributed system as a (simple, undirected) graph $G = (V,E)$: each node $v \in V$ represents a machine and an edge $\{u,v\} \in E$ represents a communication link between machines $u$ and~$v$.
-
-To understand the key difference between distributed systems and more familiar models of computation, let us consider an illustrative example: the problem of finding a maximal independent set.
-
-An \emph{independent set} for a graph $G = (V,E)$ is a set $I \subseteq V$ such that for each edge $\{u,v\} \in E$ at most one of $u$ and $v$ is in $I$. An independent set $I$ is \emph{maximal} if it cannot be extended, i.e., it is not a proper subset of another independent set.
-\begin{center}
-    \includegraphics[page=\PIndependentSet]{figs.pdf}
-\end{center}
-
-Now given any model of computation $X$ we can pose the familiar question:
-\begin{itemize}
-    \item \emph{Computability:} is it \emph{possible} to find a maximal independent set in model $X$?
-    \item \emph{Computational complexity:} can we find a maximal independent set \emph{efficiently} in model $X$?
-\end{itemize}
-We are familiar with such questions in the context of Turing machines, but it is not immediately obvious what these questions mean in the context of distributed systems. The following informal comparison illustrates the key differences.
-\begin{description}
-    \item[Input.] The input is a graph~$G$.
-    \begin{descriptionb}
-        \item[Turing machines:] We assume that the structure of $G$ is encoded as a string and given to the Turing machine on the input tape.
-        \item[Distributed systems:] We assume that the structure of the input graph $G$ is the same as the structure of the distributed system. Initially, each machine $v \in V$ only knows some local information related to $v$ (for example, the degree of $v$ and the unique identifier of $v$). To acquire more information about $G$, the nodes need to exchange messages.
-    \end{descriptionb}
-    \item[Output.] The output is an independent set $I \subseteq V$.
-    \begin{descriptionb}
-        \item[Turing machines:] We require that the machine prints an encoding of $I$ on the output tape.
-        \item[Distributed systems:] We require that each node $v \in V$ produces one bit of output: if $v \in I$, node $v$ has to output $1$, and if $v \notin I$, node $v$ has to output $0$.
-    \end{descriptionb}
-    \item[Algorithm.] We say that an algorithm solves the problem if it produces a valid output for any valid input.
-    \begin{descriptionb}
-        \item[Turing machines:] The algorithm designer chooses the state transitions of the Turing machine.
-        \item[Distributed systems:] The algorithm designer writes one program. The same program is installed in each $v \in V$.
-    \end{descriptionb}
-    \item[Complexity measures.] There are many possible complexity measures, but perhaps the most commonly used is the time complexity.
-    \begin{descriptionb}
-        \item[Turing machines:] Time = number of elementary steps. In each time unit, (1)~the machine moves the tape heads, (2)~performs a state transition that depends on the contents of the tapes, and (3)~possibly halts.
-        \item[Distributed systems:] Time = number of synchronous communication rounds. In each time unit, all machines in parallel (1)~exchange messages with their neighbours, (2)~perform state transitions that depend on the messages that they received, and (3)~possibly halt.
-    \end{descriptionb}
-\end{description}
-To oversimplify a bit, distributed computation is not really about \emph{computation}\mydash it is all about \emph{communication}. Throughout this course, we will see striking examples of the implications of this change of perspective.
-
-
-\subsection{Outside the Scope}
-
-The term ``distributed computing'' is overloaded, and it means very different things to different people.
-
-For the general public, distributed computing often refers to large-scale high-performance computing in a computer network; this includes scientific computing on grids and clusters, and volunteer computing projects such as SETI@Home and Folding@Home. However, this is \emph{not} the definition that we use, and our course is in no way related to large-scale number crunching.
-
-In general, our focus is on theory, not practice. For our purposes, a communication network is an idealised abstraction. We are not interested in any implementation details or engineering aspects. For example, the following topics are \emph{not} covered on this course: physical properties of wired or wireless media, modulation techniques, communication protocols, standards, software architectures, programming languages, software libraries, privacy, and security.
-
-Within the field of the theory of distributed computing, there are also numerous topics that we are not going to cover. We will conclude this course with a brief overview of other research areas within the field in Section~\ref{sec:other-stuff}.
-
 
 \section{Graphs}\label{sec:graphs}
 
@@ -548,6 +446,107 @@ Put otherwise, in an orientation of $G$ we have simply chosen an arbitrary direc
 \begin{ex}[orientations]
     Using the result of Exercise~\ref{ex:2fact}, show that any \Reg{2d} graph $G = (V,E)$ has an orientation $H = (V,E')$ such that $\indegree_H(v) = \outdegree_H(v) = d$ for all $v \in V$.
 \end{ex}
+
+
+\chapter{Port-numbering Model}
+
+FIXME
+
+\chapter{Unique Identifiers}
+
+FIXME
+
+\chapter{Randomised Algorithms}
+
+FIXME
+
+\chapter{Bandwidth Limitations}
+
+FIXME
+
+\part{Proving Impossibility Results}
+
+\chapter{Covering Maps}
+
+FIXME
+
+\chapter{Local Neighbourhoods}
+
+FIXME
+
+\chapter{Ramsey Theory}
+
+FIXME
+
+\chapter{Applications of Ramsey's Theorem}
+
+FIXME
+
+\part{Conclusions}
+
+\chapter{Conclusions}
+
+FIXME
+
+\part{FIXME}
+
+\chapter{Introduction and Preliminaries}
+
+\section{Scope}
+
+This course focuses on the \emph{theoretical foundations of distributed systems}. Our approach is similar to typical courses on models of computation, computational complexity, and design and analysis of algorithms. The main difference is in the models of computation that we study: instead of traditional models, such as finite state machines, Turing machines, RAM machines, or Boolean circuits, our model of choice is a \emph{distributed system}.
+
+\subsection{Distributed Systems as a Model of Computation}\label{ssec:prelim-model}
+
+A distributed system consists of multiple machines that are connected to each other through communication links. We usually view a distributed system as a (simple, undirected) graph $G = (V,E)$: each node $v \in V$ represents a machine and an edge $\{u,v\} \in E$ represents a communication link between machines $u$ and~$v$.
+
+To understand the key difference between distributed systems and more familiar models of computation, let us consider an illustrative example: the problem of finding a maximal independent set.
+
+An \emph{independent set} for a graph $G = (V,E)$ is a set $I \subseteq V$ such that for each edge $\{u,v\} \in E$ at most one of $u$ and $v$ is in $I$. An independent set $I$ is \emph{maximal} if it cannot be extended, i.e., it is not a proper subset of another independent set.
+\begin{center}
+    \includegraphics[page=\PIndependentSet]{figs.pdf}
+\end{center}
+
+Now given any model of computation $X$ we can pose the familiar question:
+\begin{itemize}
+    \item \emph{Computability:} is it \emph{possible} to find a maximal independent set in model $X$?
+    \item \emph{Computational complexity:} can we find a maximal independent set \emph{efficiently} in model $X$?
+\end{itemize}
+We are familiar with such questions in the context of Turing machines, but it is not immediately obvious what these questions mean in the context of distributed systems. The following informal comparison illustrates the key differences.
+\begin{description}
+    \item[Input.] The input is a graph~$G$.
+    \begin{descriptionb}
+        \item[Turing machines:] We assume that the structure of $G$ is encoded as a string and given to the Turing machine on the input tape.
+        \item[Distributed systems:] We assume that the structure of the input graph $G$ is the same as the structure of the distributed system. Initially, each machine $v \in V$ only knows some local information related to $v$ (for example, the degree of $v$ and the unique identifier of $v$). To acquire more information about $G$, the nodes need to exchange messages.
+    \end{descriptionb}
+    \item[Output.] The output is an independent set $I \subseteq V$.
+    \begin{descriptionb}
+        \item[Turing machines:] We require that the machine prints an encoding of $I$ on the output tape.
+        \item[Distributed systems:] We require that each node $v \in V$ produces one bit of output: if $v \in I$, node $v$ has to output $1$, and if $v \notin I$, node $v$ has to output $0$.
+    \end{descriptionb}
+    \item[Algorithm.] We say that an algorithm solves the problem if it produces a valid output for any valid input.
+    \begin{descriptionb}
+        \item[Turing machines:] The algorithm designer chooses the state transitions of the Turing machine.
+        \item[Distributed systems:] The algorithm designer writes one program. The same program is installed in each $v \in V$.
+    \end{descriptionb}
+    \item[Complexity measures.] There are many possible complexity measures, but perhaps the most commonly used is the time complexity.
+    \begin{descriptionb}
+        \item[Turing machines:] Time = number of elementary steps. In each time unit, (1)~the machine moves the tape heads, (2)~performs a state transition that depends on the contents of the tapes, and (3)~possibly halts.
+        \item[Distributed systems:] Time = number of synchronous communication rounds. In each time unit, all machines in parallel (1)~exchange messages with their neighbours, (2)~perform state transitions that depend on the messages that they received, and (3)~possibly halt.
+    \end{descriptionb}
+\end{description}
+To oversimplify a bit, distributed computation is not really about \emph{computation}\mydash it is all about \emph{communication}. Throughout this course, we will see striking examples of the implications of this change of perspective.
+
+
+\subsection{Outside the Scope}
+
+The term ``distributed computing'' is overloaded, and it means very different things to different people.
+
+For the general public, distributed computing often refers to large-scale high-performance computing in a computer network; this includes scientific computing on grids and clusters, and volunteer computing projects such as SETI@Home and Folding@Home. However, this is \emph{not} the definition that we use, and our course is in no way related to large-scale number crunching.
+
+In general, our focus is on theory, not practice. For our purposes, a communication network is an idealised abstraction. We are not interested in any implementation details or engineering aspects. For example, the following topics are \emph{not} covered on this course: physical properties of wired or wireless media, modulation techniques, communication protocols, standards, software architectures, programming languages, software libraries, privacy, and security.
+
+Within the field of the theory of distributed computing, there are also numerous topics that we are not going to cover. We will conclude this course with a brief overview of other research areas within the field in Section~\ref{sec:other-stuff}.
 
 
 \chapter{Port-Numbering Model}

@@ -354,54 +354,6 @@ Now it is easy to design algorithm $\algo{VC2}_\Delta$ that finds a \Apx{2} of a
     In this chapter, we have seen an efficient distributed algorithm that finds a \Apx{2} of a minimum-size vertex cover. What is known about efficient \emph{centralised} approximation algorithms for the vertex cover problem?
 \end{ex}
 
-\mysep
-
-\noindent In the following exercises, we will study distributed approximation algorithms for the edge dominating set problem. We will first show that the problem is easy to approximate within factor $4$ in general graphs. Then we will have a look at some special cases, and derive tight upper and lower bounds for the approximation ratio. We use the abbreviation \emph{MEDS} for a minimum edge dominating set.
-
-\begin{ex}[general case]\label{ex:edsfirst}
-    Design a distributed algorithm that finds a \Apx{4} of MEDS.
-    
-    \hint{Use the idea of Section~\ref{ssec:vc3}. Show that the edge set $M \subseteq E$ defined in \eqref{eq:vc3-M} is a $4$-approximation of MEDS. To this end, consider an optimal solution $D^*$ and show that each edge of $D^*$ is adjacent to at most $4$ edges of~$M$.}
-\end{ex}
-
-\begin{ex}[\Reg{2}]
-    Show that it is possible to find a \Apx{3} of MEDS in \Reg{2} graphs, in constant time. Show that it is not possible to find a \Apx{2.999} of MEDS in \Reg{2} graphs.
-\end{ex}
-
-\begin{ex}[\Reg{4}, upper bound]
-    Show that it is possible to find a \Apx{3.5} of MEDS in \Reg{4} graphs, in constant time.
-    
-    \hint{Consider an algorithm that selects all edges that have port number $1$ in at least one end. Derive an upper bound on the size of the solution and a lower bound on the size of an optimal solution, as a function of $|V|$.}
-\end{ex}
-
-\begin{ex}[\Reg{4}, lower bound]
-    Show that it is not possible to find a \Apx{3.499} of MEDS in \Reg{4} graphs.
-    
-    \hint{Use the construction of Exercise~\ref{ex:cover-four-reg}.}
-\end{ex}
-
-\begin{ex}[\Reg{3}, lower bound]
-    Show that it is not possible to find a \Apx{2.499} of MEDS in \Reg{3} graphs.
-    
-    \hint{Use the construction of Exercise~\ref{ex:cover-three-reg1}.}
-\end{ex}
-
-\begin{ex}[\Reg{3}, upper bound]\label{ex:edslast}
-    Show that it is possible to find a \Apx{2.5} of MEDS in \Reg{3} graphs, in constant time.
-    
-    \hint{Let $G = (V,E)$ be a $3$-regular graph. We say that a set $D \subseteq E$ is \emph{good} if it satisfies the following properties:
-    \begin{enumerate}
-        \item $D$ is an edge cover for $G$,
-        \item the subgraph induced by $D$ does not contain a path of length $3$.
-    \end{enumerate}
-    Put otherwise, $D$ induces a spanning subgraph that consists of node-disjoint stars. Prove that
-    \begin{enumerate}
-        \item any good set $D$ is a \Apx{2.5} of MEDS,
-        \item there is a distributed algorithm that finds a good set $D$.
-    \end{enumerate}
-    The distributed algorithm has to exploit the port numbers of the edges. One possible approach is this: First, use the port numbers to find nine matchings, $M_1, M_2, \dotsc, M_9$, such that each node is incident to an edge in at least one of the sets $M_i$; do not worry if some edges are present in more than one matching. Then construct an edge cover $D$ by greedily adding edges from the sets $M_i$; in step $i = 1, 2, \dotsc, 9$ you can consider all edges of $M_i$ in parallel. Finally, eliminate paths of length three by removing redundant edges in order to make $D$ a good set; again, in step $i = 1, 2, \dotsc, 9$ you can consider all edges of $M_i$ in parallel.}
-\end{ex}
-
 
 \chapter{Unique Identifiers}
 

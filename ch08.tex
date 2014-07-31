@@ -276,3 +276,9 @@ We use the following definition in the exercises. A graph $G$ is \emph{homogeneo
 \begin{ex}[\Reg{3} graphs]
     Is it possible to construct connected \Reg{3} graphs $G = (V,E)$ and $G' = (V'\!,E')$ with $|V| = |V'|$ such that the following holds: if $N$ and $N'$ are simple port-numbered networks that have $G$ and $G'$ as their underlying graphs, then there is no covering map from $N$ to $N'$?
 \end{ex}
+
+\begin{ex}[dominating sets]\label{ex:domset}
+    Let $\Delta \in \{2,3,\dotsc\}$, let $\epsilon > 0$, and let $\calF$ consist of all graphs of maximum degree at most $\Delta$. Show that it is possible to find a \Apx{(\Delta+1)} of a minimum dominating set in constant time in family~$\calF$. Show that it is not possible to find a \Apx{(\Delta+1-\epsilon)}.
+    
+    \hint{For the lower bound, use the result of Exercise~\ref{ex:cover-complete}.}
+\end{ex}

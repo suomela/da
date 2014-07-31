@@ -27,7 +27,7 @@ The common theme is that the identifiers are (supposed to be) globally unique, a
 We will now give the formal definition that aims at capturing these properties of real-world networks.
 
 
-\subsection{Definitions}\label{sec:unique-id}
+\section{Definition of the \tLOCAL{} Model}\label{sec:unique-id}
 
 Throughout this chapter, fix a constant $c > 1$. \emph{Unique identifiers} for a port-numbered network $N = (V,P,p)$ is an injection
 \[
@@ -37,9 +37,6 @@ That is, each node $v \in V$ is labelled with a unique integer, and the labels a
 
 Formally, unique identifiers can be interpreted as a graph problem $\Pi'$, where each solution $\Id \in \Pi'(N)$ is an assignment of unique identifiers for network $N$. If a distributed algorithm $A$ solves a problem $\Pi$ on a family $\calF$ given $\Pi'$, we say that $A$ solves $\Pi$ on $\calF$ \emph{given unique identifiers}, or equivalently, $A$ solves $\Pi$ on $\calF$ \emph{in the model of unique identifiers}.
 
-
-\subsection{Nodes and Their Names}
-
 For the sake of convenience, when we discuss networks with unique identifiers, we will assume that
 \[
     v = \Id(v) \text{ for all } v \in V.
@@ -47,7 +44,7 @@ For the sake of convenience, when we discuss networks with unique identifiers, w
 Put otherwise, we assume that the set $V$ is a subset of natural numbers, and $\max V \le |V|^c$.
 
 
-\subsection{Gathering Everything}\label{ssec:gather}
+\section{Gathering Everything}\label{sec:gather}
 
 In the model of unique identifiers, if the underlying graph $G = (V,E)$ is connected, all nodes can learn everything about $G$ in time $O(\diam(G))$. In this section, we will present algorithm $\algo{Gather}$ that accomplishes this.
 
@@ -90,13 +87,13 @@ Algorithm $\algo{Gather}$ maintains the following invariant: after round $r \ge 
 It is straightforward to extend $\algo{Gather}$ so that we can discover not only the underlying graph $G = (V,E)$ but also the original port-numbered network $N = (V,P,p)$.
 
 
-\subsection{Solving Everything}
+\section{Solving Everything}
 
 Let $\calF$ be a family of connected graphs, and let $\Pi$ be a distributed graph problem. Assume that there is a deterministic \emph{centralised} (non-distributed) algorithm $A'$ that solves $\Pi$ on $\calF$. For example, $A'$ can be a simple brute-force algorithm\mydash we are not interested in the running time of algorithm~$A'$.
 
 Now there is a simple distributed algorithm $A$ that solves $\Pi$ on $\calF$ in the model of unique identifiers. Let $N = (V,P,p)$ be a port-numbered network with the underlying graph $G \in \calF$. Algorithm $A$ proceeds as follows.
 \begin{enumerate}
-    \item All nodes discover $N$ using algorithm $\algo{Gather}$ from Section~\ref{ssec:gather}.
+    \item All nodes discover $N$ using algorithm $\algo{Gather}$ from Section~\ref{sec:gather}.
     \item All nodes use the centralised algorithm $A'$ to find a solution $f \in \Pi(N)$. From the perspective of algorithm $A$, this is merely a state transition; it is a local step that requires no communication at all, and hence takes $0$ communication rounds.
     \item Finally, each node $v \in V$ switches to state $f(v)$ and stops.
 \end{enumerate}
@@ -105,7 +102,7 @@ Clearly, the running time of the algorithm is $O(\diam(G))$.
 It is essential that all nodes have the same canonical representation of network $N$ (for example, $V$, $P$, and $p$ are represented as lists that are ordered lexicographically by node identifiers and port numbers), and that all nodes use the same deterministic algorithm $A'$ to solve $\Pi$. This way we are guaranteed that all nodes have locally computed the \emph{same} solution $f$, and hence the outputs $f(v)$ are globally consistent.
 
 
-\subsection{Focus on Complexity}
+\section{Focus on Complexity}
 
 The above discussion highlights the striking difference between the port-numbering model and the model of unique identifiers. While there are plenty of examples of graph problems that cannot be solved at all in the port-numbering model, with the help of unique identifiers all computable graph problems become solvable.
 

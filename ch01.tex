@@ -100,7 +100,7 @@ This shows a typical structure of a distributed algorithm: an infinite send--rec
 \end{enumerate}
 The second property is very important: each computer has to know when it is safe to announce its output and stop.
 
-Our algorithm may look a bit strange in the sense that computers that have ``stopped'' are still sending messages. However, it is fairly straightforward to rewrite the algorithm so that you could actually turn off computers that have stopped. The basic idea is that nodes that are going to switch to a stopping state first inform their neighbours about this. Each node will memorise which of its neighbours have already stopped and what where their final colours. Implementing this idea is left as Exercise~\ref{ex:intro-stopped}, and you will later see in Exercise~\ref{ex:stopped} that this can be done for \emph{any} distributed algorithm. Hence we will play with the following simple rules:
+Our algorithm may look a bit strange in the sense that computers that have ``stopped'' are still sending messages. However, it is fairly straightforward to rewrite the algorithm so that you could actually turn off computers that have stopped. The basic idea is that nodes that are going to switch to a stopping state first inform their neighbours about this. Each node will memorise which of its neighbours have already stopped and what where their final colours. Implementing this idea is left as Exercise~\ref{ex:intro-stopped}, and you will later see in Exercise~\ref{ex:stopped} that this can be done for \emph{any} distributed algorithm. Hence we will play by the following simple rules:
 \begin{itemize}
     \item Computers are state machines that repeatedly send messages to their neighbours, receive messages from their neighbours, and update their state.
     \item Some of the states are stopping states, and once a node reaches a stopping state, its no longer changes its state.
@@ -108,8 +108,32 @@ Our algorithm may look a bit strange in the sense that computers that have ``sto
 \end{itemize}
 
 
-
 \section{Fast Colouring with Unique Identifiers}\label{sec:intro-pos-id-fast}
+
+So far we have seen that with the help of unique identifiers, it is \emph{possible} to find a $3$-colouring of a path. However, the algorithm that we designed is not particularly efficient. To see this, consider a path in which the unique identifiers happen to be assigned in an increasing order:
+\begin{center}
+    FIXME: add figure
+\end{center}
+In such a graph, in each round there is only one node that is active. In total, it will take $\Theta(n)$ rounds until all nodes have stopped.
+
+However, it is possible to colour paths \emph{much} faster. The algorithm is easier to explains if we have a \emph{directed} path:
+\begin{center}
+    FIXME: add figure
+\end{center}
+That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
+
+For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough.
+
+Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any given $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
+\begin{align*}
+    2^{128} &\to 2 \cdot 128 = 2^8, \\
+    2^8 &\to 2 \cdot 8 = 2^4, \\
+    2^4 &\to 2 \cdot 4 = 2^3, \\
+    2^3 &\to 2 \cdot 3 = 6.
+\end{align*}
+Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Of course we will have to assume that $n \le 2^{128}$ so that we have enough unique identifiers for all nodes, but it is not common to encounter computer networks that are larger than that\mydash after all, there are fewer than $2^{33}$ people in the world.
+
+
 
 
 FIXME: Cole--Vishkin graph colouring.
@@ -124,4 +148,15 @@ FIXME
     Rewrite the greedy algorithm of Table~\ref{tab:intro-id-greedy} so that stopped nodes do not need to send messages.
 \end{ex}
 
+FIXME: MIS
 
+FIXME: 2-colouring
+
+\begin{ex}[undirected paths]\label{ex:intro-undir-path}
+    FIXME: fast colouring of paths (not necessarily directed)
+\end{ex}
+
+
+FIXME: analyse Cole--Vishkin, $\log^* n$ function
+
+FIXME: analyse the randomised algorithm

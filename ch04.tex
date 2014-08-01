@@ -399,7 +399,7 @@ In summary, $\algo{VC3}$ finds a \Apx{3} of a minimum vertex cover in any graph 
 
 \section{Exercises}
 
-\begin{ex}[stopped nodes]
+\begin{ex}[stopped nodes]\label{ex:stopped}
     In the formalism of this section, a node that stops will repeatedly send messages to its neighbours. Show that this detail is irrelevant, and we can always re-write algorithms so that such messages are ignored. Put otherwise, a node that stops can also stop sending messages.
     
     More precisely, assume that $A$ is a distributed algorithm that solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T$. Show that there is another algorithm $A'$ such that (i)~$A'$ solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T + O(1)$, and (ii)~in $A'$ the state transitions never depend on the messages that are sent by nodes that have stopped.

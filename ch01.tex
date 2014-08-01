@@ -131,9 +131,9 @@ Again, we will interpret the unique identifiers as colours; hence our starting p
     2^4 &\to 2 \cdot 4 = 2^3, \\
     2^3 &\to 2 \cdot 3 = 6.
 \end{align*}
-Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Of course we will have to assume that $n \le 2^{128}$ so that we have enough unique identifiers for all nodes, but it is not common to encounter computer networks that are larger than that\mydash after all, there are fewer than $2^{33}$ people in the world.
+Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Of course we will have to assume that $n \le 2^{128}$ so that we have enough unique identifiers for all nodes, but it is not common to encounter computer networks that are larger than that\mydash after all, there are still fewer than $2^{33}$ people in the world.
 
-
+Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one round. It will be convenient to interpret colours as $x$-bit binary numbers.
 
 
 FIXME: Cole--Vishkin graph colouring.
@@ -148,7 +148,7 @@ FIXME
     Rewrite the greedy algorithm of Table~\ref{tab:intro-id-greedy} so that stopped nodes do not need to send messages.
 \end{ex}
 
-FIXME: MIS
+FIXME: MIS, with IDs and with randomness
 
 FIXME: 2-colouring
 
@@ -156,7 +156,8 @@ FIXME: 2-colouring
     FIXME: fast colouring of paths (not necessarily directed)
 \end{ex}
 
+FIXME: analyse Cole--Vishkin for a general $n$, $\log^* n$ function
 
-FIXME: analyse Cole--Vishkin, $\log^* n$ function
+FIXME: Cole--Vishkin if $n$ is unknown
 
 FIXME: analyse the randomised algorithm

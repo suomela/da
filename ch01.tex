@@ -112,16 +112,17 @@ Our algorithm may look a bit strange in the sense that computers that have ``sto
 
 So far we have seen that with the help of unique identifiers, it is \emph{possible} to find a $3$-colouring of a path. However, the algorithm that we designed is not particularly efficient. To see this, consider a path in which the unique identifiers happen to be assigned in an increasing order:
 \begin{center}
-    FIXME: add figure
+    \includegraphics[page=\PIntroIdBad]{figs.pdf}
 \end{center}
 In such a graph, in each round there is only one node that is active. In total, it will take $\Theta(n)$ rounds until all nodes have stopped.
 
 However, it is possible to colour paths \emph{much} faster. The algorithm is easier to explains if we have a \emph{directed} path:
 \begin{center}
-    FIXME: add figure
+    \includegraphics[page=\PIntroIdDir]{figs.pdf}
 \end{center}
 That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
 
+\paragraph{Algorithm Overview.}
 For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough.
 
 Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any given $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
@@ -131,12 +132,44 @@ Again, we will interpret the unique identifiers as colours; hence our starting p
     2^4 &\to 2 \cdot 4 = 2^3, \\
     2^3 &\to 2 \cdot 3 = 6.
 \end{align*}
-Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Of course we will have to assume that $n \le 2^{128}$ so that we have enough unique identifiers for all nodes, but it is not common to encounter computer networks that are larger than that\mydash after all, there are still fewer than $2^{33}$ people in the world.
+Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Compare this with the simple greedy algorithm, which may take millions of rounds for paths with millions of nodes.
 
-Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one round. It will be convenient to interpret colours as $x$-bit binary numbers.
+\paragraph{Algorithm for One Step.}
+Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one round. First, each node sends its current colour to its predecessor. After this step, each node $u$ knows two values:
+\begin{itemize}[noitemsep]
+    \item $c_0(u)$, the current colour of the node,
+    \item $c_1(u)$, the current colour of its successor.
+\end{itemize}
+If a node does not have any successor, it just proceeds \emph{as if} it had a successor of some colour different from $c_0(u)$.
 
+We can interpret both $c_0(u)$ and $c_1(u)$ as $x$-bit binary strings. The current colour of the node has to be different from the current colour of its successor, i.e., $c_0(u) \ne c_1(u)$. Hence there is at least one bit that differs. Let $i(u) \in \{0,1,\dotsc,x-1\}$ be the index of the bit that differs, and let $b(u) \in \{0,1\}$ be the value of bit number $i(u)$ in $c_0(u)$. Finally, node $u$ simply picks
+\[
+    c(u) = 2i(u) + b(u)
+\]
+as its new colour.
 
-FIXME: Cole--Vishkin graph colouring.
+\paragraph{An Example.}
+Let $x = 8$. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$. In binary, we have
+\begin{align*}
+    c_0(u) &= 01111011_2, \\
+    c_1(u) &= 00101111_2.
+\end{align*}
+Counting from the least significant bit, node $u$ can see that bit $0$ is the same in both $c_0(u)$ and $c_1(u)$, and the same holds for bit number $1$. However, bit number $2$ differs: the value of bit $2$ in $c_0(u)$ is $0$, while the value of bit $2$ in $c_1(u)$ is $1$. Hence we will set
+\[
+    i(u) = 2, \quad
+    b(u) = 0, \quad
+    c(u) = 4.
+\]
+That is, node picks $4$ as its new colour. If all other nodes run the same algorithm, this will be a valid choice\mydash as we will argue next, both the predecessor and the successor of $u$ will pick a colour that is different from $4$.
+
+\paragraph{Correctness.}
+Clearly, the value $c(v)$ is in the range $\{0,1,\dotsc,2x-1\}$. However, it is not entirely obvious that these values actually produce a proper $2x$-colouring of the path. To see this, consider a pair of nodes $u$ and $v$ so that $v$ is the successor of $u$. By definition, $c_1(u) = c_0(v)$. We need to show that $c(u) \ne c(v)$. There are two cases:
+\begin{enumerate}
+    \item $i(u) \ne i(v)$: This case is trivial. No matter how we choose $b(u) \in \{0,1\}$ and $b(v) \in \{0,1\}$, we have $c(u) \ne c(v)$.
+    \item $i(u) = i(v)$: This case is more interesting. Let $i = i(u) = i(v)$. We now that $b(u)$ is bit number $i$ of $c_0(u)$, and $b(v)$ is bit number $i$ of $c_1(u)$. By the definition of $i(u)$, we also know that these bits differ.    Hence $b(u) \ne b(v)$ and $c(u) \ne c(v)$.
+\end{enumerate}
+We have argued that $c(u) \ne c(v)$ for any pair of two adjacent nodes $u$ and $v$, and the value of $c(u)$ is an integer between $0$ and $2x-1$ for each node $u$. Hence the algorithm finds a proper $2x$-colouring in one round.
+
 
 \section{Colouring with Randomised Algorithms}\label{sec:intro-pos-random}
 

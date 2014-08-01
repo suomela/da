@@ -123,7 +123,7 @@ However, it is possible to colour paths \emph{much} faster. The algorithm is eas
 That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
 
 \paragraph{Algorithm Overview.}
-For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough.
+For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough, but the same idea can be easily generalised to arbitrarily large networks if needed.
 
 Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any given $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
 \begin{align*}
@@ -142,7 +142,7 @@ Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one ro
 \end{itemize}
 If a node does not have any successor, it just proceeds \emph{as if} it had a successor of some colour different from $c_0(u)$.
 
-We can interpret both $c_0(u)$ and $c_1(u)$ as $x$-bit binary strings. The current colour of the node has to be different from the current colour of its successor, i.e., $c_0(u) \ne c_1(u)$. Hence there is at least one bit that differs. Let $i(u) \in \{0,1,\dotsc,x-1\}$ be the index of the bit that differs, and let $b(u) \in \{0,1\}$ be the value of bit number $i(u)$ in $c_0(u)$. Finally, node $u$ simply picks
+We can interpret both $c_0(u)$ and $c_1(u)$ as $x$-bit binary strings that represent integers from range $0$ to $2^x-1$. The current colour of the node has to be different from the current colour of its successor, i.e., $c_0(u) \ne c_1(u)$. Hence in the two binary strings there is at least one bit that differs. Let $i(u) \in \{0,1,\dotsc,x-1\}$ be the index of the first bit that differs, and let $b(u) \in \{0,1\}$ be the value of bit number $i(u)$ in $c_0(u)$. Finally, node $u$ simply picks
 \[
     c(u) = 2i(u) + b(u)
 \]
@@ -162,7 +162,7 @@ Counting from the least significant bit, node $u$ can see that bit $0$ is the sa
 \]
 That is, node picks $4$ as its new colour. If all other nodes run the same algorithm, this will be a valid choice\mydash as we will argue next, both the predecessor and the successor of $u$ will pick a colour that is different from $4$.
 
-\paragraph{Correctness.}
+ \paragraph{Correctness.}
 Clearly, the value $c(v)$ is in the range $\{0,1,\dotsc,2x-1\}$. However, it is not entirely obvious that these values actually produce a proper $2x$-colouring of the path. To see this, consider a pair of nodes $u$ and $v$ so that $v$ is the successor of $u$. By definition, $c_1(u) = c_0(v)$. We need to show that $c(u) \ne c(v)$. There are two cases:
 \begin{enumerate}
     \item $i(u) \ne i(v)$: This case is trivial. No matter how we choose $b(u) \in \{0,1\}$ and $b(v) \in \{0,1\}$, we have $c(u) \ne c(v)$.

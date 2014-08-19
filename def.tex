@@ -72,7 +72,6 @@
 \newcommand{\Fact}[1]{$#1$\hyp factorisation}
 \newcommand{\Reg}[1]{$#1$-regular}
 \newcommand{\Dpocol}{$(\Delta+\nobreak 1)$-colouring}
-\newcommand{\hint}[1]{\par\emph{Hint:} #1\par}
 \newcommand{\mydash}{ --- }
 \newcommand{\mysep}{\begin{center}$* \quad * \quad *$\end{center}}
 
@@ -83,3 +82,23 @@
 \input{figlist.tex}
 
 \hyphenation{auton-o-mous Hir-vo-nen Ju-ho Hir-vo-nen Kaa-si-nen Suo-me-la Tuo-mo Wawr-zyniak Ya-ma-shi-ta}
+
+%---- Hints ----
+
+\setenotez{
+    list-name = {Hints},
+    backref = true,
+    mark-cs = {\hintnumber},
+    counter-format = Alph,
+    totoc = chapter
+}
+
+\DeclareInstance{enotez-list}{custom}{list}
+{
+    format = \normalfont,
+    number-format = \normalfont,
+    list-type = itemize
+}
+
+\newcommand{\hint}[1]{\nopagebreak\par\hfill{\footnotesize\em See hint \endnote{#1}\par}}
+\newcommand{\hintnumber}[1]{#1}

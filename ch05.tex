@@ -470,41 +470,6 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
     \hint{Adapt the basic idea of algorithm $\algo{Greedy}$\mydash find local maxima and choose appropriate colours for them\mydash but pay attention to the stopping conditions and low-degree nodes. One possible strategy is this: a node becomes active if its current colour is a local maximum among those neighbours that have not yet stopped; once a node becomes active, it selects an appropriate colour and stops.}
 \end{ex}
 
-\begin{ex}[log-star]\label{ex:logstar}
-    The \emph{iterated logarithm} of $x$, in notation $\log^* x$, is defined recursively as follows:
-    \[
-        \log^*(x) = \begin{cases}
-            0 & \text{ if $x \le 1$}, \\
-            1 + \log^*(\log_2 x) & \text{ otherwise}.
-        \end{cases}
-    \]
-    This is a function that grows extremely slowly; for example
-    \begin{align*}
-        \log^* 2 &= 1, &
-        \log^* 16 &= 3, &
-        \log^* 10^{10} &= 5, \\
-        \log^* 3 &= 2, &
-        \log^* 17 &= 4, &
-        \log^* 10^{100} &= 5, \\
-        \log^* 4 &= 2, &
-        \log^* 65536 &= 4, &
-        \log^* 10^{1000} &= 5, \\
-        \log^* 5 &= 3, &
-        \log^* 65537 &= 5, &
-        \log^* 10^{10000} &= 5, \dotsc
-    \end{align*}
-
-    Prove that algorithm $\algo{DPBit}$ can be used to reduce the number of colours from $x$ to $6$ in $\log^* x$ communication rounds in any directed pseudoforest, for any $x \ge 6$. You can assume that the value of $x$ is known in advance.
-    
-    \hint{Consider the following cases separately:
-    \begin{enumerate}[label=(\roman*),noitemsep]
-        \item $\log^* x \le 2$,
-        \item $\log^* x = 3$,
-        \item\label{case:logstar-gen} $\log^* x \ge 4$. 
-    \end{enumerate}
-    In case~\ref{case:logstar-gen}, prove that after $\log^*(x)-3$ iterations of $\algo{DPBit}$, the number of colours is at most $64$.}
-\end{ex}
-
 \begin{ex}[numeral systems]\label{ex:dpbit-base}
     Algorithm $\algo{DPBit}$ is based on the idea of identifying a digit that differs in the \emph{binary} encodings of the colours. Generalise the idea: design an analogous algorithm that finds a digit that differs in the base-$k$ encodings of the colours, for an arbitrary $k$, and analyse the running time of the algorithm (cf.\ Exercise~\ref{ex:logstar}). Is the special case of $k = 2$ the best possible choice?
 \end{ex}

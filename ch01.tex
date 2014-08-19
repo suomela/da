@@ -127,12 +127,12 @@ However, it is possible to colour paths \emph{much} faster. The algorithm is eas
 \begin{center}
     \includegraphics[page=\PIntroIdDir]{figs.pdf}
 \end{center}
-That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
+That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. The orientations are just additional information that we will use in algorithm design\mydash nodes can always exchange information along each edge in either direction. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
 
 \paragraph{Algorithm Overview.}
-For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough, but the same idea can be easily generalised to arbitrarily large networks if needed.
+For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough, but the same idea can be easily generalised to arbitrarily large identifiers if needed.
 
-Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any given $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
+Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any positive integer $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
 \begin{align*}
     2^{128} &\to 2 \cdot 128 = 2^8, \\
     2^8 &\to 2 \cdot 8 = 2^4, \\
@@ -149,31 +149,76 @@ Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one ro
 \end{itemize}
 If a node does not have any successor, it just proceeds \emph{as if} it had a successor of some colour different from $c_0(u)$.
 
-We can interpret both $c_0(u)$ and $c_1(u)$ as $x$-bit binary strings that represent integers from range $0$ to $2^x-1$. The current colour of the node has to be different from the current colour of its successor, i.e., $c_0(u) \ne c_1(u)$. Hence in the two binary strings there is at least one bit that differs. Let $i(u) \in \{0,1,\dotsc,x-1\}$ be the index of the first bit that differs, and let $b(u) \in \{0,1\}$ be the value of bit number $i(u)$ in $c_0(u)$. Finally, node $u$ simply picks
+We can interpret both $c_0(u)$ and $c_1(u)$ as $x$-bit binary strings that represent integers from range $0$ to $2^x-1$. We know that the current colour of node $u$ is different from the current colour of its successor, i.e., $c_0(u) \ne c_1(u)$. Hence in the two binary strings $c_0(u)$ and $c_1(u)$ there is at least one bit that differs. Define:
+\begin{itemize}
+    \item $i(u) \in \{0,1,\dotsc,x-1\}$ is the \emph{\textbf{index}} of the first bit that differs between $c_0(u)$ and $c_1(u)$,
+    \item $b(u) \in \{0,1\}$ be the \emph{\textbf{value}} of bit number $i(u)$ in $c_0(u)$.
+\end{itemize}
+Finally, node $u$ simply picks
 \[
     c(u) = 2i(u) + b(u)
 \]
 as its new colour.
 
 \paragraph{An Example.}
-Let $x = 8$. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$. In binary, we have
+Let $x = 8$, i.e., nodes are coloured with $8$-bit numbers. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$; see Table~\ref{tab:intro-id-fast} for an illustration. In binary, we have
 \begin{align*}
     c_0(u) &= 01111011_2, \\
     c_1(u) &= 00101111_2.
 \end{align*}
-Counting from the least significant bit, node $u$ can see that bit $0$ is the same in both $c_0(u)$ and $c_1(u)$, and the same holds for bit number $1$. However, bit number $2$ differs: the value of bit $2$ in $c_0(u)$ is $0$, while the value of bit $2$ in $c_1(u)$ is $1$. Hence we will set
+Counting from the least significant bit, node $u$ can see that:
+\begin{itemize}[noitemsep]
+    \item bit number $0$ is the same in both $c_0(u)$ and $c_1(u)$,
+    \item bit number $1$ is the same in both $c_0(u)$ and $c_1(u)$,
+    \item bit number $2$ is different in $c_0(u)$ and $c_1(u)$.
+\end{itemize}
+Hence we will set
 \[
     i(u) = 2, \quad
     b(u) = 0, \quad
-    c(u) = 4.
+    c(u) = 2\cdot2 + 0 = 4.
 \]
 That is, node picks $4$ as its new colour. If all other nodes run the same algorithm, this will be a valid choice\mydash as we will argue next, both the predecessor and the successor of $u$ will pick a colour that is different from $4$.
 
- \paragraph{Correctness.}
-Clearly, the value $c(v)$ is in the range $\{0,1,\dotsc,2x-1\}$. However, it is not entirely obvious that these values actually produce a proper $2x$-colouring of the path. To see this, consider a pair of nodes $u$ and $v$ so that $v$ is the successor of $u$. By definition, $c_1(u) = c_0(v)$. We need to show that $c(u) \ne c(v)$. There are two cases:
+\begin{table}
+    \newcommand{\hl}[1]{\mathbf{\color{red}#1}}
+    \newcommand{\node}{\raisebox{-1pt}{$\bigcirc$}}
+    \newcommand{\mylf}{\\[-2pt]}
+    \center
+    \begin{tabular}{@{}c@{\qquad}ccccc@{}}
+    \toprule
+    node & input &&&& output \\
+    $u$ & $c_0(u)$ & $c_1(u)$ & $i(u)$ & $b(u)$ & $c(u)$ \\
+    \midrule
+    $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \mylf
+    $\downarrow$ \mylf
+    \node & $01111\hl{0}11_2$ & $00101\hl{1}11_2$ & $2$ & $0$ & $4$ \mylf
+    $\downarrow$ \mylf
+    \node & $00101\hl{1}11_2$ & $01101\hl{0}11_2$ & $2$ & $1$ & $5$ \mylf
+    $\downarrow$ \mylf
+    $\node$ & $01101011_2$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \mylf
+    $\downarrow$ \mylf
+    $\cdots$ & $\cdots$ \mylf
+    \midrule
+    $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \mylf
+    $\downarrow$ \mylf
+    \node & $01111\hl{0}11_2$ & $00101\hl{1}11_2$ & $2$ & $0$ & $4$ \mylf
+    $\downarrow$ \mylf
+    \node & $0\hl{0}101111_2$ & $0\hl{1}101111_2$ & $6$ & $0$ & $12$ \mylf
+    $\downarrow$ \mylf
+    $\node$ & $01101111_2$ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \mylf
+    $\downarrow$ \mylf
+    $\cdots$ & $\cdots$ \mylf
+    \bottomrule
+    \end{tabular}
+    \caption{Reducing the number of colours from $2^x$ to $2x$, for $x = 8$. There are two interesting cases: either $i(u)$ is the same for two neighbours (first example), or they are different (second example). In the first case, the values $b(u)$ will differ, and in the second case, the values $i(u)$ will differ. In both cases, the final colours $c(u)$ will be different.}\label{tab:intro-id-fast}
+\end{table}
+
+\paragraph{Correctness.}
+Clearly, the value $c(u)$ is in the range $\{0,1,\dotsc,2x-1\}$. However, it is not entirely obvious that these values actually produce a proper $2x$-colouring of the path. To see this, consider a pair of nodes $u$ and $v$ so that $v$ is the successor of $u$. By definition, $c_1(u) = c_0(v)$. We need to show that $c(u) \ne c(v)$. There are two cases\mydash see Table~\ref{tab:intro-id-fast} for an example:
 \begin{enumerate}
-    \item $i(u) \ne i(v)$: This case is trivial. No matter how we choose $b(u) \in \{0,1\}$ and $b(v) \in \{0,1\}$, we have $c(u) \ne c(v)$.
-    \item $i(u) = i(v)$: This case is more interesting. Let $i = i(u) = i(v)$. We now that $b(u)$ is bit number $i$ of $c_0(u)$, and $b(v)$ is bit number $i$ of $c_1(u)$. By the definition of $i(u)$, we also know that these bits differ.    Hence $b(u) \ne b(v)$ and $c(u) \ne c(v)$.
+    \item $i(u) = i(v) = i$: We know that $b(u)$ is bit number $i$ of $c_0(u)$, and $b(v)$ is bit number $i$ of $c_1(u)$. By the definition of $i(u)$, we also know that these bits differ. Hence $b(u) \ne b(v)$ and $c(u) \ne c(v)$.
+    \item $i(u) \ne i(v)$: No matter how we choose $b(u) \in \{0,1\}$ and $b(v) \in \{0,1\}$, we have $c(u) \ne c(v)$.
 \end{enumerate}
 We have argued that $c(u) \ne c(v)$ for any pair of two adjacent nodes $u$ and $v$, and the value of $c(u)$ is an integer between $0$ and $2x-1$ for each node $u$. Hence the algorithm finds a proper $2x$-colouring in one round.
 

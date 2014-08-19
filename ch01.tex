@@ -1,17 +1,23 @@
 %!TEX root = da-screen.tex
 
+We will start this book with an informal introduction to distributed algorithms. We will formalise the model of computing later, starting with some graph-theoretic preliminaries in Chapter~\ref{ch:graphs}, and then followed by the definitions of three models of distributed computing in Chapters \ref{ch:pn}--\ref{ch:congest}. However, in the first two chapters the intuitive idea of computers that can exchange messages with each others is sufficient.
+
+\section{Running Example: Colouring Paths}
+
 Imagine that we have $n$ computers that are connected to each other with communication channels so that the network topology is a \emph{path}:
 \begin{center}
     \includegraphics[page=\PIntroTopo]{figs.pdf}
 \end{center}
-Our task is to find a proper \emph{colouring} of the path with $3$ colours. That is, each computer has to output one of the colours, $1$, $2$, or $3$, so that neighbours have different colours:
+The computers can exchange messages with their neighbours. All computers run the \emph{same} algorithm\mydash this is the \emph{distributed algorithm} that we will design. The algorithm will decide what messages a node sends in each step, how it processes the messages that it receives, when it stops, and what it outputs when it stops.
+
+In this example, the task is to find a proper \emph{colouring} of the path with $3$ colours. That is, each computer has to output one of the colours, $1$, $2$, or $3$, so that neighbours have different colours\mydash here is an example of a proper solution:
 \begin{center}
     \includegraphics[page=\PIntroCol]{figs.pdf}
 \end{center}
 
 \section{Challenges of Distributed Algorithm}
 
-With a bird's-eye view of the entire network, colouring a path looks like a very simple task: just start from one endpoint and assign colours $1$ and $2$ alternatingly. However, in a real-world computer network we usually do not have all-powerful entities that know everything about the network and can directly tell each computer what to do.
+With a bird's-eye view of the entire network, colouring a path looks like a very simple task: just start from one endpoint and assign colours $1$ and $2$ alternately. However, in a real-world computer network we usually do not have all-powerful entities that know everything about the network and can directly tell each computer what to do.
 
 Indeed, when we start a networked computer, it is typically only aware of itself and the communication channels that it can use. In our simple example, the endpoints of the path know that they have one neighbour:
 \begin{center}
@@ -29,23 +35,23 @@ Obviously, the nodes have to exchange \emph{messages} with each other in order t
 \end{center}
 If we have two \emph{identical} computers connected to each other with a single communication link, both computers are started simultaneously, and both of them run the same deterministic algorithm, how could they ever end up in \emph{different} states?
 
-As we will see in Chapter~\ref{ch:intro-neg}, the answer is that it is not possible, without some additional assumptions. In practice, we could try to rely on some imperfections (e.g., the computers are seldom perfectly synchronised), but in the theory of distributed algorithms we often assume that there is some explicit way to \emph{break symmetry} between otherwise identical computers. In this chapter, we will have a brief look at two common assumption:
+The answer is that it is not possible, without some additional assumptions. In practice, we could try to rely on some real-world imperfections (e.g., the computers are seldom perfectly synchronised), but in the theory of distributed algorithms we often assume that there is some \emph{explicit} way to \emph{break symmetry} between otherwise identical computers. In this chapter, we will have a brief look at two common assumption:
 \begin{itemize}[noitemsep]
-    \item each computer has a unique name (Section~\ref{sec:intro-pos-id}),
-    \item the computers can use randomness (Section~\ref{sec:intro-pos-random}).
+    \item each computer has a unique name,
+    \item each computer has a source of random bits.
 \end{itemize}
-In subsequent chapters we will then formalise these models, and develop a theory that will help us understand precisely what kind of tasks can be solved in each case, and how fast.
+In subsequent chapters we will then formalise these models, and develop a theory that will help us understand precisely what kind of tasks can be solved in each case, and how fast (the model with unique names will be discussed in detail in Chapter~\ref{ch:local}, and randomised algorithms will be discussed in Chapter~\ref{ch:rand}).
 
 
 \section{Colouring with Unique Identifiers}\label{sec:intro-pos-id}
 
-There are plenty of examples of real-world networks with globally unique identifiers: public IPv4 and IPv6 addresses are globally unique identifiers of Internet hosts, devices connected to an Ethernet network have globally unique MAC addresses, mobile phones have their IMEI numbers, etc. The common theme is that the identifiers are (supposed to be) globally unique, and the numbers can be interpreted as natural numbers:
+There are plenty of examples of real-world networks with globally unique identifiers: public IPv4 and IPv6 addresses are globally unique identifiers of Internet hosts, devices connected to an Ethernet network have globally unique MAC addresses, mobile phones have their IMEI numbers, etc. The common theme is that the identifiers are globally unique, and the numbers can be interpreted as natural numbers:
 \begin{center}
     \includegraphics[page=\PIntroId]{figs.pdf}
 \end{center}
 With the help of unique identifiers, it is now easy to design an algorithm that colours a path. Indeed, the unique identifiers already form a colouring with a large number of colours! All that we need to do is to reduce the number of colours to $3$.
 
-We can use the following simple strategy. In each round, all ``local maxima'' will be active, i.e., nodes with colours larger than the colours of their neighbours:
+We can use the following simple strategy. In each step, all ``local maxima'' will be active, i.e., nodes with colours larger than the colours of their neighbours:
 \begin{center}
     \includegraphics[page=\PIntroIdA]{figs.pdf}
 \end{center}
@@ -100,12 +106,13 @@ This shows a typical structure of a distributed algorithm: an infinite send--rec
 \end{enumerate}
 The second property is very important: each computer has to know when it is safe to announce its output and stop.
 
-Our algorithm may look a bit strange in the sense that computers that have ``stopped'' are still sending messages. However, it is fairly straightforward to rewrite the algorithm so that you could actually turn off computers that have stopped. The basic idea is that nodes that are going to switch to a stopping state first inform their neighbours about this. Each node will memorise which of its neighbours have already stopped and what where their final colours. Implementing this idea is left as Exercise~\ref{ex:intro-stopped}, and you will later see in Exercise~\ref{ex:stopped} that this can be done for \emph{any} distributed algorithm. Hence we will play by the following simple rules:
+Our algorithm may look a bit strange in the sense that computers that have ``stopped'' are still sending messages. However, it is fairly straightforward to rewrite the algorithm so that you could actually turn off computers that have stopped. The basic idea is that nodes that are going to switch to a stopping state first inform their neighbours about this. Each node will memorise which of its neighbours have already stopped and what where their final colours. Implementing this idea is left as Exercise~\ref{ex:intro-stopped}, and you will later see in Exercise~\ref{ex:stopped} that this can be done for \emph{any} distributed algorithm. Hence, without loss of generality, we can play by the following simple rules:
 \begin{itemize}
     \item Computers are state machines that repeatedly send messages to their neighbours, receive messages from their neighbours, and update their state.
     \item Some of the states are stopping states, and once a node reaches a stopping state, its no longer changes its state.
     \item Eventually all nodes have to reach stopping states, and these states must form a correct solution to the problem that we want to solve.
 \end{itemize}
+Note that here a ``state machine'' does not necessarily refer to a \emph{finite}-state machine. We can perfectly well have a state machine with infinitely many states. Indeed, in the example of Table~\ref{tab:intro-id-greedy} the set of possible states was the set of all positive integers.
 
 
 \section{Fast Colouring with Unique Identifiers}\label{sec:intro-pos-id-fast}

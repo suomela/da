@@ -87,7 +87,15 @@ FIXME: Linial's lower bound.
 
 \section{Exercises}
 
-\begin{ex}[knowing $n$]
+\begin{ex}[counting]
+    Consider the following problem: counting the number of nodes in a path. That is, we are given a path with some unknown number of nodes. All nodes have to stop and output $n$, the number of nodes in the path.
+    \begin{subex}
+        \item Design a deterministic distributed algorithm that solves the counting problem in time $O(n)$. You can assume that the nodes have unique identifiers.
+        \item Prove that it is not possible to solve this problem in time $o(n)$.
+    \end{subex}
+\end{ex}
+
+\begin{ex}[known $n$]
     In Section~\ref{sec:intro-neg-simple} we saw that $2$-colouring a path with $n$ nodes takes $\Omega(n)$    rounds. Show that the claim holds even if $n$ is known. That is, all nodes are initially aware of their own identifier and of the exact number of nodes in the path.
 \end{ex}
 

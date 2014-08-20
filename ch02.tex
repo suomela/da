@@ -38,11 +38,32 @@ Of course the same reasoning holds for any node, and for any information related
 
 Naturally, if a node stops after time $t$, whatever output it produces can only depend on what it knows, and as we have seen, a node can only know information that is available at distance $t$. This is the crux of locality in distributed computing: time and distance are interchangeable; in a \emph{fast} algorithm, nodes have to make decisions based on information that is available \emph{near} them.
 
-\subsection{Simple Consequences of Locality}
+\section{Simple Consequences of Locality}
 
-FIXME
+Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $3$-colouring paths. However, a path can be also coloured with $2$ colours:
+\begin{center}
+    \includegraphics[page=\PIntroColTwo]{figs.pdf}
+\end{center}
+With some thought, we can also come up with a distributed algorithm that finds a $2$-colouring of a path with $n$ nodes in time $O(n)$. An algorithm that works along these lines should do the trick:
+\begin{itemize}
+    \item First, the endpoints of the path (i.e., nodes of degree $1$) send their identifiers to their neighbours. Other nodes forward this information until all nodes along the path learn the identifiers of the endpoints. This takes $n-1$ communication rounds.
+    \begin{center}
+        \includegraphics[page=\PIntroTwoColA]{figs.pdf}
+    \end{center}
+    \item Now the endpoints know each other's identifiers. We elect the endpoint with the smaller identifier as the \emph{leader}.
+    \begin{center}
+        \includegraphics[page=\PIntroTwoColB]{figs.pdf}
+    \end{center}
+    \item Finally, the leader colours itself with colour $1$, sends its colour to its neighbour, and stops. The neighbour responds by picking colour $2$, etc.; after $n-1$ rounds, we have coloured all nodes with alternating colours $1$ and $2$, and all nodes have stopped.
+    \begin{center}
+        \includegraphics[page=\PIntroColTwo]{figs.pdf}
+    \end{center}
+\end{itemize}
+However, in comparison with the algorithm of Section~\ref{sec:intro-pos-id-fast}, this is very slow. Hence we can ask the following question: is it really necessary to spend $\Omega(n)$ rounds in order to find a $2$-colouring of a path?
 
-\subsection{Not So Simple Consequences of Locality}
+
+
+\section{Not So Simple Consequences of Locality}
 
 
 FIXME: No deterministic symmetry breaking in anonymous networks. Linial's lower bound.

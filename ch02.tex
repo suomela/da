@@ -38,7 +38,7 @@ Of course the same reasoning holds for any node, and for any information related
 
 Naturally, if a node stops after time $t$, whatever output it produces can only depend on what it knows, and as we have seen, a node can only know information that is available at distance $t$. This is the crux of locality in distributed computing: time and distance are interchangeable; in a \emph{fast} algorithm, nodes have to make decisions based on information that is available \emph{near} them.
 
-\section{Simple Consequences of Locality}
+\section{Simple Consequences of Locality}\label{sec:intro-neg-simple}
 
 Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $3$-colouring paths. However, a path can be also coloured with $2$ colours:
 \begin{center}
@@ -61,23 +61,37 @@ With some thought, we can also come up with a distributed algorithm that finds a
 \end{itemize}
 However, in comparison with the algorithm of Section~\ref{sec:intro-pos-id-fast}, this is very slow. Hence we can ask the following question: is it really necessary to spend $\Omega(n)$ rounds in order to find a $2$-colouring of a path?
 
+To reach a contradiction, suppose that there was a deterministic algorithm $A$ that runs in time $o(n)$. In particular, there is an $n_0$ such that for any $n \ge n_0$, the running time of algorithm $A$ is at most $(n-3)/2$. Pick some integer $k \ge n_0/2$, and consider two paths: path $G$ contains $2k$ nodes, numbered $1,2,\dotsc,2k$, and path $H$ contains $2k+1$ nodes, numbered \[1,2,\dotsc,k,2k+1,k+1,k+2,\dotsc,2k.\] Here is an example for $k = 3$:
+\begin{center}
+    \includegraphics[page=\PIntroLbTwoA]{figs.pdf}
+\end{center}
+By assumption, the running time $t$ is at most $k-1$ rounds in both cases. In particular, node number $1$ is only aware of the first $k$ nodes along the path, and it must produce its output based on what it sees. As what it sees is the same in $G$ and $H$, we conclude that node $1$ picks the same colour in both instances:
+\begin{center}
+    \includegraphics[page=\PIntroLbTwoB]{figs.pdf}
+\end{center}
+By a similar reasoning, node $2k$ (i.e., the last node of the path) has the same neighbourhood up to distance $t$, and therefore it also has to produces the same output in both cases:
+\begin{center}
+    \includegraphics[page=\PIntroLbTwoC]{figs.pdf}
+\end{center}
+However, now we reach a contradiction: In graph $H$, nodes $1$ and $2k$ have to produce the same output. It follows that nodes $1$ and $2k$ produces the same output also in $G$. However, this cannot happen in any proper $2$-colouring of $G$. We conclude that algorithm $A$ fails to find a proper $2$-colouring in at least one of these instances.
+
+In summary, we have shown that there is no deterministic algorithm that finds a $2$-colouring in time $o(n)$, even if the algorithm can use unique identifiers. On the other hand, there is a deterministic algorithm that solves the problem in time $O(n)$; we conclude that the distributed computational complexity of $2$-colouring paths is precisely $\Theta(n)$.
+
+While we have focused on deterministic algorithms here, we can use similar ideas to prove an analogous result for randomised algorithms, too. This is left as an exercise.
 
 
 \section{Not So Simple Consequences of Locality}
 
+FIXME: Linial's lower bound.
 
-FIXME: No deterministic symmetry breaking in anonymous networks. Linial's lower bound.
 
-FIXME:
+\section{Exercises}
 
-In the previous chapter, we have seen examples of problems that can be solved with a distributed algorithm in the port-numbering model. However, there are many problems that cannot be solved.
+\begin{ex}[knowing $n$]
+    In Section~\ref{sec:intro-neg-simple} we saw that $2$-colouring a path with $n$ nodes takes $\Omega(n)$    rounds. Show that the claim holds even if $n$ is known. That is, all nodes are initially aware of their own identifier and of the exact number of nodes in the path.
+\end{ex}
 
-As a very simple example, let $N = (V,P,p)$ be a port-numbered network with two nodes, $u$ and $v$, that are connected to each other:
-\begin{center}
-    \includegraphics[page=\PPnnTwoNode]{figs.pdf}
-\end{center}
-Assume that we are given a labelling $f(u) = f(v) = 0$. Now let $A$ be any distributed algorithm, and consider the execution of $A$ on $(N,f)$. As the local inputs of $u$ and $v$ are identical, we will have $x_0(u) = x_0(v)$ after the initialisation, that is, nodes $u$ and $v$ have \emph{identical states before round $1$}. It follows that the message sent by $u$ to $v$ in round $1$ is the same as the message sent by $v$ to $u$ in round $1$. Therefore we will have $x_1(u) = x_1(v)$, that is, nodes $u$ and $v$ have \emph{identical states after round $1$}. By induction, we have $x_t(u) = x_t(v)$ for any round $t$. In particular, if $A$ stops in time $T$, we will have $x_T(u) = x_T(v)$, i.e., both $u$ and $v$ produce the same local output.
+\begin{ex}[randomised algorithms]
+    Show that there is no randomised distributed algorithm that finds a $2$-colouring in time $o(n)$ with probability at least $0.9$.
+\end{ex}
 
-This reasoning already shows that $A$ cannot produce a proper colouring, a maximal independent set, a minimum vertex cover, etc.\mydash in each of these cases nodes $u$ and $v$ would have to produce distinct outputs. We generalise this observation in Chapter~\ref{ch:covering-map}, when we introduce a very useful graph-theoretic tool, covering maps.
-
-There are also many problems that can be solved with a distributed algorithm, but it requires a lot of time. Techniques that are useful in proving time lower bounds will be introduced in Chapter~\ref{ch:local-neighbourhoods}.

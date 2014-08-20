@@ -73,7 +73,15 @@ By a similar reasoning, node $2k$ (i.e., the last node of the path) has the same
 \begin{center}
     \includegraphics[page=\PIntroLbTwoC]{figs.pdf}
 \end{center}
-However, now we reach a contradiction: In graph $H$, nodes $1$ and $2k$ have to produce the same output. It follows that nodes $1$ and $2k$ produces the same output also in $G$. However, this cannot happen in any proper $2$-colouring of $G$. We conclude that algorithm $A$ fails to find a proper $2$-colouring in at least one of these instances.
+However, now we reach a contradiction. In path $H$, in any proper $2$-colouring nodes $1$ and $2k$ have the same colour\mydash for example, both of them are of colour $1$, as shown in the following picture:
+\begin{center}
+    \includegraphics[page=\PIntroLbTwoD]{figs.pdf}
+\end{center}
+If algorithm $A$ works correctly, it follows that nodes $1$ and $2k$ must produce the same output in path $H$. However, then it follows that nodes $1$ and $2k$ produces the same output also in $G$, too, but this cannot happen in any proper $2$-colouring of $G$.
+\begin{center}
+    \includegraphics[page=\PIntroLbTwoE]{figs.pdf}
+\end{center}
+We conclude that algorithm $A$ fails to find a proper $2$-colouring in at least one of these instances.
 
 In summary, we have shown that there is no deterministic algorithm that finds a $2$-colouring in time $o(n)$, even if the algorithm can use unique identifiers. On the other hand, there is a deterministic algorithm that solves the problem in time $O(n)$; we conclude that the distributed computational complexity of $2$-colouring paths is precisely $\Theta(n)$.
 

@@ -97,10 +97,9 @@ For the sake of concreteness, let us consider the following case:
     \item we have a \emph{directed} path with $n$ nodes, so that each node has at most one successor and at most one predecessor,
     \item the unique identifiers are a permutation of the set $\{1,2,\dotsc,n\}$.
 \end{itemize}
-In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$; here $\log^*$ is the iterated logarithm function that we studied in Exercise~\ref{ex:logstar}. We will now show that this is optimal
+In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$; here $\log^*$ is the iterated logarithm function that we studied in Exercise~\ref{ex:logstar}. We will now show that this is optimal: any algorithm $A$ that solves this problem requires $\Omega(\log^* n)$ rounds.
 
-Now we will show that the fast $3$-colouring algorithm is asymptotically optimal: $3$-colouring cannot be solved in time $o(\log^* n)$. We will show that this holds even in the following setting:
-Fix an $n$, and let $A$ be a deterministic distributed algorithm that finds a $3$-colouring in this setting. Let $t$ be the running time of algorithm $A$. We will show that $t = \Omega(\log^* n)$.
+To this end, fix an $n$, and fix an algorithm $A$ that finds a $3$-colouring in this setting. Let $t$ be the running time of the algorithm. In particular, the output of a node only depends on the information that is available within distance $t$ from it.
 
 FIXME: Linial's lower bound.
 

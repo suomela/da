@@ -85,10 +85,22 @@ We conclude that algorithm $A$ fails to find a proper $2$-colouring in at least 
 
 In summary, we have shown that there is no deterministic algorithm that finds a $2$-colouring in time $o(n)$, even if the algorithm can use unique identifiers. On the other hand, there is a deterministic algorithm that solves the problem in time $O(n)$; we conclude that the distributed computational complexity of $2$-colouring paths is precisely $\Theta(n)$.
 
-While we have focused on deterministic algorithms here, we can use similar ideas to prove an analogous result for randomised algorithms, too. This is left as an exercise.
+While we have focused on deterministic algorithms here, we can use similar ideas to prove an analogous result for randomised algorithms, too\mydash this is left as an exercise.
 
 
-\section{Not So Simple Consequences of Locality}
+\section{Not So Simple Consequences of Locality}\label{sec:intro-neg-logstar}
+
+In the previous section we saw that $2$-colouring paths with distributed algorithms takes $\Theta(n)$ rounds. In Chapter~\ref{ch:intro-pos} we saw that $3$-colouring is possible much faster, at least if the identifiers are not too large in comparison with $n$.
+
+For the sake of concreteness, let us consider the following case:
+\begin{itemize}
+    \item we have a \emph{directed} path with $n$ nodes, so that each node has at most one successor and at most one predecessor,
+    \item the unique identifiers are a permutation of the set $\{1,2,\dotsc,n\}$.
+\end{itemize}
+In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$; here $\log^*$ is the iterated logarithm function that we studied in Exercise~\ref{ex:logstar}. We will now show that this is optimal
+
+Now we will show that the fast $3$-colouring algorithm is asymptotically optimal: $3$-colouring cannot be solved in time $o(\log^* n)$. We will show that this holds even in the following setting:
+Fix an $n$, and let $A$ be a deterministic distributed algorithm that finds a $3$-colouring in this setting. Let $t$ be the running time of algorithm $A$. We will show that $t = \Omega(\log^* n)$.
 
 FIXME: Linial's lower bound.
 
@@ -111,3 +123,26 @@ FIXME: Linial's lower bound.
     Show that there is no randomised distributed algorithm that finds a $2$-colouring in time $o(n)$ with probability at least $0.9$.
 \end{ex}
 
+\begin{ex}[maximal independent sets]
+    Recall the definition of a maximal independent set from Exercise~\ref{ex:intro-mis}. Prove that it is not possible to find a maximal independent set with a deterministic algorithm in time $o(\log^* n)$. Show that this holds even if we have unique identifiers from set $\{1,2,\dotsc,n\}$. Show that this is tight.
+\end{ex}
+
+\begin{ex}[large independent sets]
+    An independent set is a set of nodes $I$ such that for each node $v \in I$, none of its neighbours are in $I$. Consider a path with $n$ nodes. Assume that we have unique identifiers that are bounded by some polynomial of $n$, that is, there is a constant $c$ such that the unique identifiers are from $\{1,2,\dotsc,n^c\}$.
+    \begin{subex}
+        \item Show that it is trivial to find some independent set in $O(1)$ time with a deterministic distributed algorithm.
+        \item Show that there exists an independent set with at least $n/2$ nodes.
+        \item Show that finding an independent set with at least $n/2$ nodes takes $\Theta(n)$ rounds.
+        \item Design a deterministic distributed algorithm that finds an independent set with at least $n/10$ nodes in time $O(\log^* n)$, with the help of unique identifiers. You can assume that the identifiers are bounded by a polynomial in $n$.
+        \item Design a randomised distributed algorithm that finds an independent set so that the \emph{expected} number of nodes in the output is at least $n/10$ and the running time of the algorithm is $O(1)$.
+    \end{subex}
+\end{ex}
+
+\begin{ex}[tight bounds]
+    Consider the following case: we have a directed path with $n$ nodes, and the unique identifiers are a permutation of $\{1,2,\dotsc,n\}$. We know that $3$-colouring is possible in time $O(\log^* n)$, and this is \emph{asymptotically} tight. However, there is no need to settle for asymptotic bounds; we can work out a precise expression for the optimal running time up to small additive constants:
+    \begin{subex}
+        \item Find a positive constant $c_1$ such that the following holds for all $n$: it is possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) + c_1$.
+        \item Find a positive constant $c_2$ such that the following holds for all $n$: it is possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) - c_2$.
+    \end{subex}
+    \hint{For the upper bound, we need to speed up the fast algorithm by a factor of $2$. To do this, consider the following strategy: after each iteration, reverse the directions of the edges. Then consider two iterations of the algorithm, and observe that the new colour of a node $v$ after \emph{two} iterations only depends on the original colours within distance \emph{one} from node $v$. Hence one communication step is enough to simulate two iterations of colour reduction.}
+\end{ex}

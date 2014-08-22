@@ -251,7 +251,7 @@ While a logarithmic running time is very fast, it is still asymptotically much s
 
 \section{Exercises}
 
-\begin{ex}[maximal independent sets]
+\begin{ex}[maximal independent sets]\label{ex:intro-mis}
     A \emph{maximal independent set} is a set of nodes $I$ that satisfies the following properties:
     \begin{itemize}[noitemsep]
         \item for each node $v \in I$, none of its neighbours are in $I$,
@@ -263,8 +263,8 @@ While a logarithmic running time is very fast, it is still asymptotically much s
     \end{center}
     Your task is to design a distributed algorithm that finds a maximal independent set in any path graph, for each of the following settings:
     \begin{subex}
-        \item\label{subex:intro-mis-a} a deterministic algorithm that uses unique unique identifiers,
-        \item\label{subex:intro-mis-b} a fast deterministic algorithm that uses $128$-bit unique identifiers,
+        \item\label{subex:intro-mis-a} a deterministic algorithm for paths with arbitrarily large unique unique identifiers,
+        \item\label{subex:intro-mis-b} a fast deterministic algorithm for \emph{directed} paths with $128$-bit unique identifiers,
         \item\label{subex:intro-mis-c} a randomised algorithm that does not need unique identifiers. 
     \end{subex}
     In part \ref{subex:intro-mis-a}, use the techniques presented in Section~\ref{sec:intro-pos-id},

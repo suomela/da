@@ -124,7 +124,7 @@ FIXME: Linial's lower bound.
 \end{ex}
 
 \begin{ex}[maximal independent sets]
-    Recall the definition of a maximal independent set from Exercise~\ref{ex:intro-mis}. Prove that it is not possible to find a maximal independent set with a deterministic algorithm in time $o(\log^* n)$. Show that this holds even if we have unique identifiers from set $\{1,2,\dotsc,n\}$. Show that this is tight.
+    Recall the definition of a maximal independent set from Exercise~\ref{ex:intro-mis}. Prove that it is not possible to find a maximal independent set with a deterministic algorithm in time $o(\log^* n)$. Show that this holds even if we have unique identifiers from set $\{1,2,\dotsc,n\}$.
 \end{ex}
 
 \begin{ex}[large independent sets]
@@ -138,11 +138,11 @@ FIXME: Linial's lower bound.
     \end{subex}
 \end{ex}
 
-\begin{ex}[tight bounds]
+\begin{exs}[tight bounds]
     Consider the following case: we have a directed path with $n$ nodes, and the unique identifiers are a permutation of $\{1,2,\dotsc,n\}$. We know that $3$-colouring is possible in time $O(\log^* n)$, and this is \emph{asymptotically} tight. However, there is no need to settle for asymptotic bounds; we can work out a precise expression for the optimal running time up to small additive constants:
     \begin{subex}
         \item Find a positive constant $c_1$ such that the following holds for all $n$: it is possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) + c_1$.
-        \item Find a positive constant $c_2$ such that the following holds for all $n$: it is possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) - c_2$.
+        \item Find a positive constant $c_2$ such that the following holds for all $n$: it is not possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) - c_2$.
     \end{subex}
     \hint{For the upper bound, we need to speed up the fast algorithm by a factor of $2$. To do this, consider the following strategy: after each iteration, reverse the directions of the edges. Then consider two iterations of the algorithm, and observe that the new colour of a node $v$ after \emph{two} iterations only depends on the original colours within distance \emph{one} from node $v$. Hence one communication step is enough to simulate two iterations of colour reduction.}
-\end{ex}
+\end{exs}

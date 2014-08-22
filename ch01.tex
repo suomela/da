@@ -282,7 +282,13 @@ While a logarithmic running time is very fast, it is still asymptotically much s
     \hint{Use the local maxima and minima to partition the path in subpaths so that within each subpath we have unique identifiers given in an increasing order. Use this ordering to orient each subpath. Then we can apply the fast colour reduction algorithm in each subpath. Finally, combine the solutions.}
 \end{ex}
 
-\begin{ex}[log-star]\label{ex:logstar}
+\begin{ex}[randomised and fast]
+    The randomised algorithm of Section~\ref{sec:intro-pos-random} finds a $3$-colouring in time $O(\log n)$ with high probability. Can you design a randomised algorithm that finds a $3$-colouring in time $o(\log n)$ with high probability? You can assume that $n$ is known.
+
+    \hint{Design a randomised algorithm that finds a colouring with a large number of colours quickly. Then apply the technique of Section~\ref{sec:intro-pos-id-fast} to reduce the number of colours to $3$ quickly.}
+\end{ex}
+
+\begin{exs}[log-star]\label{ex:logstar}
     The \emph{iterated logarithm} of $x$, in notation $\log^* x$, is defined recursively as follows:
     \[
         \log^*(x) = \begin{cases}
@@ -315,14 +321,8 @@ While a logarithmic running time is very fast, it is still asymptotically much s
     (iii)~$\log^* x \ge 4$.
     \end{center}
     In case~(iii), prove that after $\log^*(x)-3$ iterations, the number of colours is at most $64$.}
-\end{ex}
+\end{exs}
 
-\begin{ex}[randomised and fast]
-    The randomised algorithm of Section~\ref{sec:intro-pos-random} finds a $3$-colouring in time $O(\log n)$ with high probability. Can you design a randomised algorithm that finds a $3$-colouring in time $o(\log n)$ with high probability? You can assume that $n$ is known.
-
-    \hint{Design a randomised algorithm that finds a colouring with a large number of colours quickly. Then apply the technique of Section~\ref{sec:intro-pos-id-fast} to reduce the number of colours to $3$ quickly.}
-\end{ex}
-
-\begin{ex}[oblivious algorithms]
+\begin{exs}[oblivious algorithms]
     The algorithm of Section~\ref{sec:intro-pos-id} works correctly even if we do not know how many nodes there are in the network, or what is the range of unique identifiers\mydash we say that the algorithm is \emph{oblivious}. Adapt the fast algorithm of Section~\ref{sec:intro-pos-id-fast} so that it is also oblivious.
-\end{ex}
+\end{exs}

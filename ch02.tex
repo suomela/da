@@ -38,12 +38,17 @@ Of course the same reasoning holds for any node, and for any information related
 
 Naturally, if a node stops after time $t$, whatever output it produces can only depend on what it knows, and as we have seen, a node can only know information that is available at distance $t$. This is the crux of locality in distributed computing: time and distance are interchangeable; in a \emph{fast} algorithm, nodes have to make decisions based on information that is available \emph{near} them.
 
-\section{Simple Consequences of Locality}\label{sec:intro-neg-simple}
+
+\section{Locality and 2-Colouring}\label{sec:intro-neg-simple}
 
 Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $3$-colouring paths. However, a path can be also coloured with $2$ colours:
 \begin{center}
     \includegraphics[page=\PIntroColTwo]{figs.pdf}
 \end{center}
+
+
+\subsection{Algorithm for 2-Colouring}
+
 With some thought, we can also come up with a distributed algorithm that finds a $2$-colouring of a path with $n$ nodes in time $O(n)$. An algorithm that works along these lines should do the trick:
 \begin{itemize}
     \item First, the endpoints of the path (i.e., nodes of degree $1$) send their identifiers to their neighbours. Other nodes forward this information until all nodes along the path learn the identifiers of the endpoints. This takes $n-1$ communication rounds.
@@ -60,6 +65,9 @@ With some thought, we can also come up with a distributed algorithm that finds a
     \end{center}
 \end{itemize}
 However, in comparison with the algorithm of Section~\ref{sec:intro-pos-id-fast}, this is very slow. Hence we can ask the following question: is it really necessary to spend $\Omega(n)$ rounds in order to find a $2$-colouring of a path?
+
+
+\subsection{Lower Bound for 2-Colouring}
 
 To reach a contradiction, suppose that there was a deterministic algorithm $A$ that runs in time $o(n)$. In particular, there is an $n_0$ such that for any $n \ge n_0$, the running time of algorithm $A$ is at most $(n-3)/2$. Pick some integer $k \ge n_0/2$, and consider two paths: path $G$ contains $2k$ nodes, numbered $1,2,\dotsc,2k$, and path $H$ contains $2k+1$ nodes, numbered \[1,2,\dotsc,k,2k+1,k+1,k+2,\dotsc,2k.\] Here is an example for $k = 3$:
 \begin{center}
@@ -88,7 +96,7 @@ In summary, we have shown that there is no deterministic algorithm that finds a 
 While we have focused on deterministic algorithms here, we can use similar ideas to prove an analogous result for randomised algorithms, too\mydash this is left as an exercise.
 
 
-\section{Not So Simple Consequences of Locality}\label{sec:intro-neg-logstar}
+\section{Locality and 3-Colouring}\label{sec:intro-neg-logstar}
 
 In the previous section we saw that $2$-colouring paths with distributed algorithms takes $\Theta(n)$ rounds. In Chapter~\ref{ch:intro-pos} we saw that $3$-colouring is possible much faster. Let us now study precisely how much faster it is.
 
@@ -97,7 +105,7 @@ For the sake of concreteness, we will consider the following case:
     \item we have a \emph{directed} path with $n$ nodes, so that each node has at most one successor and at most one predecessor,
     \item the unique identifiers are a permutation of the set $\{1,2,\dotsc,n\}$.
 \end{itemize}
-In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$; here $\log^*$ is the iterated logarithm function that we studied in Exercise~\ref{ex:logstar}. We will now show that this is optimal: any algorithm $A$ that solves this problem requires $\Omega(\log^* n)$ rounds.
+In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$. We will now show that this is optimal: any algorithm $A$ that solves this problem requires $\Omega(\log^* n)$ rounds.
 
 
 \subsection{Proof Overview}

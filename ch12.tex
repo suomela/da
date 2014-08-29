@@ -62,3 +62,8 @@ In the following exercises, we will study distributed approximation algorithms f
     \end{enumerate}
     The distributed algorithm has to exploit the port numbers of the edges. One possible approach is this: First, use the port numbers to find nine matchings, $M_1, M_2, \dotsc, M_9$, such that each node is incident to an edge in at least one of the sets $M_i$; do not worry if some edges are present in more than one matching. Then construct an edge cover $D$ by greedily adding edges from the sets $M_i$; in step $i = 1, 2, \dotsc, 9$ you can consider all edges of $M_i$ in parallel. Finally, eliminate paths of length three by removing redundant edges in order to make $D$ a good set; again, in step $i = 1, 2, \dotsc, 9$ you can consider all edges of $M_i$ in parallel.}
 \end{ex}
+
+
+\section{Bibliographic Notes}
+
+Exercises \ref{ex:edsfirst}--\ref{ex:edslast} are inspired by our work \cite{suomela10eds,astrand10weakly-coloured}.

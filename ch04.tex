@@ -434,3 +434,9 @@ In summary, $\algo{VC3}$ finds a \Apx{3} of a minimum vertex cover in any graph 
     
     \hint{This exercise is not trivial. If $T_1$ was a constant function $T_1(n) = c$, we could simply run $A_1$, and then start $A_2$ at time $c$, using the output of $A_1$ as the input of $A_2$. However, if $T_1$ is an arbitrary function of $|V|$, this strategy is not possible\mydash we do not know in advance when $A_1$ will stop.}
 \end{ex}
+
+
+\section{Bibliographic Notes}
+
+The concept of a port numbering is from Angluin's~\cite{angluin80local} work. Algorithm $\algo{BMM}$ is due to Ha\'{n}\'{c}kowiak et al.~\cite{hanckowiak98distributed}, and algorithm $\algo{VC3}$ is from a paper with Polishchuk~\cite{polishchuk09simple}.
+

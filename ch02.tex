@@ -145,3 +145,8 @@ FIXME: Linial's lower bound.
     \end{subex}
     \hint{For the upper bound, we need to speed up the fast algorithm by a factor of $2$. To do this, consider the following strategy: after each iteration, reverse the directions of the edges. Then consider two iterations of the algorithm, and observe that the new colour of a node $v$ after \emph{two} iterations only depends on the original colours within distance \emph{one} from node $v$. Hence one communication step is enough to simulate two iterations of colour reduction.}
 \end{exs}
+
+
+\section{Bibliographic Notes}
+
+The negative result of Section~\ref{sec:intro-neg-logstar} is due to Linial~\cite{linial92locality}; our presentation follows a more streamlined version of the proof~\cite{laurinharju14linial-easy}.

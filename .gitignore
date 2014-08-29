@@ -8,3 +8,4 @@ da-*.pdf
 *.toc
 *.fdb_latexmk
 *.synctex.gz
+Makefile

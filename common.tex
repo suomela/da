@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[charter]{mathdesign}
 \usepackage[UKenglish]{babel}
-\usepackage{amsmath,amsthm,booktabs,enumitem,graphicx,hyphenat,titlesec,url,xcolor}
+\usepackage{amsmath,amsthm,booktabs,enumitem,graphicx,hyphenat,titlesec,titletoc,url,xcolor}
 \usepackage{microtype}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{enotez}
@@ -42,26 +42,43 @@
 
 %---- TOC ----
 
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\@dottedtocline}
-  {\rightskip\@tocrmarg}
-  {\rightskip\@tocrmarg plus 4em \hyphenpenalty\@M}
-  {}{}
-\renewcommand{\@pnumwidth}{1.7em}
-\renewcommand{\@tocrmarg}{2.7em}
-\makeatother
+\contentsmargin{7mm}
+
+\titlecontents{part}
+              [0mm]
+              {\addvspace{7mm}\Large\bfseries\color{titlecolor}}
+              {}
+              {Part }
+              {}
+
+\titlecontents{chapter}
+              [6mm]
+              {\addvspace{4mm}\bfseries}
+              {\contentslabel{6mm}}
+              {\hspace*{-6mm}}
+              {\titlerule[0pt]\contentspage}
+              [\addvspace{2mm}]
+
+\titlecontents{section}
+              [15mm]
+              {}
+              {\contentslabel{9mm}}
+              {\hspace*{-9mm}}
+              {\titlerule*[1pc]{.}\contentspage}
+
+\titlecontents{subsection}
+              [27mm]
+              {}
+              {\contentslabel{12mm}}
+              {\hspace*{-12mm}}
+              {\titlerule*[1pc]{.}\contentspage}
 
 %---- Hyperlinks ----
 
 \urlstyle{same}
 
 \hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=black,
-    filecolor=black,
-    urlcolor=[rgb]{0,0.1,0.5},
+    hidelinks
 }
 
 %---- Lists ----

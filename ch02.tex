@@ -126,12 +126,12 @@ Let $k$ and $c$ be positive integers. We say that a function $f$ is a $k$-ary $c
     &f(x_1, x_2, \dotsc, x_k) \in \{1,2,\dotsc,c\} \\
     &\text{for all } 1 \le x_1 < x_2 < \dotso < x_k \le n,
     \end{split}
-    \label{eq:col1} \\[3pt]
+    \label{eq:linial-col1} \\[3pt]
     \begin{split}
     &f(x_1, x_2, \dotsc, x_k) \ne f(x_2, x_3, \dotsc, x_{k+1}) \\
     &\text{for all } 1 \le x_1 < x_2 < \dotso < x_{k+1} \le n.
     \end{split}
-    \label{eq:col2}
+    \label{eq:linial-col2}
 \end{align}
 For example, here is a $2$-ary $3$-colouring function for $n = 5$:
 \begin{align*}
@@ -164,13 +164,13 @@ You can verify that this is indeed a colouring function:
 
 Now consider a distributed algorithm $A$ that finds a $3$-colouring in time $T$. Let $k = 2T+1$. We will show how to use $A$ to construct a $k$-ary $3$-colouring function $f$.
 
-To this end, let $1 \le x_1 < x_2 < \dotso < x_k \le n$. Construct a path in which nodes with unique identifiers $x_1, x_2, \dotsc, x_k$ are given in this order. Then apply algorithm $A$ to find a colouring of this path, and define that $f(x_1, x_2, \dotsc, x_k)$ is the output of node $x_{T+1}$. Here is an illustration for $T = 2$, i.e., $k = 5$:
+To this end, let $1 \le x_1 < x_2 < \dotso < x_k \le n$. Construct a path in which we have $k$ consecutive nodes with unique identifiers $x_1, x_2, \dotsc, x_k$, in this order\mydash here is an illustration for $T = 2$:
 \begin{center}
     \includegraphics[page=\PIntroIdIncr]{figs.pdf}
 \end{center}
-Note that the output of $x_{T+1}$ only depends on the identifiers $x_1, x_2, \dotsc,\allowbreak x_k$, so this is well-defined.
+Then apply algorithm $A$ to find a colouring of this path, and define that $f(x_1, x_2, \dotsc, x_k)$ is the output of node $x_{T+1}$. Note that the output of $x_{T+1}$ only depends on the identifiers $x_1, x_2, \dotsc,\allowbreak x_k$, so this is well-defined: we will get the same output, regardless of how we choose the unique identifiers of the remaining $n-k$ nodes.
 
-Now we need to argue that $f$ is indeed a colouring function. Property \eqref{eq:col1} clearly holds. To verify property \eqref{eq:col2}, let $1 \le x_1 < x_2 < \dotso < x_{k+1} \le n$. Consider a path $P$ in which the identifiers are given in an increasing order\mydash here is an illustration for $T = 2$:
+Now we need to argue that $f$ is indeed a colouring function. Property \eqref{eq:linial-col1} clearly holds. To verify property \eqref{eq:linial-col2}, let $1 \le x_1 < x_2 < \dotso < x_{k+1} \le n$. Consider a path $P$ in which the identifiers are given in an increasing order\mydash here is an illustration for $T = 2$:
 \begin{center}
     \includegraphics[page=\PIntroIdIncrB]{figs.pdf}
 \end{center}
@@ -182,16 +182,113 @@ is equal to the output of node $x_{T+1}$ in path $P$, and
 \[
     f(x_2, x_3, \dotsc, x_{k+1}).
 \]
-is equal to the output of node $x_{T+2}$ in path $P$. Here it is crucial that the output of a node only depends on its radius-$T$ neighbourhood. Algorithm $A$ of course has to properly colour path $P$. In particular, the output of $x_{T+1}$ has to be different from the output of $x_{T+2}$. We conclude that
+is equal to the output of node $x_{T+2}$ in path $P$. Here it is crucial that the output of a node only depends on its radius-$T$ neighbourhood. Algorithm $A$ finds a proper colouring of any path; therefore the output of $x_{T+1}$ has to be different from the output of $x_{T+2}$. We conclude that
 \[
     f(x_1, x_2, \dotsc, x_k) \ne f(x_2, x_3, \dotsc, x_{k+1}),
 \]
 Function $f$ is indeed a $k$-ary $3$-colouring function.
 
+We have seen that colouring functions are closely related to algorithms that colour paths. Before we continue, let us make the following observations:
+\begin{itemize}
+    \item Given a distributed algorithm that finds a $3$-colouring of a path in time $T$, we can construct a $k$-ary $3$-colouring function for $k = 2T+1$.
+    \item The converse is not necessarily true. Given a colouring function, it is not necessarily easy to construct a distributed algorithm for colouring paths. In essence, a colouring function only needs to colour properly path segments that have unique identifiers given in an increasing order, while a path colouring algorithm has to handle arbitrary paths (as well as all corner cases, such as nodes near the endpoints of a path).
+    \item A distributed algorithm implies a $k$-ary colouring function for an odd $k$.
+    \item Colouring functions are well-defined also for even values of $k$.
+\end{itemize}
 
-\paragraph{Limitations of Colouring Functions.}
+
+\paragraph{Simple Base Case.}
+
+We will now show that $k$-ary $3$-colouring functions do not exist if $k$ is too small. We start with a trivial lemma that shows that with $k = 1$ we cannot do much.
+
+\begin{lemma}\label{lem:linial-base}
+    If $A$ is a $1$-ary $c$-colouring function, then we must have $c \ge n$.
+\end{lemma}
+\begin{proof}
+    Note that a $1$-ary $c$-colouring function is a mapping
+    \[
+        f\colon \{1,2,\dotsc,n\} \to \{1,2,\dotsc,c\}.
+    \]
+    If $c < n$, there are collisions: we can find some $x_1$ and $x_2$ with $x_1 < x_2$ and $f(x_1) = f(x_2)$, which contradicts property~\eqref{eq:linial-col2}.
+\end{proof}
 
 
+\paragraph{Iteration.}
+
+The key element of the proof is the following lemma. Informally, given any colouring function~$f$, we can always construct another colouring function~$g$ that is ``faster'' (smaller number of arguments) but ``worse'' (larger number of colours).
+
+\begin{lemma}\label{lem:linial-iter}
+    If $f$ is a $k$-ary $c$-colouring function, we can construct a $(k-1)$-ary $2^c$-colouring function~$g$.
+\end{lemma}
+\begin{proof}
+    First, let us define some bijection $h$ between subsets of $\{1,2,\dotsc,c\}$ and integers $\{1,2,\dotsc,2^c\}$. For example,
+    \[
+        h(\emptyset) = 1,\quad h(\{1\}) = 2,\quad h(\{2\}) = 3, h(\{1,2\}) = 4, \dotsc
+    \]
+    Second, define function $g'$ as follows:
+    \[
+    \begin{split}
+        &g'(x_1, x_2, \dotsc, x_{k-1}) \\
+        &\quad= \bigl\{ f(x_1, x_2, \dotsc, x_{k-1}, x_k) \,:\, x_k > x_{k-1} \bigr\}.
+    \end{split}
+    \]
+    Finally, let $g$ be $h \circ g'$, that is,
+    \[
+        g(x_1, x_2, \dotsc, x_{k-1}) = h(g'(x_1, x_2, \dotsc, x_{k-1})).
+    \]
+
+    We claim that this function $g$ is indeed a $(k-1)$-ary $2^c$-colouring function. Clearly it takes $k-1$ arguments and it satisfies property~\eqref{eq:linial-col1}. The interesting part is \eqref{eq:linial-col2}. Let $1 \le x_1 < x_2 < \dotso < x_k \le n$. By way of contradiction, suppose that
+    \[
+        g(x_1, x_2, \dotsc, x_{k-1}) = g(x_2, x_3, \dotsc, x_k).
+    \]
+    As $h$ is a bijection, this implies
+    \begin{equation}
+        g'(x_1, x_2, \dotsc, x_{k-1}) = g'(x_2, x_3, \dotsc, x_k). \label{eq:contr}
+    \end{equation}
+    Let $\alpha = f(x_1, x_2, \dotsc, x_k)$.
+    From the definition of $g'$ we have
+    \[
+        \alpha \in g'(x_1, x_2, \dotsc, x_{k-1}).
+    \]
+    By assumption \eqref{eq:contr}, this implies
+    \[
+        \alpha \in g'(x_2, x_3, \dotsc, x_k).
+    \]
+    But then we must have some $x_k < x_{k+1} \le n$ such that
+    \[
+        \alpha = f(x_2, x_3, \dotsc, x_{k+1}).
+    \]
+    However, we also had
+    \[
+        \alpha = f(x_1, x_2, \dotsc, x_k).
+    \]
+    That is, $f$ cannot be a colouring function.
+\end{proof}
+
+
+\paragraph{Completing the Proof.}
+
+Define the power tower notation
+\[
+    {}^i 2 = 2^{2^{\cdot^{\cdot^2}}},
+\]
+with $i$ twos in the power tower. For example, ${}^2 2 = 4$ and ${}^3 2 = 16$. Note that $\log^*$ is, in essence, the inverse of power towers: for all natural numbers $i$ we have
+\[
+    \log^* {}^i 2 = i.
+\]
+
+Now assume that $f_1$ is a $k$-ary $3$-colouring function. Certainly it is also a $k$-ary $4$-colouring function, and $4 = {}^2 2$. We can apply Lemma~\ref{lem:linial-iter} iteratively to obtain
+\begin{itemize}[noitemsep]
+    \item a $(k-1)$-ary ${}^3 2$-colouring function $A_2$,
+    \item a $(k-2)$-ary ${}^4 2$-colouring function $A_3$, \\ \ldots
+    \item a $1$-ary ${}^{k+1} 2$-colouring function $A_k$.
+\end{itemize}
+By Lemma~\ref{lem:linial-base}, we must have ${}^{k+1} 2 \ge n$, which implies $k + 1 \ge \log^* n$.
+
+This completes the proof. Recall that if $A$ is a distributed algorithm that finds a $3$-colouring of any path in time $T$, then there exists a $k$-ary $3$-colouring function for $k = 2T+1$. We have now shown that
+\[
+    k + 1 = 2T + 2 \ge \log^* n.
+\]
 
 
 \section{Exercises}

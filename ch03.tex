@@ -6,7 +6,8 @@ The study of distributed algorithms is closely related to graphs: we will interp
 
 A \emph{simple undirected graph} is a pair $G = (V,E)$, where $V$ is the set of \emph{nodes} (\emph{vertices}) and $E$ is the set of \emph{edges}. Each edge $e \in E$ is a 2-subset of nodes, that is, $e = \{u,v\}$ where $u \in V$, $v \in V$, and $u \ne v$. Unless otherwise mentioned, we assume that $V$ is a non-empty finite set; it follows that $E$ is a finite set. Usually, we will draw graphs using circles and lines\mydash each circle represents a node, and a line that connects two nodes represents an edge.
 
-\paragraph{Adjacency.}
+
+\subsection{Adjacency}
 
 If $e = \{u,v\} \in E$, we say that node $u$ is \emph{adjacent} to $v$, nodes $u$ and $v$ are \emph{neighbours}, node $u$ is \emph{incident} to $e$, and edge $e$ is also \emph{incident} to $u$. If $e_1, e_2 \in E$, $e_1 \ne e_2$, and $e_1 \cap e_2 \ne \emptyset$ (i.e., $e_1$ and $e_2$ are distinct edges that share an endpoint), we say that $e_1$ is \emph{adjacent} to $e_2$.
 \begin{figure}
@@ -20,7 +21,8 @@ The \emph{degree} of a node $v \in V$ in graph $G$ is \[
 \]
 That is, $v$ has $\deg_G(v)$ neighbours; it is adjacent to $\deg_G(v)$ nodes and incident to $\deg_G(v)$ edges. A node $v \in V$ is \emph{isolated} if $\deg_G(v) = 0$. Graph $G$ is \emph{\Reg{k}} if $\deg_G(v) = k$ for each $v \in V$.
 
-\paragraph{Subgraphs.}
+
+\subsection{Subgraphs}
 
 Let $G = (V,E)$ and $H = (V_2,E_2)$ be two graphs. If $V_2 \subseteq V$ and $E_2 \subseteq E$, we say that $H$ is a \emph{subgraph} of $G$. If $V_2 = V$, we say that $H$ is a \emph{spanning subgraph} of $G$.
 
@@ -28,7 +30,8 @@ If $V_2 \subseteq V$ and $E_2 = \Set{ \{u,v\} \in E : u \in V_2,\ v \in V_2 }$, 
 
 If $E_2 \subseteq E$ and $V_2 = \bigcup E_2$, we say that $H$ is an \emph{edge-induced subgraph}; more specifically, $H$ is the subgraph of $G$ induced by edges $E_2$.
 
-\paragraph{Walks.}
+
+\subsection{Walks}
 
 \begin{figure}
     \centering
@@ -52,7 +55,8 @@ If $E_2 \subseteq E$ and $V_2 = \bigcup E_2$, we say that $H$ is an \emph{edge-i
 
 A \emph{walk} of length $\ell$ from node $v_0$ to node $v_\ell$ is an alternating sequence $w = (v_0, e_1, v_1, e_2, v_2, \dotsc, e_\ell, v_\ell)$ where $v_i \in V$, $e_i \in E$, and $e_i = \{ v_{i-1}, v_i \}$ for all $i$; see Figure~\ref{fig:walk}. The walk is \emph{empty} if $\ell = 0$. We say that walk~$w$ \emph{visits} the nodes $v_0, v_1, \dotsc, v_\ell$, and it \emph{traverses} the edges $e_1, e_2, \dotsc, e_\ell$. In general, a walk may visit the same node more than once and it may traverse the same edge more than once. A \emph{non-backtracking walk} does not traverse the same edge twice consecutively, that is, $e_{i-1} \ne e_i$ for all $i$. A \emph{path} is a walk that visits each node at most once, that is, $v_i \ne v_j$ for all $0 \le i < j \le \ell$. A walk is \emph{closed} if $v_0 = v_\ell$. A \emph{cycle} is a non-empty closed walk with $v_i \ne v_j$ and $e_i \ne e_j$ for all $1 \le i < j \le \ell$; it follows that the length of a cycle is at least~$3$.
 
-\paragraph{Connectivity and Distances.}
+
+\subsection{Connectivity and Distances}
 
 For each graph $G = (V,E)$, we can define a relation $\leadsto$ on $V$ as follows: $u \leadsto v$ if there is a walk from $u$ to $v$. Clearly $\leadsto$ is an equivalence relation. Let $C \subseteq V$ be an equivalence class; the subgraph induced by $C$ is called a \emph{connected component} of $G$.
 
@@ -76,7 +80,8 @@ A \emph{tree} is a connected, acyclic graph. If $T = (V,E)$ is a tree and $u,v \
 
 A \emph{path graph} is a graph that consists of one path, and a \emph{cycle graph} is a graph that consists of one cycle. Put otherwise, a path graph is a tree in which all nodes have degree at most $2$, and a cycle graph is a \Reg{2} pseudotree. Note that any graph of maximum degree $2$ consists of disjoint paths and cycles, and any \Reg{2} graph consists of disjoint cycles.
 
-\paragraph{Isomorphism.}
+
+\subsection{Isomorphism}
 
 An \emph{isomorphism} from graph $G_1 = (V_1,E_1)$ to graph $G_2 = (V_2,E_2)$ is a bijection $f\colon V_1 \to V_2$ that preserves adjacency: $\{u,v\} \in E_1$ if and only if $\{f(u),f(v)\} \in E_2$. If an isomorphism from $G_1$ to $G_2$ exists, we say that $G_1$ and $G_2$ are isomorphic.
 

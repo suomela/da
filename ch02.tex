@@ -100,7 +100,7 @@ For the sake of concreteness, we will consider the following case:
 In this case the algorithm of Section~\ref{sec:intro-pos-id-fast} finds a $3$-colouring in time $O(\log^* n)$; here $\log^*$ is the iterated logarithm function that we studied in Exercise~\ref{ex:logstar}. We will now show that this is optimal: any algorithm $A$ that solves this problem requires $\Omega(\log^* n)$ rounds.
 
 
-\paragraph{Proof Overview.}
+\subsection{Proof Overview}
 
 Fix any positive integer $n$. We will prove the claim as follows.
 \begin{enumerate}
@@ -118,7 +118,7 @@ or put otherwise,
 \]
 
 
-\paragraph{Colouring Functions.}
+\subsection{Colouring Functions}
 
 Let $k$ and $c$ be positive integers. We say that a function $f$ is a $k$-ary $c$-colouring function if
 \begin{align}
@@ -160,7 +160,7 @@ You can verify that this is indeed a colouring function:
 \end{align*}
 
 
-\paragraph{From Algorithms to Colouring Functions.}
+\subsection{From Algorithms to Colouring Functions}
 
 Now consider a distributed algorithm $A$ that finds a $3$-colouring in time $T$. Let $k = 2T+1$. We will show how to use $A$ to construct a $k$-ary $3$-colouring function $f$.
 
@@ -188,16 +188,20 @@ is equal to the output of node $x_{T+2}$ in path $P$. Here it is crucial that th
 \]
 Function $f$ is indeed a $k$-ary $3$-colouring function.
 
+
+\subsection{Observations}
+
 We have seen that colouring functions are closely related to algorithms that colour paths. Before we continue, let us make the following observations:
 \begin{itemize}
     \item Given a distributed algorithm that finds a $3$-colouring of a path in time $T$, we can construct a $k$-ary $3$-colouring function for $k = 2T+1$.
-    \item The converse is not necessarily true. Given a colouring function, it is not necessarily easy to construct a distributed algorithm for colouring paths. In essence, a colouring function only needs to colour properly path segments that have unique identifiers given in an increasing order, while a path colouring algorithm has to handle arbitrary paths (as well as all corner cases, such as nodes near the endpoints of a path).
+    \item However, it is not necessarily easy to construct a distributed algorithm for colouring paths. In essence, a colouring function only needs to colour properly path segments that have unique identifiers given in an increasing order, while a path colouring algorithm has to handle arbitrary paths (as well as all corner cases, such as nodes near the endpoints of a path).
     \item A distributed algorithm implies a $k$-ary colouring function for an odd $k$.
-    \item Colouring functions are well-defined also for even values of $k$.
+    \item However, colouring functions are well-defined also for even values of $k$.
 \end{itemize}
+While we are interested in algorithms, it turns out that colouring functions are easier to analyse. It is sufficient to show that colouring functions for a very small $k$ do not exist\mydash then it follows that algorithms for a very small $T$ do not exist, either.
 
 
-\paragraph{Simple Base Case.}
+\subsection{Simple Base Case}
 
 We will now show that $k$-ary $3$-colouring functions do not exist if $k$ is too small. We start with a trivial lemma that shows that with $k = 1$ we cannot do much.
 
@@ -213,7 +217,7 @@ We will now show that $k$-ary $3$-colouring functions do not exist if $k$ is too
 \end{proof}
 
 
-\paragraph{Iteration.}
+\subsection{Iteration}
 
 The key element of the proof is the following lemma. Informally, given any colouring function~$f$, we can always construct another colouring function~$g$ that is ``faster'' (smaller number of arguments) but ``worse'' (larger number of colours).
 
@@ -266,7 +270,7 @@ The key element of the proof is the following lemma. Informally, given any colou
 \end{proof}
 
 
-\paragraph{Completing the Proof.}
+\subsection{Completing the Proof}
 
 Define the power tower notation
 \[
@@ -325,12 +329,20 @@ This completes the proof. Recall that if $A$ is a distributed algorithm that fin
 \end{ex}
 
 \begin{exs}[tight bounds]
-    Consider the following case: we have a directed path with $n$ nodes, and the unique identifiers are a permutation of $\{1,2,\dotsc,n\}$. We know that $3$-colouring is possible in time $O(\log^* n)$, and this is \emph{asymptotically} tight. However, there is no need to settle for asymptotic bounds; we can work out a precise expression for the optimal running time up to small additive constants:
-    \begin{subex}
-        \item Find a positive constant $c_1$ such that the following holds for all $n$: it is possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) + c_1$.
-        \item Find a positive constant $c_2$ such that the following holds for all $n$: it is not possible to find a $3$-colouring with a deterministic algorithm in time $\frac{1}{2} \log^*(n) - c_2$.
-    \end{subex}
-    \hint{For the upper bound, we need to speed up the fast algorithm by a factor of $2$. To do this, consider the following strategy: after each iteration, reverse the directions of the edges. Then consider two iterations of the algorithm, and observe that the new colour of a node $v$ after \emph{two} iterations only depends on the original colours within distance \emph{one} from node $v$. Hence one communication step is enough to simulate two iterations of colour reduction.}
+    Consider the following case: we have a directed path with $n$ nodes, and the unique identifiers are a permutation of $\{1,2,\dotsc,n\}$. We have seen that $3$-colouring the path with a deterministic distributed algorithm takes at least
+    \[
+        \frac{1}{2} \log^*(n) - 1
+    \]
+    rounds. On the other hand, the analysis of Exercise~\ref{ex:logstar-tight} shows that colouring is possible in
+    \[
+        \log^*(n) + O(1)
+    \]
+    rounds. Close the factor-$2$ gap between the bounds, and design a distributed algorithm that finds a $3$-colouring in
+    \[
+        \frac{1}{2} \log^*(n) + O(1)
+    \]
+    rounds.
+    \hint{Consider the following strategy: after each iteration, reverse the directions of the edges. Then consider two iterations of the algorithm, and observe that the new colour of a node $v$ after \emph{two} iterations only depends on the original colours within distance \emph{one} from node $v$. Hence one communication step is enough to simulate two iterations of colour reduction.}
 \end{exs}
 
 

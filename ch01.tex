@@ -129,7 +129,9 @@ However, it is possible to colour paths \emph{much} faster. The algorithm is eas
 \end{center}
 That is, we have a consistent orientation in the path so that each node has at most one ``predecessor'' and at most one ``successor''. The orientations are just additional information that we will use in algorithm design\mydash nodes can always exchange information along each edge in either direction. We will generalise this algorithm to undirected paths in Exercise~\ref{ex:intro-undir-path}.
 
-\paragraph{Algorithm Overview.}
+
+\subsection{Algorithm Overview}
+
 For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough, but the same idea can be easily generalised to arbitrarily large identifiers if needed.
 
 Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In this section, we will present an algorithm that reduces the number of colours from $2^x$ to $2x$ in one round, for any positive integer $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
@@ -141,7 +143,9 @@ Again, we will interpret the unique identifiers as colours; hence our starting p
 \end{align*}
 Once we have found a $6$-colouring, we can then apply the algorithm of Table~\ref{tab:intro-id-greedy} to reduce the number of colours from $6$ to $3$. It is easy to see that this will take at most $3$ rounds. Overall, we have an algorithm that reduces the number of colours from $2^{128}$ to $3$ in only $7$ rounds\mydash no matter how many nodes we have in the path. Compare this with the simple greedy algorithm, which may take millions of rounds for paths with millions of nodes.
 
-\paragraph{Algorithm for One Step.}
+
+\subsection{Algorithm for One Step}
+
 Let us now show how to reduce the number of colours from $2^x$ to $2x$ in one round. First, each node sends its current colour to its predecessor. After this step, each node $u$ knows two values:
 \begin{itemize}[noitemsep]
     \item $c_0(u)$, the current colour of the node,
@@ -160,7 +164,9 @@ Finally, node $u$ simply picks
 \]
 as its new colour.
 
-\paragraph{An Example.}
+
+\subsection{An Example}
+
 Let $x = 8$, i.e., nodes are coloured with $8$-bit numbers. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$; see Table~\ref{tab:intro-id-fast} for an illustration. In binary, we have
 \begin{align*}
     c_0(u) &= 01111011_2, \\
@@ -214,7 +220,9 @@ That is, node picks $4$ as its new colour. If all other nodes run the same algor
     \caption{Reducing the number of colours from $2^x$ to $2x$, for $x = 8$. There are two interesting cases: either $i(u)$ is the same for two neighbours (first example), or they are different (second example). In the first case, the values $b(u)$ will differ, and in the second case, the values $i(u)$ will differ. In both cases, the final colours $c(u)$ will be different.}\label{tab:intro-id-fast}
 \end{table}
 
-\paragraph{Correctness.}
+
+\subsection{Correctness}
+
 Clearly, the value $c(u)$ is in the range $\{0,1,\dotsc,2x-1\}$. However, it is not entirely obvious that these values actually produce a proper $2x$-colouring of the path. To see this, consider a pair of nodes $u$ and $v$ so that $v$ is the successor of $u$. By definition, $c_1(u) = c_0(v)$. We need to show that $c(u) \ne c(v)$. There are two cases\mydash see Table~\ref{tab:intro-id-fast} for an example:
 \begin{enumerate}
     \item $i(u) = i(v) = i$: We know that $b(u)$ is bit number $i$ of $c_0(u)$, and $b(v)$ is bit number $i$ of $c_1(u)$. By the definition of $i(u)$, we also know that these bits differ. Hence $b(u) \ne b(v)$ and $c(u) \ne c(v)$.
@@ -227,12 +235,16 @@ We have argued that $c(u) \ne c(v)$ for any pair of two adjacent nodes $u$ and $
 
 So far we have used unique identifiers to break symmetry. Another possibility is to use randomness. Here is a simple randomised distributed algorithm that finds a proper $3$-colouring of a path: nodes try to pick colours from the palette $\{1,2,3\}$ uniformly at random, and they stop once they succeed in picking a colour that is different from the colours of their neighbours.
 
-\paragraph{Algorithm.}
+
+\subsection{Algorithm}
+
 More precisely, the algorithm proceeds as follows. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
 
 In each step, each node $u$ with $s(u) = 0$ picks a new colour $c(u) \in \{1,2,3\}$ uniformly at random. Then each node sends its current colour $c(u)$ to its neighbours. If $c(u)$ is different from the colours of its neighbours, $u$ will set $s(u) = 1$ and stop; otherwise it tries again in the next round.
 
-\paragraph{Analysis.}
+
+\subsection{Analysis}
+
 It is easy to see that in each step, a node $u$ will stop with probability at least $1/3$: after all, no matter what its neighbours do, there is at least one choice for $c(u) \in \{1,2,3\}$ that does not conflict with its neighbours. Fix some positive constant $C$, and let us run the randomised algorithm that we just described for
 \[
     k = (C+1) \log_{3/2} n
@@ -243,7 +255,9 @@ steps, where $n$ is the number of nodes in our network. Now the probability that
 \]
 By the union bound, the probability that there is a node that has not stopped is at most $1/n^C$. Hence with probability at least $1-1/n^C$, all nodes have stopped after $k$.
 
-\paragraph{With High Probability.}
+
+\subsection{With High Probability}
+
 Let us summarise what we have achieved: for any given constant $C$, there is an algorithm that runs for $k = O(\log n)$ rounds and produces a proper $3$-colouring of a path with probability $1-1/n^C$. We say that the algorithm runs in time $O(\log n)$ \emph{with high probability}\mydash here the phrase ``high probability'' specifically refers to a probability of form $1-1/n^C$ where we can plug in any constant $C$. Note that even for a moderate value of $C$, say, $C = 10$, the success probability approaches $1$ very rapidly as $n$ increases.
 
 While a logarithmic running time is very fast, it is still asymptotically much slower than the deterministic algorithm that we presented in Section~\ref{sec:intro-pos-id-fast}\mydash we will explore this in more detail in the exercises.
@@ -318,7 +332,7 @@ While a logarithmic running time is very fast, it is still asymptotically much s
     \end{subex}
 \end{ex}
 
-\begin{exs}[tight analysis]
+\begin{exs}[tight analysis]\label{ex:logstar-tight}
     Prove that the algorithm of Section~\ref{sec:intro-pos-id-fast} reduces the number of colours from $x$ to $6$ in $\log^* x$ steps, for any given integer $x \ge 6$.
     \hint{Consider the following cases separately:
     \begin{center}

@@ -272,16 +272,7 @@ The key element of the proof is the following lemma. Informally, given any colou
 
 \subsection{Completing the Proof}
 
-Define the power tower notation
-\[
-    {}^i 2 = 2^{2^{\cdot^{\cdot^2}}},
-\]
-with $i$ twos in the power tower. For example, ${}^2 2 = 4$ and ${}^3 2 = 16$. Note that $\log^*$ is, in essence, the inverse of power towers: for all natural numbers $i$ we have
-\[
-    \log^* {}^i 2 = i.
-\]
-
-Now assume that $f_1$ is a $k$-ary $3$-colouring function. Certainly it is also a $k$-ary $4$-colouring function, and $4 = {}^2 2$. We can apply Lemma~\ref{lem:linial-iter} iteratively to obtain
+Assume that $f_1$ is a $k$-ary $3$-colouring function. Certainly it is also a $k$-ary $4$-colouring function, and $4 = {}^2 2$ (recall that we use the notation ${}^i 2$ for power towers). We can now apply Lemma~\ref{lem:linial-iter} iteratively to obtain
 \begin{itemize}[noitemsep]
     \item a $(k-1)$-ary ${}^3 2$-colouring function $A_2$,
     \item a $(k-2)$-ary ${}^4 2$-colouring function $A_3$, \\ \ldots

@@ -343,11 +343,12 @@ We will explore and analyse these algorithms and their variants in more depth in
     In case~(iii), prove that after $\log^*(x)-3$ iterations, the number of colours is at most $64$.}
 \end{exs}
 
-\begin{exs}[oblivious algorithms]
+\begin{exs}[oblivious algorithms]\label{ex:oblivious}
     The algorithm of Section~\ref{sec:intro-pos-id} works correctly even if we do not know how many nodes there are in the network, or what is the range of unique identifiers\mydash we say that the algorithm is \emph{oblivious}. Adapt the fast algorithm of Section~\ref{sec:intro-pos-id-fast} so that it is also oblivious.
+    \hint{One possible strategy is this: Choose some threshold, e.g., $d = 10$. Focus on the nodes that have identifiers smaller than $d$, and find a proper $3$-colouring in those parts, in time $O(\log^* d)$. Remove the nodes that are properly coloured. Then increase threshold $d$, and repeat. Be careful with the way in which you increase $d$. Show that you can achieve a running time of $O(\log^* x)$, where $x$ is the largest identifier, without knowing $x$ in advance.}
 \end{exs}
 
 
 \section{Bibliographic Notes}
 
-The fast colouring algorithm of Section~\ref{sec:intro-pos-id-fast} was originally presented by Cole and Vishkin~\cite{cole86deterministic} and further refined by Goldberg et al.~\cite{goldberg88parallel}.
+The fast colouring algorithm of Section~\ref{sec:intro-pos-id-fast} was originally presented by Cole and Vishkin~\cite{cole86deterministic} and further refined by Goldberg et al.~\cite{goldberg88parallel}. Exercise~\ref{ex:oblivious} was inspired by Korman et al.~\cite{korman11removing}.

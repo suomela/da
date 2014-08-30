@@ -1,6 +1,6 @@
 %!TEX root = da-dev.tex
 
-In the analysis of distributed algorithms, we will sometimes encounter power towers and iterated logarithms.
+In the analysis of distributed algorithms, we will encounter power towers and iterated logarithms.
 
 
 \usection{Power Tower}
@@ -21,7 +21,7 @@ where there are $i$ twos in the tower. Power towers grow very fast; for example,
 
 \usection{Iterated Logarithm}
 
-The iterated logarithm of $x$, in notation $\log^* x$, is defined recursively as follows:
+The iterated logarithm of $x$, in notation $\log^* x$ or $\log^*(x)$, is defined recursively as follows:
 \[
     \log^*(x) = \begin{cases}
         0 & \text{ if $x \le 1$}, \\
@@ -30,7 +30,7 @@ The iterated logarithm of $x$, in notation $\log^* x$, is defined recursively as
 \]
 In essence, this is the inverse of the power tower function. For all positive integers $i$, we have
 \[
-    \log^* {}^i 2 = i.
+    \log^*({}^i 2) = i.
 \]
 As power towers grow very fast, iterated logarithms grow very slowly; for example,
 \begin{align*}

@@ -165,27 +165,6 @@ Finally, node $u$ chooses
 as its new colour.
 
 
-\subsection{An Example}
-
-Let $x = 8$, i.e., nodes are coloured with $8$-bit numbers. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$; see Table~\ref{tab:intro-id-fast} for an illustration. In binary, we have
-\begin{align*}
-    c_0(u) &= 01111011_2, \\
-    c_1(u) &= 00101111_2.
-\end{align*}
-Counting from the least significant bit, node $u$ can see that:
-\begin{itemize}[noitemsep]
-    \item bit number $0$ is the same in both $c_0(u)$ and $c_1(u)$,
-    \item bit number $1$ is the same in both $c_0(u)$ and $c_1(u)$,
-    \item bit number $2$ is different in $c_0(u)$ and $c_1(u)$.
-\end{itemize}
-Hence we will set
-\[
-    i(u) = 2, \quad
-    b(u) = 0, \quad
-    c(u) = 2\cdot2 + 0 = 4.
-\]
-That is, node picks $4$ as its new colour. If all other nodes run the same algorithm, this will be a valid choice\mydash as we will argue next, both the predecessor and the successor of $u$ will pick a colour that is different from $4$.
-
 \begin{table}
     \newcommand{\hl}[1]{\mathbf{\color{red}#1}}
     \newcommand{\node}{\raisebox{-1pt}{$\bigcirc$}}
@@ -219,6 +198,30 @@ That is, node picks $4$ as its new colour. If all other nodes run the same algor
     \end{tabular}
     \caption{Reducing the number of colours from $2^x$ to $2x$, for $x = 8$. There are two interesting cases: either $i(u)$ is the same for two neighbours (first example), or they are different (second example). In the first case, the values $b(u)$ will differ, and in the second case, the values $i(u)$ will differ. In both cases, the final colours $c(u)$ will be different.}\label{tab:intro-id-fast}
 \end{table}
+
+
+\subsection{An Example}
+
+Let $x = 8$, i.e., nodes are coloured with $8$-bit numbers. Assume that we have a node $u$ of colour $123$, and $u$ has a successor $v$ of colour $47$; see Table~\ref{tab:intro-id-fast} for an illustration. In binary, we have
+\begin{align*}
+    c_0(u) &= 01111011_2, \\
+    c_1(u) &= 00101111_2.
+\end{align*}
+\begin{samepage}
+Counting from the least significant bit, node $u$ can see that:
+\begin{itemize}[noitemsep]
+    \item bit number $0$ is the same in both $c_0(u)$ and $c_1(u)$,
+    \item bit number $1$ is the same in both $c_0(u)$ and $c_1(u)$,
+    \item bit number $2$ is different in $c_0(u)$ and $c_1(u)$.
+\end{itemize}
+\end{samepage}
+Hence we will set
+\[
+    i(u) = 2, \quad
+    b(u) = 0, \quad
+    c(u) = 2\cdot2 + 0 = 4.
+\]
+That is, node picks $4$ as its new colour. If all other nodes run the same algorithm, this will be a valid choice\mydash as we will argue next, both the predecessor and the successor of $u$ will pick a colour that is different from $4$.
 
 
 \subsection{Correctness}

@@ -236,7 +236,9 @@ We have argued that $c(u) \ne c(v)$ for any pair of two adjacent nodes $u$ and $
 
 \subsection{Iteration}
 
-The algorithm that we presented in this chapter can reduce the number of colours from $2^x$ to $2x$ in one round; put otherwise, we can reduce the number of colours from $x$ to $O(\log x)$ in one round. If we iterate the algorithm, we can reduce the number of colours from $x$ to $6$ in $O(\log^* x)$ rounds, and after that we can use the algorithm of Section~\ref{sec:intro-pos-id} to reduce the number of colours from $6$ to $3$ in $3$ rounds\mydash the details of the analysis are left as Exercises \ref{ex:logstar} and~\ref{ex:logstar-tight}.
+The algorithm that we presented in this chapter can reduce the number of colours from $2^x$ to $2x$ in one round; put otherwise, we can reduce the number of colours from $x$ to $O(\log x)$ in one round.
+
+If we iterate the algorithm, we can reduce the number of colours from $x$ to $6$ in $O(\log^* x)$ rounds, after which we can use the algorithm of Section~\ref{sec:intro-pos-id} to reduce the number of colours from $6$ to $3$ in $3$ rounds\mydash the details of the analysis are left as Exercises \ref{ex:logstar} and~\ref{ex:logstar-tight}.
 
 
 \section{Colouring with Randomised Algorithms}\label{sec:intro-pos-random}
@@ -246,29 +248,40 @@ So far we have used unique identifiers to break symmetry. Another possibility is
 
 \subsection{Algorithm}
 
-More precisely, the algorithm proceeds as follows. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
+Let us formalise the algorithm that we sketched above. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
 
 In each step, each node $u$ with $s(u) = 0$ picks a new colour $c(u) \in \{1,2,3\}$ uniformly at random. Then each node sends its current colour $c(u)$ to its neighbours. If $c(u)$ is different from the colours of its neighbours, $u$ will set $s(u) = 1$ and stop; otherwise it tries again in the next round.
 
 
 \subsection{Analysis}
 
-It is easy to see that in each step, a node $u$ will stop with probability at least $1/3$: after all, no matter what its neighbours do, there is at least one choice for $c(u) \in \{1,2,3\}$ that does not conflict with its neighbours. Fix some positive constant $C$, and let us run the randomised algorithm that we just described for
+It is easy to see that in each step, a node $u$ will stop with probability at least $1/3$: after all, no matter what its neighbours do, there is at least one choice for $c(u) \in \{1,2,3\}$ that does not conflict with its neighbours.
+
+Fix a positive constant $C$. Consider what happens if we run the algorithm for
 \[
     k = (C+1) \log_{3/2} n
 \]
-steps, where $n$ is the number of nodes in our network. Now the probability that a given node $u$ has not stopped is at most
+steps, where $n$ is the number of nodes in the network. Now the probability that a given node $u$ has not stopped after $k$ steps is at most
 \[
     (1 - 1/3)^k = \frac{1}{n^{C+1}}.
 \]
-By the union bound, the probability that there is a node that has not stopped is at most $1/n^C$. Hence with probability at least $1-1/n^C$, all nodes have stopped after $k$.
+By the union bound, the probability that there is a node that has not stopped is at most $1/n^C$. Hence with probability at least $1-1/n^C$, all nodes have stopped after $k$ steps.
 
 
 \subsection{With High Probability}
 
-Let us summarise what we have achieved: for any given constant $C$, there is an algorithm that runs for $k = O(\log n)$ rounds and produces a proper $3$-colouring of a path with probability $1-1/n^C$. We say that the algorithm runs in time $O(\log n)$ \emph{with high probability}\mydash here the phrase ``high probability'' specifically refers to a probability of form $1-1/n^C$ where we can plug in any constant $C$. Note that even for a moderate value of $C$, say, $C = 10$, the success probability approaches $1$ very rapidly as $n$ increases.
+Let us summarise what we have achieved: for any given constant $C$, there is an algorithm that runs for $k = O(\log n)$ rounds and produces a proper $3$-colouring of a path with probability $1-1/n^C$. We say that the algorithm runs in time $O(\log n)$ \emph{with high probability}\mydash here the phrase ``high probability'' means that we can choose any constant $C$ and the algorithm will succeed at least with a probability of $1-1/n^C$. Note that even for a moderate value of $C$, say, $C = 10$, the success probability approaches $1$ very rapidly as $n$ increases.
 
-While a logarithmic running time is very fast, it is still asymptotically much slower than the deterministic algorithm that we presented in Section~\ref{sec:intro-pos-id-fast}\mydash we will explore this in more detail in the exercises.
+
+\section{Summary}
+
+In this chapter we have seen three different distributed algorithms for colouring paths:
+\begin{itemize}
+    \item Section~\ref{sec:intro-pos-id}: a deterministic algorithm for paths with unique unique identifiers\mydash runs in $O(n)$ rounds, where $n$ is the number of nodes.
+    \item Section~\ref{sec:intro-pos-id-fast}: a deterministic algorithm for \emph{directed} paths with unique unique identifiers\mydash runs in $O(\log^* x)$ rounds, where $x$ is the largest identifier.
+    \item Section~\ref{sec:intro-pos-random}: a randomised algorithm for paths\mydash runs in $O(\log n)$ rounds with high probability.
+\end{itemize}
+We will explore and analyse these algorithms and their variants in more depth in the exercises.
 
 
 \section{Exercises}
@@ -305,7 +318,7 @@ While a logarithmic running time is very fast, it is still asymptotically much s
 \end{ex}
 
 \begin{ex}[randomised and fast]
-    The randomised algorithm of Section~\ref{sec:intro-pos-random} finds a $3$-colouring in time $O(\log n)$ with high probability. Can you design a randomised algorithm that finds a $3$-colouring in time $o(\log n)$ with high probability? You can assume that $n$ is known.
+    The randomised algorithm of Section~\ref{sec:intro-pos-random} finds a $3$-colouring in time $O(\log n)$ with high probability, and it does not need any unique identifiers. Can you design a randomised algorithm that finds a $3$-colouring in time $o(\log n)$ with high probability? You can assume that $n$ is known.
 
     \hint{Design a randomised algorithm that finds a colouring with a large number of colours quickly. Then apply the technique of Section~\ref{sec:intro-pos-id-fast} to reduce the number of colours to $3$ quickly.}
 \end{ex}

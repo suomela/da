@@ -206,11 +206,11 @@ Function $f$ is indeed a $k$-ary $3$-colouring function.
 We have seen that colouring functions are closely related to algorithms that colour paths. Before we continue, let us make the following observations:
 \begin{itemize}
     \item Given a distributed algorithm that finds a $3$-colouring of a path in time $T$, we can construct a $k$-ary $3$-colouring function for $k = 2T+1$.
-    \item However, it is not necessarily easy to construct a distributed algorithm for colouring paths. In essence, a colouring function only needs to colour properly path segments that have unique identifiers given in an increasing order, while a path colouring algorithm has to handle arbitrary paths (as well as all corner cases, such as nodes near the endpoints of a path).
+    \item The converse is not necessarily true. A colouring function only needs to colour properly path segments that have unique identifiers given in an increasing order, while an algorithm has to handle all kinds of paths (as well as all corner cases, such as nodes near the endpoints of a path).
     \item A distributed algorithm implies a $k$-ary colouring function for an odd $k$.
-    \item However, colouring functions are well-defined also for even values of $k$.
+    \item Colouring functions are well-defined also for even values of $k$.
 \end{itemize}
-While we are interested in algorithms, it turns out that colouring functions are easier to analyse. It is sufficient to show that colouring functions for a very small $k$ do not exist\mydash then it follows that algorithms for a very small $T$ do not exist, either.
+While we are interested in algorithms, it turns out that colouring functions are easier to analyse. It is sufficient to show that colouring functions for very small values of $k$ do not exist\mydash then it follows that algorithms for very small values of $T$ do not exist, either.
 
 
 \subsection{Simple Base Case}
@@ -229,7 +229,7 @@ We will now show that $k$-ary $3$-colouring functions do not exist if $k$ is too
 \end{proof}
 
 
-\subsection{Iteration}
+\subsection{Recursive Step}
 
 The key element of the proof is the following lemma. Informally, given any colouring function~$f$, we can always construct another colouring function~$g$ that is ``faster'' (smaller number of arguments) but ``worse'' (larger number of colours).
 
@@ -243,17 +243,15 @@ The key element of the proof is the following lemma. Informally, given any colou
     \]
     Second, define function $g'$ as follows:
     \[
-    \begin{split}
-        &g'(x_1, x_2, \dotsc, x_{k-1}) \\
-        &\quad= \bigl\{ f(x_1, x_2, \dotsc, x_{k-1}, x_k) \,:\, x_k > x_{k-1} \bigr\}.
-    \end{split}
+        g'(x_1, x_2, \dotsc, x_{k-1})
+        = \bigl\{ f(x_1, x_2, \dotsc, x_{k-1}, x_k) \,:\, x_k > x_{k-1} \bigr\}.
     \]
     Finally, let $g$ be $h \circ g'$, that is,
     \[
         g(x_1, x_2, \dotsc, x_{k-1}) = h(g'(x_1, x_2, \dotsc, x_{k-1})).
     \]
 
-    We claim that this function $g$ is indeed a $(k-1)$-ary $2^c$-colouring function. Clearly it takes $k-1$ arguments and it satisfies property~\eqref{eq:linial-col1}. The interesting part is \eqref{eq:linial-col2}. Let $1 \le x_1 < x_2 < \dotso < x_k \le n$. By way of contradiction, suppose that
+    We claim that this function $g$ is indeed a $(k-1)$-ary $2^c$-colouring function. Clearly it takes $k-1$ arguments and it satisfies property~\eqref{eq:linial-col1}. The interesting part is property~\eqref{eq:linial-col2}. Let $1 \le x_1 < x_2 < \dotso < x_k \le n$. By way of contradiction, suppose that
     \[
         g(x_1, x_2, \dotsc, x_{k-1}) = g(x_2, x_3, \dotsc, x_k).
     \]

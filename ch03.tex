@@ -1,6 +1,6 @@
 %!TEX root = da-dev.tex
 
-The study of distributed algorithms is closely related to graphs: we will interpret a computer network as a graph, and we will study computational problems related to this graph. In this section we will give a summary of graph-theoretic concepts that we will use.
+The study of distributed algorithms is closely related to graphs: we will interpret a computer network as a graph, and we will study computational problems related to this graph. In this section we will give a summary of the graph-theoretic concepts that we will use.
 
 \section{Terminology}
 
@@ -26,9 +26,9 @@ That is, $v$ has $\deg_G(v)$ neighbours; it is adjacent to $\deg_G(v)$ nodes and
 
 Let $G = (V,E)$ and $H = (V_2,E_2)$ be two graphs. If $V_2 \subseteq V$ and $E_2 \subseteq E$, we say that $H$ is a \emph{subgraph} of $G$. If $V_2 = V$, we say that $H$ is a \emph{spanning subgraph} of $G$.
 
-If $V_2 \subseteq V$ and $E_2 = \Set{ \{u,v\} \in E : u \in V_2,\ v \in V_2 }$, we say that $H = (V_2,E_2)$ is an \emph{induced subgraph}; more specifically, $H$ is the subgraph of $G$ induced by nodes $V_2$.
+If $V_2 \subseteq V$ and $E_2 = \Set{ \{u,v\} \in E : u \in V_2,\ v \in V_2 }$, we say that $H = (V_2,E_2)$ is an \emph{induced subgraph}; more specifically, $H$ is the subgraph of $G$ induced by the set of nodes $V_2$.
 
-If $E_2 \subseteq E$ and $V_2 = \bigcup E_2$, we say that $H$ is an \emph{edge-induced subgraph}; more specifically, $H$ is the subgraph of $G$ induced by edges $E_2$.
+If $E_2 \subseteq E$ and $V_2 = \bigcup E_2$, we say that $H$ is an \emph{edge-induced subgraph}; more specifically, $H$ is the subgraph of $G$ induced by the set of edges $E_2$.
 
 
 \subsection{Walks}
@@ -53,7 +53,7 @@ If $E_2 \subseteq E$ and $V_2 = \bigcup E_2$, we say that $H$ is an \emph{edge-i
     }\label{fig:cycle}
 \end{figure}
 
-A \emph{walk} of length $\ell$ from node $v_0$ to node $v_\ell$ is an alternating sequence \[w = (v_0, e_1, v_1, e_2, v_2, \dotsc, e_\ell, v_\ell)\] where $v_i \in V$, $e_i \in E$, and $e_i = \{ v_{i-1}, v_i \}$ for all $i$; see Figure~\ref{fig:walk}. The walk is \emph{empty} if $\ell = 0$. We say that walk~$w$ \emph{visits} the nodes $v_0, v_1, \dotsc, v_\ell$, and it \emph{traverses} the edges $e_1, e_2, \dotsc, e_\ell$. In general, a walk may visit the same node more than once and it may traverse the same edge more than once. A \emph{non-backtracking walk} does not traverse the same edge twice consecutively, that is, $e_{i-1} \ne e_i$ for all $i$. A \emph{path} is a walk that visits each node at most once, that is, $v_i \ne v_j$ for all $0 \le i < j \le \ell$. A walk is \emph{closed} if $v_0 = v_\ell$. A \emph{cycle} is a non-empty closed walk with $v_i \ne v_j$ and $e_i \ne e_j$ for all $1 \le i < j \le \ell$; it follows that the length of a cycle is at least~$3$.
+A \emph{walk} of length $\ell$ from node $v_0$ to node $v_\ell$ is an alternating sequence \[w = (v_0, e_1, v_1, e_2, v_2, \dotsc, e_\ell, v_\ell)\] where $v_i \in V$, $e_i \in E$, and $e_i = \{ v_{i-1}, v_i \}$ for all $i$; see Figure~\ref{fig:walk}. The walk is \emph{empty} if $\ell = 0$. We say that walk~$w$ \emph{visits} the nodes $v_0, v_1, \dotsc, v_\ell$, and it \emph{traverses} the edges $e_1, e_2, \dotsc, e_\ell$. In general, a walk may visit the same node more than once and it may traverse the same edge more than once. A \emph{non-backtracking walk} does not traverse the same edge twice consecutively, that is, $e_{i-1} \ne e_i$ for all $i$. A \emph{path} is a walk that visits each node at most once, that is, $v_i \ne v_j$ for all $0 \le i < j \le \ell$. A walk is \emph{closed} if $v_0 = v_\ell$. A \emph{cycle} is a non-empty closed walk with $v_i \ne v_j$ and $e_i \ne e_j$ for all $1 \le i < j \le \ell$; see Figure~\ref{fig:cycle}. Note that the length of a cycle is at least~$3$.
 
 
 \subsection{Connectivity and Distances}
@@ -67,7 +67,7 @@ If $u$ and $v$ are in the same connected component, there is at least one \emph{
     \includegraphics[page=\PNeighbourhood]{figs.pdf}
     \caption{Neighbourhoods.}\label{fig:neighbourhood}
 \end{figure}
-For each node $v$ and for a non-negative integer $r$, we define the \emph{radius-$r$ neighbourhood} of $v$ as follows:
+For each node $v$ and for a non-negative integer $r$, we define the \emph{radius-$r$ neighbourhood} of $v$ as follows (see Figure~\ref{fig:neighbourhood}):
 \[
     \ball_G(v, r) = \Set{ u \in V : \dist_G(u,v) \le r }.
 \]
@@ -115,13 +115,13 @@ Vertex covers, edge covers, dominating sets, and edge dominating sets are exampl
 
 The following terms are commonly used in the context of maximisation problems; it is important not to confuse them:
 \begin{enumerate}
-    \item \emph{maximal}: a maximal solution is not a proper subset of another feasible solution,
-    \item \emph{maximum}: a maximum solution is a solution of the largest possible cardinality.
+    \item \textbf{\emph{maximal}}: a maximal solution is not a proper subset of another feasible solution,
+    \item \textbf{\emph{maximum}}: a maximum solution is a solution of the largest possible cardinality.
 \end{enumerate}
 Similarly, in the context of minimisation problems, analogous terms are used:
 \begin{enumerate}
-    \item \emph{minimal}: a minimal solution is not a proper superset of another feasible solution,
-    \item \emph{minimum}: a minimum solution is a solution of the smallest possible cardinality.
+    \item \textbf{\emph{minimal}}: a minimal solution is not a proper superset of another feasible solution,
+    \item \textbf{\emph{minimum}}: a minimum solution is a solution of the smallest possible cardinality.
 \end{enumerate}
 Using this convention, we can define the terms \emph{maximal independent set}, \emph{maximum independent set}, \emph{maximal matching}, \emph{maximum matching}, \emph{minimal vertex cover}, \emph{minimum vertex cover}, etc.
 
@@ -210,7 +210,7 @@ Note that we follow the convention that the approximation ratio $\alpha$ is alwa
 
 \section{Directed Graphs and Orientations}
 
-Unless otherwise mentioned, all graphs in this course are undirected. However, we will occasionally need to refer to so-called orientations, and hence we need to introduce some terminology related to directed graphs.
+Unless otherwise mentioned, all graphs in this book are undirected. However, we will occasionally need to refer to so-called orientations, and hence we need to introduce some terminology related to directed graphs.
 
 A \emph{directed graph} is a pair $G = (V,E)$, where $V$ is the set of nodes and $E$ is the set of \emph{directed edges}. Each edge $e \in E$ is a pair of nodes, that is, $e = (u,v)$ where $u, v \in V$. Put otherwise, $E \subseteq V \times V$.
 
@@ -265,17 +265,6 @@ Put otherwise, in an orientation of $G$ we have simply chosen an arbitrary direc
     \end{subex}
 \end{ex}
 
-\begin{ex}[matchings and edge domination]\label{ex:mmeds}
-    Show that
-    \begin{subex}
-        \item a maximal matching is a minimal edge dominating set,
-        \item a minimal edge dominating set is not necessarily a maximal matching,
-        \item a minimum maximal matching is a minimum edge dominating set,
-        \item any maximal matching is a \Apx{2} of a minimum edge dominating set.
-    \end{subex}
-    \hint{Assume that $D$ is an edge dominating set; show that you can construct a maximal matching $M$ with $|M| \le |D|$.}
-\end{ex}
-
 \begin{ex}[graph colourings and partitions]
     Show that
     \begin{subex}
@@ -297,8 +286,19 @@ Put otherwise, in an orientation of $G$ we have simply chosen an arbitrary direc
 \end{ex}
 
 \begin{ex}[isomorphism]
-    Construct non-empty \Reg{3} connected graphs $G$ and $H$ such that $G$ and $H$ have the same number of nodes and $G$ and $H$ are \emph{not} isomorphic.
+    Construct non-empty \Reg{3} connected graphs $G$ and $H$ such that $G$ and $H$ have the same number of nodes and $G$ and $H$ are \emph{not} isomorphic. Just giving a construction is not sufficient\mydash you have to \emph{prove} that $G$ and $H$ are not isomorphic.
 \end{ex}
+
+\begin{exs}[matchings and edge domination]\label{ex:mmeds}
+    Show that
+    \begin{subex}
+        \item a maximal matching is a minimal edge dominating set,
+        \item a minimal edge dominating set is not necessarily a maximal matching,
+        \item a minimum maximal matching is a minimum edge dominating set,
+        \item any maximal matching is a \Apx{2} of a minimum edge dominating set.
+    \end{subex}
+    \hint{Assume that $D$ is an edge dominating set; show that you can construct a maximal matching $M$ with $|M| \le |D|$.}
+\end{exs}
 
 \begin{exs}[Petersen 1891]\label{ex:2fact}
     Show that any \Reg{2d} graph $G = (V,E)$ has an orientation $H = (V,E')$ such that \[\indegree_H(v) = \outdegree_H(v) = d\] for all $v \in V$. Show that any \Reg{2d} graph has a \Fact{2}.
@@ -307,6 +307,6 @@ Put otherwise, in an orientation of $G$ we have simply chosen an arbitrary direc
 
 \section{Bibliographic Notes}
 
-The connection between minimum maximal matchings and minimum edge dominating sets (Exercise~\ref{ex:mmeds}) is due to Allan and Laskar~\cite{allan78domination} and Yannakakis and Gavril~\cite{yannakakis80edge}. The connection between maximal matchings and approximations of vertex covers (Exercise~\ref{ex:mmvc}) is commonly attributed to Gavril and Yannakakis (see, e.g., Papadimitriou and Steiglitz~\cite{papadimitriou98combinatorial}). Exercise~\ref{ex:2fact} is a 120-year-old result due to Petersen~\cite{petersen1891dietheorie}. The definition of a weak colouring is from Naor and Stockmeyer~\cite{naor95what}.
+The connection between maximal matchings and approximations of vertex covers (Exercise~\ref{ex:mmvc}) is commonly attributed to Gavril and Yannakakis (see, e.g., Papadimitriou and Steiglitz~\cite{papadimitriou98combinatorial}). The connection between minimum maximal matchings and minimum edge dominating sets (Exercise~\ref{ex:mmeds}) is due to Allan and Laskar~\cite{allan78domination} and Yannakakis and Gavril~\cite{yannakakis80edge}. Exercise~\ref{ex:2fact} is a 120-year-old result due to Petersen~\cite{petersen1891dietheorie}. The definition of a weak colouring is from Naor and Stockmeyer~\cite{naor95what}.
 
 Diestel's book~\cite{diestel05graph} is a good source for graph-theoretic background, and Vazirani's book~\cite{vazirani01approximation} provides further information on approximation algorithms.

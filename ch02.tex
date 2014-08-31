@@ -189,17 +189,14 @@ Now we need to argue that $f$ is indeed a colouring function. Property \eqref{eq
 \begin{center}
     \includegraphics[page=\PIntroIdIncrB]{figs.pdf}
 \end{center}
-By definition,
+We have defined function $f$ so that
+\begin{itemize}
+    \item $f(x_1, x_2, \dotsc, x_k) = {}$the output of node $x_{T+1}$ in path $P$,
+    \item $f(x_2, x_3, \dotsc, x_{k+1}) = {}$the output of node $x_{T+2}$ in path $P$.
+\end{itemize}
+Here it is crucial that the output of a node only depends on its radius-$T$ neighbourhood. Algorithm $A$ finds a proper colouring of any path; therefore the output of $x_{T+1}$ has to be different from the output of $x_{T+2}$. We conclude that
 \[
-    f(x_1, x_2, \dotsc, x_k),
-\]
-is equal to the output of node $x_{T+1}$ in path $P$, and
-\[
-    f(x_2, x_3, \dotsc, x_{k+1}).
-\]
-is equal to the output of node $x_{T+2}$ in path $P$. Here it is crucial that the output of a node only depends on its radius-$T$ neighbourhood. Algorithm $A$ finds a proper colouring of any path; therefore the output of $x_{T+1}$ has to be different from the output of $x_{T+2}$. We conclude that
-\[
-    f(x_1, x_2, \dotsc, x_k) \ne f(x_2, x_3, \dotsc, x_{k+1}),
+    f(x_1, x_2, \dotsc, x_k) \ne f(x_2, x_3, \dotsc, x_{k+1}).
 \]
 Function $f$ is indeed a $k$-ary $3$-colouring function.
 

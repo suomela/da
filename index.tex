@@ -69,18 +69,20 @@ These conventions are usually followed in the choice of symbols.
     \item[$\CONGEST$] bandwidth-limited networks, Chapter~\ref{ch:congest}.
 \end{notation}}
 
-% FIXME
+\usection{Algorithms}
 
-% \usection{Algorithms}
-
-% {\raggedright
-% \begin{algorithms}
-%     \item[$\algo{BMM}$] maximal matching in $2$-coloured graphs, Section~\ref{ssec:bmm}.
-%     \item[$\algo{Colour}$] fast colour reduction in bounded-degree graphs, Section~\ref{ssec:colour}.
-%     \item[$\algo{DPBit}$] fast colour reduction in directed pseudoforests, Section~\ref{ssec:dpbit}.
-%     \item[$\algo{DPGreedy}$] greedy colour reduction in directed pseudoforests, Section~\ref{ssec:dpgreedy}.
-%     \item[$\algo{DPSet}$] fast colour reduction in directed pseudoforests, Exercise~\ref{ex:dpset}.
-%     \item[$\algo{Gather}$] gathering information in port-numbered graphs, Section~\ref{sec:gather}.
-%     \item[$\algo{Greedy}$] greedy colour reduction, Section~\ref{ssec:greedy}.
-%     \item[$\algo{VC3}$] \Apx{3} of minimum vertex cover, Section~\ref{ssec:vc3}.
-% \end{algorithms}}
+{\raggedright
+\begin{algorithms}
+    \item[$\algo{P3C}$] deterministic algorithm for $3$-colouring a path, runs in $O(n)$ rounds in the $\LOCAL$ model, Section~\ref{sec:algo-p3c}.
+    \item[$\algo{P3CBit}$] deterministic algorithm for $3$-colouring a directed path, runs in $O(\log^* n)$ rounds in the $\LOCAL$ model, Section~\ref{sec:algo-p3cbit}.
+    \item[$\algo{P3CRand}$] randomised algorithm for $3$-colouring a path, runs in $O(\log n)$ rounds with high probability, Section~\ref{sec:algo-p3crand}.
+    \item[$\algo{P2C}$] deterministic algorithm for $2$-colouring a path, runs in $O(n)$ rounds in the $\LOCAL$ model, Section~\ref{ssec:algo-p2c}.
+    % \item[$\algo{BMM}$] maximal matching in $2$-coloured graphs, Section~\ref{ssec:bmm}.
+    % \item[$\algo{Colour}$] fast colour reduction in bounded-degree graphs, Section~\ref{ssec:colour}.
+    % \item[$\algo{DPBit}$] fast colour reduction in directed pseudoforests, Section~\ref{ssec:dpbit}.
+    % \item[$\algo{DPGreedy}$] greedy colour reduction in directed pseudoforests, Section~\ref{ssec:dpgreedy}.
+    % \item[$\algo{DPSet}$] fast colour reduction in directed pseudoforests, Exercise~\ref{ex:dpset}.
+    % \item[$\algo{Gather}$] gathering information in port-numbered graphs, Section~\ref{sec:gather}.
+    % \item[$\algo{Greedy}$] greedy colour reduction, Section~\ref{ssec:greedy}.
+    % \item[$\algo{VC3}$] \Apx{3} of minimum vertex cover, Section~\ref{ssec:vc3}.
+\end{algorithms}}

@@ -54,9 +54,9 @@ Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $
 \end{center}
 
 
-\subsection{Algorithm \talgo{P2C}: 2-Colouring Paths}\label{ssec:algo-p2c}
+\subsection{2-Colouring Paths with Distributed Algorithms}\label{ssec:algo-p2c}
 
-With some thought, we can also come up with a distributed algorithm that finds a $2$-colouring of a path with $n$ nodes in time $O(n)$. An algorithm that works along these lines should do the trick; let us call this algorithm ``$\algo{P2C}$'':
+With some thought, we can also come up with a distributed algorithm that finds a $2$-colouring of a path with $n$ nodes in time $O(n)$. An algorithm that works along these lines should do the trick; let us call this algorithm $\algo{P2C}$:
 \begin{itemize}
     \item First, the endpoints of the path (i.e., nodes of degree $1$) send their identifiers to their neighbours. Other nodes forward this information until all nodes along the path learn the identifiers of the endpoints. This takes $n-1$ communication rounds.
     \begin{center}

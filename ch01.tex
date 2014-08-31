@@ -43,7 +43,7 @@ The answer is that it is not possible, without some additional assumptions. In p
 In subsequent chapters we will then formalise these models, and develop a theory that will help us understand precisely what kind of tasks can be solved in each case, and how fast (the model with unique names will be discussed in detail in Chapter~\ref{ch:local}, and randomised algorithms will be discussed in Chapter~\ref{ch:rand}).
 
 
-\section{Algorithm \talgo{P3C}: Colouring with Unique Identifiers}\label{sec:algo-p3c}
+\section{Colouring with Unique Identifiers}\label{sec:algo-p3c}
 
 There are plenty of examples of real-world networks with globally unique identifiers: public IPv4 and IPv6 addresses are globally unique identifiers of Internet hosts, devices connected to an Ethernet network have globally unique MAC addresses, mobile phones have their IMEI numbers, etc. The common theme is that the identifiers are globally unique, and the numbers can be interpreted as natural numbers:
 \begin{center}
@@ -80,7 +80,7 @@ Note that we may indeed be forced to use all three colours.
 
 So far we have sketched an algorithm idea, but we still have to show that we can actually implement this idea as a distributed algorithm. Remember that there is no central control; nobody has a bird's-eye view of the entire network. Each node is an independent computer, and all computers are running the \emph{same} algorithm. What would the algorithm look like?
 
-Let us fix some notation. Each node maintains a variable $c$ that contains its current colour. Initially, $c$ is equal to the unique identifier of the node. Then computation proceeds as shown in Table~\ref{tab:algo-p3c}; we will call this algorithm ``$\algo{P3C}$''.
+Let us fix some notation. Each node maintains a variable $c$ that contains its current colour. Initially, $c$ is equal to the unique identifier of the node. Then computation proceeds as shown in Table~\ref{tab:algo-p3c}; we will call this algorithm $\algo{P3C}$.
 
 \begin{table}
     \raggedright
@@ -115,7 +115,7 @@ Our algorithm may look a bit strange in the sense that computers that have ``sto
 Note that here a ``state machine'' does not necessarily refer to a \emph{finite}-state machine. We can perfectly well have a state machine with infinitely many states. Indeed, in the example of Table~\ref{tab:algo-p3c} the set of possible states was the set of all positive integers.
 
 
-\section{Algorithm \talgo{P3CBit}: Fast Colouring with Unique Identifiers}\label{sec:algo-p3cbit}
+\section{Faster Colouring with Unique Identifiers}\label{sec:algo-p3cbit}
 
 So far we have seen that with the help of unique identifiers, it is \emph{possible} to find a $3$-colouring of a path. However, the algorithm that we designed is not particularly efficient in the worst case. To see this, consider a path in which the unique identifiers happen to be assigned in an increasing order:
 \begin{center}
@@ -134,7 +134,7 @@ That is, we have a consistent orientation in the path so that each node has at m
 
 For the sake of concreteness, let us assume that the nodes are labelled with $128$-bit unique identifiers\mydash for example, IPv6 addresses. In most real-world networks $2^{128}$ identifiers is certainly more than enough, but the same idea can be easily generalised to arbitrarily large identifiers if needed.
 
-Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In the next section, we will present algorithm called ``$\algo{P3CBit}$'' that reduces the number of colours from $2^x$ to $2x$ in one round, for any positive integer $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
+Again, we will interpret the unique identifiers as colours; hence our starting point is a path that is properly coloured with $2^{128}$ colours. In the next section, we will present algorithm called $\algo{P3CBit}$ that reduces the number of colours from $2^x$ to $2x$ in one round, for any positive integer $x$. Hence in one step we can reduce the number of colours from $2^{128}$ to $2 \cdot 128 = 256$. In just four iterations we can reduce the number of colours from $2^{128}$ to $6$, as follows:
 \begin{align*}
     2^{128} &\to 2 \cdot 128 = 2^8, \\
     2^8 &\to 2 \cdot 8 = 2^4, \\
@@ -241,14 +241,14 @@ The algorithm that we presented in this chapter can reduce the number of colours
 If we iterate the algorithm, we can reduce the number of colours from $x$ to $6$ in $O(\log^* x)$ rounds, after which we can use algorithm $\algo{P3C}$ from Section~\ref{sec:algo-p3c} to reduce the number of colours from $6$ to $3$ in $3$ rounds\mydash the details of the analysis are left as Exercises \ref{ex:logstar} and~\ref{ex:logstar-tight}.
 
 
-\section{Algorithm \talgo{P3CRand}: Exploiting Randomness}\label{sec:algo-p3crand}
+\section{Colouring with Randomised Algorithms}\label{sec:algo-p3crand}
 
 So far we have used unique identifiers to break symmetry. Another possibility is to use randomness. Here is a simple randomised distributed algorithm that finds a proper $3$-colouring of a path: nodes try to pick colours from the palette $\{1,2,3\}$ uniformly at random, and they stop once they succeed in picking a colour that is different from the colours of their neighbours.
 
 
 \subsection{Algorithm}
 
-Let us formalise the algorithm that we sketched above; we will call this algorithm ``$\algo{P3CRand}$''. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
+Let us formalise the algorithm that we sketched above; we will call this algorithm $\algo{P3CRand}$. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
 
 In each step, each node $u$ with $s(u) = 0$ picks a new colour $c(u) \in \{1,2,3\}$ uniformly at random. Then each node sends its current colour $c(u)$ to its neighbours. If $c(u)$ is different from the colours of its neighbours, $u$ will set $s(u) = 1$ and stop; otherwise it tries again in the next round.
 

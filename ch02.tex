@@ -76,7 +76,7 @@ However, in comparison with algorithm $\algo{P3CBit}$ from Section~\ref{sec:algo
 
 \subsection{Lower Bound for 2-Colouring}
 
-To reach a contradiction, suppose that there was a deterministic algorithm $A$ that runs in time $o(n)$. In particular, there is an $n_0$ such that for any $n \ge n_0$, the running time of algorithm $A$ is at most $(n-3)/2$. Pick some integer $k \ge n_0/2$, and consider two paths: path $G$ contains $2k$ nodes, numbered $1,2,\dotsc,2k$, and path $H$ contains $2k+1$ nodes, numbered \[1,2,\dotsc,k,2k+1,k+1,k+2,\dotsc,2k.\] Here is an example for $k = 3$:
+To reach a contradiction, suppose that there is a deterministic algorithm $A$ that runs in time $o(n)$. In particular, there is a number $n_0$ such that for any number of nodes $n \ge n_0$, the running time of algorithm $A$ is at most $(n-3)/2$. Pick some integer $k \ge n_0/2$, and consider two paths: path $G$ contains $2k$ nodes, numbered $1,2,\dotsc,2k$, and path $H$ contains $2k+1$ nodes, numbered \[1,2,\dotsc,k,2k+1,k+1,k+2,\dotsc,2k.\] Here is an example for $k = 3$:
 \begin{center}
     \includegraphics[page=\PIntroLbTwoA]{figs.pdf}
 \end{center}
@@ -161,7 +161,7 @@ For example, here is a $2$-ary $3$-colouring function for $n = 5$:
     f(3,5) &= 1, \\&&&&&&
     f(4,5) &= 3.
 \end{align*}
-You can verify that this is indeed a colouring function:
+You can verify that this is indeed a colouring function; property~\eqref{eq:linial-col1} clearly holds, and property~\eqref{eq:linial-col2} can be verified by considering all cases:
 \begin{align*}
     f(1,2) &\ne f(2,3), &
     f(1,2) &\ne f(2,4), &
@@ -177,7 +177,7 @@ You can verify that this is indeed a colouring function:
 
 \subsection{From Algorithms to Colouring Functions}
 
-Now consider a distributed algorithm $A$ that finds a $3$-colouring in time $T$. Let $k = 2T+1$. We will show how to use $A$ to construct a $k$-ary $3$-colouring function $f$.
+Now consider a distributed algorithm $A$ that finds a $3$-colouring in time~$T$. Let $k = 2T+1$. We will show how to use $A$ to construct a $k$-ary $3$-colouring function $f$.
 
 To this end, let $1 \le x_1 < x_2 < \dotso < x_k \le n$. Construct a path in which we have $k$ consecutive nodes with unique identifiers $x_1, x_2, \dotsc, x_k$, in this order\mydash here is an illustration for $T = 2$:
 \begin{center}

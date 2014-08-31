@@ -1,6 +1,6 @@
 %!TEX root = da-dev.tex
 
-The defining property of fast distributed algorithms is \emph{locality}: if we run a distributed algorithm for $t$ time steps, then nodes can only be aware of information that is available within distance at most $t$ from them. In this chapter we will see why this is the case, and what consequences it has.
+The defining property of fast distributed algorithms is \emph{locality}: if we run a distributed algorithm for $t$ time steps, the nodes can only be aware of the information that is available within distance at most $t$ from them. In this chapter we will see why this is the case, and what consequences it has.
 
 \section{Locality}
 
@@ -8,7 +8,7 @@ Locality is easiest to understand through an example. Consider the following net
 \begin{center}
     \includegraphics[page=\PIntroId]{figs.pdf}
 \end{center}
-Let us focus on node number $15$. Initially, there is only one node in the network that is aware of the existence of such a node\mydash the node itself. Let us highlight the set of nodes that are aware of node $15$ at time {\boldmath $t = 0$}:
+Let us focus on the node number $15$. Initially, there is only one node in the network that is aware of the existence of such a node\mydash the node itself. Let us highlight the set of nodes that are aware of node $15$ at time {\boldmath $t = 0$}:
 \begin{center}
     \includegraphics[page=\PIntroTA]{figs.pdf}
 \end{center}
@@ -21,9 +21,9 @@ Now let us consider what happens at time {\boldmath $t = 1$}, after one communic
 \begin{center}
     \includegraphics[page=\PIntroTB]{figs.pdf}
 \end{center}
-However, the crucial observation is that only these three nodes can be aware of the existence of node $15$. For example, consider node $27$. Before the first round, this node and its neighbours were unaware of node $15$; hence during the first round node $27$ could not learn anything about node $15$ from any of its neighbours.
+However, the crucial observation is that only these three nodes can be aware of the existence of node $15$. For example, consider node $27$. Before the first round, this node and its neighbours were unaware of node $15$; hence during the first round node $27$ could not have learned anything about node $15$ from any of its neighbours.
 
-By a similar reasoning, at time {\boldmath $t = 2$}, after two communication rounds, the set of nodes that may be aware of node $15$ consists precisely of those nodes that are within distance $t = 2$ from it:
+By a similar reasoning, at time {\boldmath $t = 2$}, after two communication rounds, the set of nodes that may be aware of node $15$ consists of precisely those nodes that are within distance $t = 2$ from it:
 \begin{center}
     \includegraphics[page=\PIntroTC]{figs.pdf}
 \end{center}
@@ -31,17 +31,24 @@ And at time {\boldmath $t = 3$} this information may have propagated up to dista
 \begin{center}
     \includegraphics[page=\PIntroTD]{figs.pdf}
 \end{center}
-Of course the same reasoning holds for any node, and for any information related to the node. For example, at time $t = 3$, precisely these nodes are aware of the existence of node $13$, and precisely these nodes know that node $13$ is a node of degree $1$, i.e., it has got only one neighbour:
+\begin{samepage}
+Of course the same reasoning holds for any node, and for any information related to the node. For example, here is a picture that shows the nodes that are within distance $3$ from node $13$:
 \begin{center}
     \includegraphics[page=\PIntroTDB]{figs.pdf}
 \end{center}
+\end{samepage}
+At time $t = 3$, precisely these nodes can be aware of the existence of node $13$, and precisely these nodes can know that node $13$ is a node of degree $1$, i.e., it has got only one neighbour.
 
-Naturally, if a node stops after time $t$, whatever output it produces can only depend on what it knows, and as we have seen, a node can only know information that is available at distance $t$. This is the crux of locality in distributed computing: time and distance are interchangeable; in a \emph{fast} algorithm, nodes have to make decisions based on information that is available \emph{near} them.
+Naturally, if a node stops after time $t$, whatever output it produces can only depend on what it knows, and as we have seen, a node can only know information that is available at distance $t$. This is the crux of locality in distributed computing:
+\begin{itemize}
+    \item time and distance are interchangeable,
+    \item in a \emph{fast} algorithm, nodes have to make decisions based on the information that is available \emph{near} them.
+\end{itemize}
 
 
 \section{Locality and 2-Colouring}\label{sec:intro-neg-simple}
 
-Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $3$-colouring paths. However, a path can be also coloured with $2$ colours:
+Recall from Chapter~\ref{ch:intro-pos} that there are very fast algorithms for $3$-colouring paths. However, there is no need to settle for $3$ colours\mydash a path can be always coloured with $2$ colours:
 \begin{center}
     \includegraphics[page=\PIntroColTwo]{figs.pdf}
 \end{center}

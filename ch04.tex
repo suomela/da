@@ -1,12 +1,16 @@
 %!TEX root = da-dev.tex
 
-Now that we have introduced the essential graph-theoretic concepts, we are ready to define what a ``distributed algorithm'' is. In this chapter, we will study one variant of the theme: deterministic distributed algorithms in the ``port-numbering model''. In this work, we will use the abbreviation $\PN$ for the port-numbering model, and we will also use the term ``$\PN$-algorithm'' to refer to deterministic distributed algorithms in the port-numbering model.
+Now that we have introduced the essential graph-theoretic concepts, we are ready to define what a ``distributed algorithm'' is. In this chapter, we will study one variant of the theme: deterministic distributed algorithms in the ``port-numbering model''. In this work, we will use the abbreviation $\PN$ for the port-numbering model, and we will also use the term ``$\PN$-algorithm'' to refer to deterministic distributed algorithms in the port-numbering model. For now, everything will be deterministic\mydash randomised algorithms will be discussed in Chapter~\ref{ch:rand}.
 
 \section{Introduction}
 
 The basic idea of the $\PN$ model is best explained through an example. Suppose that I claim the following:
 \begin{itemize}
     \item $A$ is a deterministic distributed algorithm that finds a \Apx{2} of a minimum vertex cover in the port-numbering model.
+\end{itemize}
+Or, in brief:
+\begin{itemize}
+    \item $A$ is a $\PN$-algorithm for finding a \Apx{2} of a minimum vertex cover.
 \end{itemize}
 Informally, this entails the following:
 \begin{enumerate}
@@ -27,12 +31,7 @@ Informally, this entails the following:
         \[ C = \Set{ v \in V : \text{computer $v$ produced output $1$} } \]
         is a feasible vertex cover for graph $G$, and its size is at most $2$ times the size of a minimum vertex cover. 
 \end{enumerate}
-Sections \ref{sec:pnn} and \ref{sec:distr-alg} below go through the effort of formalising this idea. While at it, we also address the following issues:
-\begin{enumerate}
-    \item It is easy to encode a subset of nodes using local outputs\mydash but how should we encode, for example, a subset of edges?
-    \item Often it is useful to have not only local outputs but also a \emph{local input} for each computer. Then we could compose algorithms: first, algorithm $A_1$ solves a problem $\Pi_1$; then algorithm $A_2$ uses the solution of $\Pi_1$ to solve a problem~$\Pi_2$.
-    \item Often we will focus our attention to certain families of graphs\mydash it is too much to expect that an algorithm could solve a problem in \emph{any} undirected graph~$G$.
-\end{enumerate}
+Sections \ref{sec:pnn} and \ref{sec:distr-alg} will formalise this idea.
 
 \section{Port-Numbered Network}\label{sec:pnn}
 
@@ -62,15 +61,6 @@ Unless otherwise mentioned, we assume that the port numbers are \emph{consecutiv
 If $(v,i) \in P$, we use the shorthand notation $p(v,i)$ for $p((v,i))$. If $p(u,i) = (v,j)$, we say that port $(u,i)$ is \emph{connected} to port $(v,j)$; we also say that port $(u,i)$ is connected to node $v$, and that node $u$ is connected to node~$v$.
 
 If $p(v,i) = (v,j)$ for some $j$, we say that there is a \emph{loop} at $v$\mydash note that we may have $i = j$ or $i \ne j$. If $p(u,i_1) = (v,j_1)$ and $p(u,i_2) = (v,j_2)$ for some $u \ne v$, $i_1 \ne i_2$, and $j_1 \ne j_2$, we say that there are \emph{multiple connections} between $u$ and~$v$. A port-numbered network $N = (V,P,p)$ is \emph{simple} if there are no loops or multiple connections. 
-
-\subsection{Intuition}
-
-The intuitive idea behind the definition is that a simple port-numbered network $N$ is a model of a physical, real-world communication network:
-\begin{enumerate}
-    \item each node $v \in V$ is a physical device (e.g., a computer or a router),
-    \item node $v$ has $\deg_N(v)$ communication ports, labelled with integers $1,2,\dotsc,\allowbreak\deg_N(v)$,
-    \item $p(u,i) = (v,j)$ indicates that there is a cable that connects the port number $i$ in device $u$ with the port number $j$ in device $v$.
-\end{enumerate}
 
 \subsection{Underlying Graph}
 
@@ -107,7 +97,7 @@ Assume that $N = (V,P,p)$ is a simple port-numbered network, and $G = (V,E)$ is 
 
 It is trivial to compose the labellings. For example, we can easily construct a node labelling that encodes both a subset of nodes and a subset of edges.
 
-Note that the above encoding is natural from the perspective of distributed systems. For example, assume that we have used a node labelling $f\colon V \to Y$ to encode a matching $M \subseteq E$. Now the label $f(v)$ of a node $v \in V$ effectively describes $M$ in the immediate neighbourhood of $v$. In particular, $f(v)$ indicates whether $v$ is matched, i.e., whether there is a node $u$ such that $\{u,v\} \in M$, and if this is the case, which of the ports is connected to $u$.
+The above encoding are natural from the perspective of distributed systems. For example, assume that we have used a node labelling $f\colon V \to Y$ to encode a matching $M \subseteq E$. Now the label $f(v)$ of a node $v \in V$ effectively describes $M$ in the immediate neighbourhood of $v$. In particular, $f(v)$ indicates whether $v$ is matched, i.e., whether there is a node $u$ such that $\{u,v\} \in M$, and if this is the case, which of the ports is connected to $u$.
 
 \subsection{Distributed Graph Problems}\label{ssec:distr-graph-problem}
 
@@ -128,9 +118,9 @@ To make the idea more clear, we will give some more detailed examples.
 
 \section{Distributed Algorithms in the Port-Numbering Model}\label{sec:distr-alg}
 
-We proceed to give a formal definition of a distributed algorithm in the port-numbering model. In essence, a distributed algorithm is a state machine. To run the algorithm on a certain port-numbered network, we put a copy of the same state machine at each node of the network.
+We will now give a formal definition of a distributed algorithm in the port-numbering model. In essence, a distributed algorithm is a state machine (not necessarily a finite-state machine). To run the algorithm on a certain port-numbered network, we put a copy of the same state machine at each node of the network.
 
-It should be noted that the formal definition of a distributed algorithm plays a similar role as the definition of a Turing machine in the study of non-distributed algorithms. A formally rigorous foundation is necessary to study questions such as computability and computational complexity. However, we do not usually present algorithms as Turing machines, and the same is the case here. Once we become more familiar with distributed algorithms, we will use a higher-level pseudocode to define algorithms and omit the tedious details of translating the high-level description into a state machine.
+The formal definition of a distributed algorithm plays a similar role as the definition of a Turing machine in the study of non-distributed algorithms. A formally rigorous foundation is necessary to study questions such as computability and computational complexity. However, we do not usually present algorithms as Turing machines, and the same is the case here. Once we become more familiar with distributed algorithms, we will use a higher-level pseudocode to define algorithms and omit the tedious details of translating the high-level description into a state machine.
 
 \subsection{State Machine}
 

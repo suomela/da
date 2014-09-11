@@ -199,15 +199,15 @@ Recall the algorithm $\algo{P3C}$ for $3$-colouring paths from Section~\ref{sec:
 \end{itemize}
 We will present algorithm $A$ that solves problem $\Pi$ on graph family $\calF$ given $\Pi'$. Note that in Section~\ref{sec:algo-p3c} we assumed that we have unique identifiers, but it is sufficient to assume that we have some graph colouring, i.e., a solution to problem $\Pi'$.
 
-The set of local inputs is determined by problem $\Pi'$ that we assume as input:
+The set of local inputs is determined by what we assume as input:
 \[
     \Input_A = \NNpos.
 \]
-The set of stopping states is determined by problem $\Pi$ that we are trying to solve:
+The set of stopping states is determined by the problem that we are trying to solve:
 \[
     \Output_A = \{1,2,3\}.
 \]
-In our algorithm, each node only needs to store one positive integer (current colour):
+In our algorithm, each node only needs to store one positive integer (the current colour):
 \[
     \States_A = \NNpos.
 \]

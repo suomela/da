@@ -417,34 +417,6 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
 
 \section{Exercises}
 
-\begin{ex}[counting]
-    The \emph{counting problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if $g(v) = |V|$ for all $v \in V$. That is, in the counting problem each node has to output the value $|V|$, i.e., it has to indicate how many nodes there are in the network.
-    
-    Let $\calF$ consist of all cycle graphs, and let $\calF'$ consist of all graphs of maximum degree~$2$.
-    \begin{subex}
-        \item Prove that the counting problem cannot be solved on $\calF$ in the $\PN$ model.
-        \item Design an algorithm that solves the counting problem on $\calF$ in the $\LOCAL$ model in time $O(|V|)$. Present the algorithm in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}.
-        \item Prove that the counting problem cannot be solved in time $o(|V|)$ on $\calF$ in the $\LOCAL$ model.
-        \item Prove that the counting problem cannot be solved on $\calF'$ in the $\LOCAL$ model.
-    \end{subex}
-\end{ex}
-
-\begin{ex}[leader election]
-    The \emph{leader election problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if there is precisely one node $u \in V$ such that
-    \[
-        g(v) = \begin{cases}
-            1 & \text{if $v = u$}, \\
-            0 & \text{otherwise}.
-        \end{cases}
-    \]
-    
-    Let $\calF$ consist of all connected graphs.
-    \begin{subex}
-        \item Prove that the leader election problem cannot be solved on $\calF$ in the $\PN$ model.
-        \item Design an algorithm that solves the leader election problem on $\calF$ in the $\LOCAL$ model.
-    \end{subex}
-\end{ex}
-
 \begin{ex}[iterated greedy]\label{ex:greedy-iterate}
     Design a colour reduction algorithm $A$ with the following properties:
     given any graph $G = (V,E)$ and any proper vertex colouring~$f$,
@@ -464,7 +436,39 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
     Algorithm $\algo{DPBit}$ is based on the idea of identifying a digit that differs in the \emph{binary} encodings of the colours. Generalise the idea: design an analogous algorithm that finds a digit that differs in the base-$k$ encodings of the colours, for an arbitrary $k$, and analyse the running time of the algorithm (cf.\ Exercise~\ref{ex:logstar}). Is the special case of $k = 2$ the best possible choice?
 \end{ex}
 
-\begin{ex}[from bits to sets]\label{ex:dpset}
+\begin{ex}[applications]
+    Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design fast distributed algorithms that solve the following problems on $\calF$ in the $\LOCAL$ model.
+    \begin{subex}
+        \item Maximal independent set.
+        \item Maximal matching.
+        \item Edge colouring with $O(\Delta)$ colours.
+    \end{subex}
+    
+    \hint{You can either use algorithm $\algo{Colour}$ as a subroutine, or you can modify the basic idea of $\algo{Colour}$ slightly to solve these problems.}
+\end{ex}
+
+\begin{ex}[vertex cover]
+    Let $\calF$ consist of cycle graphs. Design a fast distributed algorithm that finds a \Apx{1.1} of a minimum vertex cover on $\calF$ in the $\LOCAL$ model.
+    
+    \hint{Solve small problem instances by brute force and focus on the case of long cycles. In a long cycle, use a graph colouring algorithm to find a $3$-colouring, and then use the $3$-colouring to construct a maximal independent set. Observe that a maximal independent set partitions the cycle into short fragments (with 2--3 nodes in each fragment).
+
+    Apply the same approach recursively: interpret each fragment as a ``supernode'' and partition the cycle that is formed by the supernodes into short fragments, etc. Eventually, you have partitioned the original cycle into \emph{long} fragments, with dozens of nodes in each fragment.
+    
+    Find an optimal vertex cover within each fragment. Make sure that the solution is feasible near the boundaries, and prove that you are able to achieve the required approximation ratio.}
+\end{ex}
+
+\begin{ex}[distance-$2$ colouring]\label{ex:distance2col}
+    Let $G = (V,E)$ be a graph. A \emph{distance-$2$ colouring with $k$ colours} is a function $f \colon V \to \{1,2,\dotsc,k\}$ with the following property:
+    \[
+        \dist_G(u,v) \le 2 \text{ implies } f(u) \ne f(v) \text{ for all nodes } u \ne v.
+    \]
+
+    Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design a fast distributed algorithm that finds a distance-$2$ colouring with $O(\Delta^2)$ colours for any graph $G \in \calF$ in the $\LOCAL$ model.
+    
+    \hint{Given a graph $G \in \calF$, construct a virtual graph $G^2 = (V, E')$ as follows: $\{u,v\} \in E'$ if $u \ne v$ and $\dist_G(u,v) \le 2$. Prove that the maximum degree of $G^2$ is $O(\Delta^2)$. Simulate a fast graph colouring algorithm on $G^2$.}
+\end{ex}
+
+\begin{exs}[from bits to sets]\label{ex:dpset}
     Algorithm $\algo{DPBit}$ can reduce the number of colours from $2^x$ to $2x$ in one round in any directed pseudoforest, for any positive integer $x$. For example, we can reduce the number of colours as follows:
     \[
         2^{128} \to 256 \to 16 \to 8 \to 6.
@@ -510,41 +514,9 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
     Prove that $\algo{DPSet}$ works correctly. In particular, show that $g\colon V \to \{1,2,\dotsc,2x\}$ is a proper graph colouring of the directed pseudoforest~$G$.
     
     Analyse the running time of $\algo{DPSet}$ and compare it with $\algo{DPBit}$. Is $\algo{DPSet}$ always faster? Can you prove a general result analogous to the claim of Exercise~\ref{ex:logstar}?
-\end{ex}
+\end{exs}
 
-\begin{ex}[cycles]
-    Let $\calF$ consist of cycle graphs. Design a fast distributed algorithm that finds a \Apx{1.1} of a minimum vertex cover on $\calF$ in the $\LOCAL$ model.
-    
-    \hint{Solve small problem instances by brute force and focus on the case of long cycles. In a long cycle, use a graph colouring algorithm to find a $3$-colouring, and then use the $3$-colouring to construct a maximal independent set. Observe that a maximal independent set partitions the cycle into short fragments (with 2--3 nodes in each fragment).
-
-    Apply the same approach recursively: interpret each fragment as a ``supernode'' and partition the cycle that is formed by the supernodes into short fragments, etc. Eventually, you have partitioned the original cycle into \emph{long} fragments, with dozens of nodes in each fragment.
-    
-    Find an optimal vertex cover within each fragment. Make sure that the solution is feasible near the boundaries, and prove that you are able to achieve the required approximation ratio.}
-\end{ex}
-
-\begin{ex}[applications]
-    Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design fast distributed algorithms that solve the following problems on $\calF$ in the $\LOCAL$ model.
-    \begin{subex}
-        \item Maximal independent set.
-        \item Maximal matching.
-        \item Edge colouring with $O(\Delta)$ colours.
-    \end{subex}
-    
-    \hint{You can either use algorithm $\algo{Colour}$ as a subroutine, or you can modify the basic idea of $\algo{Colour}$ slightly to solve these problems.}
-\end{ex}
-
-\begin{ex}[distance-$2$ colouring]\label{ex:distance2col}
-    Let $G = (V,E)$ be a graph. A \emph{distance-$2$ colouring with $k$ colours} is a function $f \colon V \to \{1,2,\dotsc,k\}$ with the following property:
-    \[
-        \dist_G(u,v) \le 2 \text{ implies } f(u) \ne f(v) \text{ for all nodes } u \ne v.
-    \]
-
-    Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design a fast distributed algorithm that finds a distance-$2$ colouring with $O(\Delta^2)$ colours for any graph $G \in \calF$ in the $\LOCAL$ model.
-    
-    \hint{Given a graph $G \in \calF$, construct a virtual graph $G^2 = (V, E')$ as follows: $\{u,v\} \in E'$ if $u \ne v$ and $\dist_G(u,v) \le 2$. Prove that the maximum degree of $G^2$ is $O(\Delta^2)$. Simulate a fast graph colouring algorithm on $G^2$.}
-\end{ex}
-
-\begin{ex}[dominating set approximation]\label{ex:greedy-domset}
+\begin{exs}[dominating set approximation]\label{ex:greedy-domset}
     Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design an algorithm that finds an \Apx{O(\log \Delta)} of a minimum dominating set on $\calF$ in the $\LOCAL$ model.
     
     \hint{First, design (or look up) a greedy \emph{centralised} algorithm achieves an approximation ratio of $O(\log \Delta)$ on $\calF$. The following idea will work: repeatedly pick a node that \emph{dominates} as many new nodes as possible\mydash here a node $v \in V$ is said to dominate all nodes in $\ball_G(v,1)$. For more details, see a textbook on approximation algorithms, e.g., Vazirani~\cite{vazirani01approximation}.
@@ -560,7 +532,7 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
         \end{itemize}
     \end{itemize}
     The key observation is that if $u,v \in V$ are two distinct nodes of the same colour, then the set of nodes dominated by $u$ and the set of nodes dominated by $v$ are disjoint. Hence it does not matter whether the greedy algorithm picks $u$ before $v$ or $v$ before $u$, provided that both of them are equally good from the perspective of the number of new nodes that they dominate. Indeed, we can equally well pick both $u$ and $v$ simultaneously in parallel.}
-\end{ex}
+\end{exs}
 
 
 \section{Bibliographic Notes}

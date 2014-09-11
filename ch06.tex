@@ -1,3 +1,23 @@
 %!TEX root = da-dev.tex
 
 FIXME: $\CONGEST$ model
+
+\section{Exercises}
+
+\begin{ex}[counting]
+    The \emph{counting problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if $g(v) = |V|$ for all $v \in V$. That is, in the counting problem each node has to output the value $|V|$, i.e., it has to indicate how many nodes there are in the network.
+
+    Design an algorithm that solves the counting problem on cycle graphs in the $\CONGEST$ model in time $O(|V|)$. Present the algorithm in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}.
+\end{ex}
+
+\begin{ex}[leader election]
+    The \emph{leader election problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if there is precisely one node $u \in V$ such that
+    \[
+        g(v) = \begin{cases}
+            1 & \text{if $v = u$}, \\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    Design an algorithm that solves the leader election problem on connected graphs in the $\CONGEST$ model in time $O(|V|)$.
+\end{ex}
+

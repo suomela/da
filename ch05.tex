@@ -417,25 +417,6 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
 
 \section{Exercises}
 
-\begin{ex}[iterated greedy]\label{ex:greedy-iterate}
-    Design a colour reduction algorithm $A$ with the following properties:
-    given any graph $G = (V,E)$ and any proper vertex colouring~$f$,
-    algorithm $A$ outputs a proper vertex colouring~$g$ such that
-    for each node $v \in V$ we have $g(v) \le \deg_G(v) + 1$.
-    
-    Let $\Delta$ be the maximum degree of $G$, let $n = |V|$ be the number of nodes in $G$, and let $x$ be the number of colours in colouring $f$. The running time of $A$ should be at most
-    \[
-        \min \{ n, x \} + O(1).
-    \]
-    Note that the algorithm does not know $n$, $x$, or $\Delta$. Also note that we may have either $x \le n$ or $x \ge n$.
-    
-    \hint{Adapt the basic idea of algorithm $\algo{Greedy}$\mydash find local maxima and choose appropriate colours for them\mydash but pay attention to the stopping conditions and low-degree nodes. One possible strategy is this: a node becomes active if its current colour is a local maximum among those neighbours that have not yet stopped; once a node becomes active, it selects an appropriate colour and stops.}
-\end{ex}
-
-\begin{ex}[numeral systems]\label{ex:dpbit-base}
-    Algorithm $\algo{DPBit}$ is based on the idea of identifying a digit that differs in the \emph{binary} encodings of the colours. Generalise the idea: design an analogous algorithm that finds a digit that differs in the base-$k$ encodings of the colours, for an arbitrary $k$, and analyse the running time of the algorithm (cf.\ Exercise~\ref{ex:logstar}). Is the special case of $k = 2$ the best possible choice?
-\end{ex}
-
 \begin{ex}[applications]
     Let $\Delta$ be a known constant, and let $\calF$ be the family of graphs of maximum degree at most $\Delta$. Design fast distributed algorithms that solve the following problems on $\calF$ in the $\LOCAL$ model.
     \begin{subex}
@@ -457,6 +438,21 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
     Find an optimal vertex cover within each fragment. Make sure that the solution is feasible near the boundaries, and prove that you are able to achieve the required approximation ratio.}
 \end{ex}
 
+\begin{ex}[iterated greedy]\label{ex:greedy-iterate}
+    Design a colour reduction algorithm $A$ with the following properties:
+    given any graph $G = (V,E)$ and any proper vertex colouring~$f$,
+    algorithm $A$ outputs a proper vertex colouring~$g$ such that
+    for each node $v \in V$ we have $g(v) \le \deg_G(v) + 1$.
+    
+    Let $\Delta$ be the maximum degree of $G$, let $n = |V|$ be the number of nodes in $G$, and let $x$ be the number of colours in colouring $f$. The running time of $A$ should be at most
+    \[
+        \min \{ n, x \} + O(1).
+    \]
+    Note that the algorithm does not know $n$, $x$, or $\Delta$. Also note that we may have either $x \le n$ or $x \ge n$.
+    
+    \hint{Adapt the basic idea of algorithm $\algo{Greedy}$\mydash find local maxima and choose appropriate colours for them\mydash but pay attention to the stopping conditions and low-degree nodes. One possible strategy is this: a node becomes active if its current colour is a local maximum among those neighbours that have not yet stopped; once a node becomes active, it selects an appropriate colour and stops.}
+\end{ex}
+
 \begin{ex}[distance-$2$ colouring]\label{ex:distance2col}
     Let $G = (V,E)$ be a graph. A \emph{distance-$2$ colouring with $k$ colours} is a function $f \colon V \to \{1,2,\dotsc,k\}$ with the following property:
     \[
@@ -467,6 +463,10 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
     
     \hint{Given a graph $G \in \calF$, construct a virtual graph $G^2 = (V, E')$ as follows: $\{u,v\} \in E'$ if $u \ne v$ and $\dist_G(u,v) \le 2$. Prove that the maximum degree of $G^2$ is $O(\Delta^2)$. Simulate a fast graph colouring algorithm on $G^2$.}
 \end{ex}
+
+\begin{exs}[numeral systems]\label{ex:dpbit-base}
+    Algorithm $\algo{DPBit}$ is based on the idea of identifying a digit that differs in the \emph{binary} encodings of the colours. Generalise the idea: design an analogous algorithm that finds a digit that differs in the base-$k$ encodings of the colours, for an arbitrary $k$, and analyse the running time of the algorithm (cf.\ Exercise~\ref{ex:logstar-tight}). Is the special case of $k = 2$ the best possible choice?
+\end{exs}
 
 \begin{exs}[from bits to sets]\label{ex:dpset}
     Algorithm $\algo{DPBit}$ can reduce the number of colours from $2^x$ to $2x$ in one round in any directed pseudoforest, for any positive integer $x$. For example, we can reduce the number of colours as follows:
@@ -513,7 +513,7 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
 
     Prove that $\algo{DPSet}$ works correctly. In particular, show that $g\colon V \to \{1,2,\dotsc,2x\}$ is a proper graph colouring of the directed pseudoforest~$G$.
     
-    Analyse the running time of $\algo{DPSet}$ and compare it with $\algo{DPBit}$. Is $\algo{DPSet}$ always faster? Can you prove a general result analogous to the claim of Exercise~\ref{ex:logstar}?
+    Analyse the running time of $\algo{DPSet}$ and compare it with $\algo{DPBit}$. Is $\algo{DPSet}$ always faster? Can you prove a general result analogous to the claim of Exercise~\ref{ex:logstar-tight}?
 \end{exs}
 
 \begin{exs}[dominating set approximation]\label{ex:greedy-domset}

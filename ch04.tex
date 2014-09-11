@@ -191,15 +191,13 @@ In practice, we will often specify $\calF$, $\Pi$, $\Pi'$, and $T$ implicitly. H
 
 \section{Example: Colouring Paths}\label{sec:algo-p3c-formal}
 
-Recall the algorithm $\algo{P3C}$ for $3$-colouring paths from Section~\ref{sec:algo-p3c}. We will now present the algorithm in a formally precise manner as a state machine.
-
-Let us start with the problem definition:
-\begin{itemize}
-    \item $\calF$ is the family of path graphs. That is, $G \in \calF$ if $G$ is a connected, acyclic graph in which all nodes have degree at most~$2$.
-    \item $\Pi$ is the problem of colouring graphs with $3$ colours. That is, if $N = (V,P,p)$ is a simple port-numbered graph, and $G = (V,E)$ is the underlying graph of $N$, we have $f \in \Pi(N)$ if $f\colon V \to \{1,2,3\}$ is a function such that $f(u) \ne f(v)$ for all $\{u,v\} \in E$.
-    \item $\Pi'$ is the problem of colouring graphs with any number of colours. That is, if $N = (V,P,p)$ is a simple port-numbered graph, and $G = (V,E)$ is the underlying graph of $N$, we have $f \in \Pi'(N)$ if $f\colon V \to \NNpos$ is a function such that $f(u) \ne f(v)$ for all $\{u,v\} \in E$.
+Recall the algorithm $\algo{P3C}$ for $3$-colouring paths from Section~\ref{sec:algo-p3c}. We will now present the algorithm in a formally precise manner as a state machine. Let us start with the problem definition:
+\begin{itemize}[noitemsep]
+    \item $\calF$ is the family of path graphs.
+    \item $\Pi$ is the problem of colouring graphs with $3$ colours.
+    \item $\Pi'$ is the problem of colouring graphs with any number of colours.
 \end{itemize}
-We will present algorithm $A = \algo{P3C}$ that solves problem $\Pi$ on graph family $\calF$ given $\Pi'$. (Note that in Section~\ref{sec:algo-p3c} we assumed that we have unique identifiers, but it is sufficient to assume that we have some graph colouring, i.e., a solution to problem $\Pi'$.)
+We will present algorithm $A$ that solves problem $\Pi$ on graph family $\calF$ given $\Pi'$. Note that in Section~\ref{sec:algo-p3c} we assumed that we have unique identifiers, but it is sufficient to assume that we have some graph colouring, i.e., a solution to problem $\Pi'$.
 
 The set of local inputs is determined by problem $\Pi'$ that we assume as input:
 \[
@@ -247,11 +245,11 @@ Again, we only need to define $\Receive_{A,d}$ for degrees $d \le 2$:
     \end{cases}
 \end{align*}
 
-The definition is a bit technical, but it can be verified that this algorithm does precisely the same thing as the algorithm that was described in pseudocode in Table~\ref{tab:algo-p3c}. Moreover, it can be verified that this algorithm indeed solves problem $\Pi$ on graph family $\calF$ given $\Pi'$, in the sense that we defined in Section~\ref{ssec:def-solving-graph-problem}.
+This algorithm does precisely the same thing as the algorithm that was described in pseudocode in Table~\ref{tab:algo-p3c}. It can be verified that this algorithm indeed solves problem $\Pi$ on graph family $\calF$ given $\Pi'$, in the sense that we defined in Section~\ref{ssec:def-solving-graph-problem}.
 
 We will not usually present distributed algorithms in the low-level state-machine formalism. Typically we are happy with a higher-level presentation (e.g., in pseudocode), but it is important to understand that any distributed algorithm can be always translated into the state machine formalism.
 
-In the next two sections we will give some non-trivial examples of $\PN$-algorithms. We will give an informal description of the algorithms; in the exercises we will see how to translate these algorithms into the state machine formalism.
+In the next two sections we will give some non-trivial examples of $\PN$-algorithms. We will give informal descriptions of the algorithms; in the exercises we will see how to translate these algorithms into the state machine formalism.
 
 
 \section{Example: Maximal Matching in Two-Coloured Graphs}\label{sec:bmm}

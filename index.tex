@@ -13,6 +13,7 @@
     \item[$\ball_G(v,r)$] nodes that are within distance $r$ from $v$ in $G$
     \item[$\diam(G)$] diameter of graph $G$
     \item[$\NN$] the set of natural numbers, $\{0,1,2,\dotsc\}$
+    \item[$\NNpos$] the set of positive integers, $\{1,2,\dotsc\}$
     \item[$\RR$] the set of real numbers
     \item[{$[a,b]$}] set $\{x \in \RR : a \le x \le b\}$
     \item[$Y^{(k)}$] the collection of all $k$-subsets of $Y$
@@ -71,18 +72,17 @@ These conventions are usually followed in the choice of symbols.
 
 \usection{Algorithms}
 
-{\raggedright
 \begin{algorithms}
-    \item[$\algo{P3C}$] deterministic algorithm for $3$-colouring a path, runs in $O(n)$ rounds in the $\LOCAL$ model, Section~\ref{sec:algo-p3c}.
-    \item[$\algo{P3CBit}$] deterministic algorithm for $3$-colouring a directed path, runs in $O(\log^* n)$ rounds in the $\LOCAL$ model, Section~\ref{sec:algo-p3cbit}.
-    \item[$\algo{P3CRand}$] randomised algorithm for $3$-colouring a path, runs in $O(\log n)$ rounds with high probability, Section~\ref{sec:algo-p3crand}.
-    \item[$\algo{P2C}$] deterministic algorithm for $2$-colouring a path, runs in $O(n)$ rounds in the $\LOCAL$ model, Section~\ref{ssec:algo-p2c}.
-    % \item[$\algo{BMM}$] maximal matching in $2$-coloured graphs, Section~\ref{ssec:bmm}.
+    \item[$\algo{P3C}$] Deterministic algorithm for $3$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Sections \ref{sec:algo-p3c} and \ref{sec:algo-p3c-formal}.
+    \item[$\algo{P3CBit}$] Deterministic algorithm for $3$-colouring a directed path. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:algo-p3cbit}.
+    \item[$\algo{P3CRand}$] Randomised algorithm for $3$-colouring a path. Runs in $O(\log n)$ rounds with high probability. Section~\ref{sec:algo-p3crand}.
+    \item[$\algo{P2C}$] Deterministic algorithm for $2$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Section~\ref{ssec:algo-p2c}.
+    \item[$\algo{BMM}$] Deterministic algorithm for finding a maximal matching in $2$-coloured graphs. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:bmm}.
+    \item[$\algo{VC3}$] Deterministic algorithm for finding a \Apx{3} of minimum vertex cover. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:vc3}.
     % \item[$\algo{Colour}$] fast colour reduction in bounded-degree graphs, Section~\ref{ssec:colour}.
     % \item[$\algo{DPBit}$] fast colour reduction in directed pseudoforests, Section~\ref{ssec:dpbit}.
     % \item[$\algo{DPGreedy}$] greedy colour reduction in directed pseudoforests, Section~\ref{ssec:dpgreedy}.
     % \item[$\algo{DPSet}$] fast colour reduction in directed pseudoforests, Exercise~\ref{ex:dpset}.
     % \item[$\algo{Gather}$] gathering information in port-numbered graphs, Section~\ref{sec:gather}.
     % \item[$\algo{Greedy}$] greedy colour reduction, Section~\ref{ssec:greedy}.
-    % \item[$\algo{VC3}$] \Apx{3} of minimum vertex cover, Section~\ref{ssec:vc3}.
-\end{algorithms}}
+\end{algorithms}

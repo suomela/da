@@ -166,7 +166,7 @@ Finally, we define the new state vector $x_t$ by
 
 We say that algorithm $A$ \emph{stops in time $T$} if $x_T(u) \in \Output_A$ for each $u \in V$. We say that $A$ \emph{stops} if $A$ stops in time $T$ for some finite $T$. If $A$ stops in time $T$, we say that $g = x_T$ is the \emph{output} of $A$, and $x_T(u)$ is the \emph{local output} of node $u$.
 
-\subsection{Solving Graph Problems}
+\subsection{Solving Graph Problems}\label{ssec:def-solving-graph-problem}
 
 Now we will define precisely what it means if we say that a distributed algorithm $A$ solves a certain graph problem.
 
@@ -189,13 +189,76 @@ In practice, we will often specify $\calF$, $\Pi$, $\Pi'$, and $T$ implicitly. H
 \end{enumerate}
 
 
-\section{Examples}\label{sec:pn-examples}
+\section{Example: Colouring Paths}\label{sec:algo-p3c-formal}
 
-In this section, we will give two examples of distributed algorithms that solve distributed graph problems. We will give an \emph{informal} presentation of the algorithms\mydash formalising the algorithms as state machines is left as an exercise.
+Recall the algorithm $\algo{P3C}$ for $3$-colouring paths from Section~\ref{sec:algo-p3c}. We will now present the algorithm in a formally precise manner as a state machine.
 
-\subsection{Maximal Matching in Two-Coloured Graphs}\label{ssec:bmm}
+Let us start with the problem definition:
+\begin{itemize}
+    \item $\calF$ is the family of path graphs. That is, $G \in \calF$ if $G$ is a connected, acyclic graph in which all nodes have degree at most~$2$.
+    \item $\Pi$ is the problem of colouring graphs with $3$ colours. That is, if $N = (V,P,p)$ is a simple port-numbered graph, and $G = (V,E)$ is the underlying graph of $N$, we have $f \in \Pi(N)$ if $f\colon V \to \{1,2,3\}$ is a function such that $f(u) \ne f(v)$ for all $\{u,v\} \in E$.
+    \item $\Pi'$ is the problem of colouring graphs with any number of colours. That is, if $N = (V,P,p)$ is a simple port-numbered graph, and $G = (V,E)$ is the underlying graph of $N$, we have $f \in \Pi'(N)$ if $f\colon V \to \NNpos$ is a function such that $f(u) \ne f(v)$ for all $\{u,v\} \in E$.
+\end{itemize}
+We will present algorithm $A = \algo{P3C}$ that solves problem $\Pi$ on graph family $\calF$ given $\Pi'$. (Note that in Section~\ref{sec:algo-p3c} we assumed that we have unique identifiers, but it is sufficient to assume that we have some graph colouring, i.e., a solution to problem $\Pi'$.)
+
+The set of local inputs is determined by problem $\Pi'$ that we assume as input:
+\[
+    \Input_A = \NNpos.
+\]
+The set of stopping states is determined by problem $\Pi$ that we are trying to solve:
+\[
+    \Output_A = \{1,2,3\}.
+\]
+In our algorithm, each node only needs to store one positive integer (current colour):
+\[
+    \States_A = \NNpos.
+\]
+Messages are also integers:
+\[
+    \Msg_A = \NNpos.
+\]
+Initialisation is trivial: the initial state of a node is its colour. Hence for all $d$ we have
+\[
+    \Init_{A,d}(x) = x.
+\]
+In each step, each node sends its current colour to each of its neighbours. As we assume that all nodes have degree at most $2$, we only need to define $\Send_{A,d}$ for $d \le 2$:
+\begin{align*}
+    \Send_{A,0}(x) &= (). \\
+    \Send_{A,1}(x) &= (x). \\
+    \Send_{A,2}(x) &= (x,x).
+\end{align*}
+The nontrivial part of the algorithm is hidden in the $\Receive$ function. To define it, we will use the following auxiliary function that returns the smallest positive number not in $X$:
+\[
+    g(X) = \min(\NNpos \setminus X).
+\]
+Again, we only need to define $\Receive_{A,d}$ for degrees $d \le 2$:
+\begin{align*}
+    \Receive_{A,0}(x, ()) &= \begin{cases}
+        g(\emptyset) & \text{if } x \notin \{1,2,3\}, \\
+        x & \text{otherwise}.
+    \end{cases}\\
+    \Receive_{A,1}(x, (y)) &= \begin{cases}
+        g(\{y\}) & \text{if } x \notin \{1,2,3\}\\[-2pt]&\text{and } x > y, \\
+        x & \text{otherwise}.
+    \end{cases}\\
+    \Receive_{A,2}(x, (y, z)) &= \begin{cases}
+        g(\{y,z\}) & \text{if } x \notin \{1,2,3\}\\[-2pt]&\text{and } x > y\text{, }x > z, \\
+        x & \text{otherwise}.
+    \end{cases}
+\end{align*}
+
+The definition is a bit technical, but it can be verified that this algorithm does precisely the same thing as the algorithm that was described in pseudocode in Table~\ref{tab:algo-p3c}. Moreover, it can be verified that this algorithm indeed solves problem $\Pi$ on graph family $\calF$ given $\Pi'$, in the sense that we defined in Section~\ref{ssec:def-solving-graph-problem}.
+
+We will not usually present distributed algorithms in the low-level state-machine formalism. Typically we are happy with a higher-level presentation (e.g., in pseudocode), but it is important to understand that any distributed algorithm can be always translated into the state machine formalism.
+
+In the next two sections we will give some non-trivial examples of $\PN$-algorithms. We will give an informal description of the algorithms; in the exercises we will see how to translate these algorithms into the state machine formalism.
+
+
+\section{Example: Maximal Matching in Two-Coloured Graphs}\label{sec:bmm}
 
 In this section we present a distributed algorithm $\algo{BMM}$ that finds a maximal matching in a $2$-coloured graph. That is, $\calF$ is the family of bipartite graphs, we are given a $2$-colouring $f\colon V \to \{1,2\}$, and the algorithm will output an encoding of a maximal matching $M \subseteq E$.
+
+\subsection{Algorithm}
 
 In what follows, we say that a node $v \in V$ is \emph{white} if $f(v) = 1$, and it is \emph{black} if $f(v) = 2$. During the execution of the algorithm, each node is in one of the states
 \[
@@ -253,6 +316,9 @@ The algorithm is presented in Table~\ref{tab:bmm}; see Figure~\ref{fig:bmm} for 
     \caption{Algorithm $\algo{BMM}$; here $k = 1, 2, \dotsc$.}\label{tab:bmm}
 \end{table}
 
+
+\subsection{Analysis}
+
 The following invariant is useful in order to analyse the algorithm.
 \begin{lemma}\label{lem:bmminv}
     Assume that $u$ is a white node, $v$ is a black node, and $(u,i) = p(v,j)$. Then at least one of the following holds:
@@ -285,9 +351,15 @@ Moreover, the output is correct.
     Let us then verify that $M$ is indeed maximal. If this was not the case, there would be an unmatched white node $u$ that is connected to an unmatched black node $v$. However, Lemma~\ref{lem:bmminv} implies that at least one of them becomes matched before or during round $2\Delta$.
 \end{proof}
 
-\subsection{Vertex Covers}\label{ssec:vc3}
+
+\section{Example: Vertex Covers}\label{sec:vc3}
 
 We will now give a distributed algorithm $\algo{VC3}$ that finds a \Apx{3} of a minimum vertex cover; we will use algorithm $\algo{BMM}$ from the previous section as a building block.
+
+In the previous sections we have seen algorithms that assume something about the input (e.g., we are given a proper colouring of the network). The algorithm that we will see in this section makes no such assumptions. We can run algorithm $\algo{VC3}$ in any port-numbered network, without any additional input. In particular, we do not need any kind of colouring, unique identifiers, or randomness. Nevertheless, it is possible to use algorithm $\algo{BMM}$ as a subroutine, even though $\algo{BMM}$ assumes that we have a $2$-coloured graph!
+
+
+\subsection{Virtual 2-Coloured Network}
 
 \begin{figure}
     \centering
@@ -311,6 +383,9 @@ With these definitions we have constructed a network $N'$ such that the underlyi
 \]
 Nodes of colour $1$ are called \emph{white} and nodes of colour $2$ are called \emph{black}.
 
+
+\subsection{Simulation of the Virtual Network}
+
 Now $N$ is our physical communication network, and $N'$ is merely a mathematical construction. However, the key observation is that we can use the physical network $N$ to efficiently \emph{simulate} the execution of any distributed algorithm $A$ on $(N'\!, f')$. Each physical node $v \in V$ simulates nodes $v_1$ and $v_2$ in $N'$:
 \begin{enumerate}
     \item If $v_1$ sends a message $m_1$ to port $(v_1,i)$ and $v_2$ sends a message $m_2$ to port $(v_2,i)$ in the simulation, then $v$ sends the pair $(m_1,m_2)$ to port $(v,i)$ in the physical network.
@@ -319,13 +394,19 @@ Now $N$ is our physical communication network, and $N'$ is merely a mathematical
     Note that we have here reversed the messages: what came from a white node is received by a black node and vice versa.
 \end{enumerate}
 
-In particular, we can take algorithm $\algo{BMM}$ of Section~\ref{ssec:bmm} and use the network $N$ to simulate it on $(N'\!,f')$. Note that network $N$ is not necessarily bipartite and we do not have any colouring of $N$; hence we would not be able to apply algorithm $\algo{BMM}$ on~$N$.
+In particular, we can take algorithm $\algo{BMM}$ of Section~\ref{sec:bmm} and use the network $N$ to simulate it on $(N'\!,f')$. Note that network $N$ is not necessarily bipartite and we do not have any colouring of $N$; hence we would not be able to apply algorithm $\algo{BMM}$ on~$N$.
+
+
+\subsection{Algorithm}
 
 Now we are ready to present algorithm $\algo{VC3}$ that finds a vertex cover:
 \begin{enumerate}
     \item Simulate algorithm $\algo{BMM}$ in the virtual network $N'$. Each node $v$ waits until both of its copies, $v_1$ and $v_2$, have stopped.
     \item Node $v$ outputs $1$ if at least one of its copies $v_1$ or $v_2$ becomes matched.
 \end{enumerate}
+
+
+\subsection{Analysis}
 
 Clearly algorithm $\algo{VC3}$ stops, as algorithm $\algo{BMM}$ stops. Moreover, the running time is $2\Delta+1$ rounds, where $\Delta$ is the maximum degree of~$N$.
 
@@ -389,20 +470,20 @@ In summary, $\algo{VC3}$ finds a \Apx{3} of a minimum vertex cover in any graph 
 
 \section{Exercises}
 
-\begin{ex}[stopped nodes]\label{ex:stopped}
-    In the formalism of this section, a node that stops will repeatedly send messages to its neighbours. Show that this detail is irrelevant, and we can always re-write algorithms so that such messages are ignored. Put otherwise, a node that stops can also stop sending messages.
-    
-    More precisely, assume that $A$ is a distributed algorithm that solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T$. Show that there is another algorithm $A'$ such that (i)~$A'$ solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T + O(1)$, and (ii)~in $A'$ the state transitions never depend on the messages that are sent by nodes that have stopped.
-\end{ex}
-
 \begin{ex}[formalising $\algo{BMM}$]
-    Present algorithm $\algo{BMM}$ from Section~\ref{ssec:bmm} in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}. Try to make $\Msg_A$ as small as possible.
+    Present algorithm $\algo{BMM}$ from Section~\ref{sec:bmm} in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}. Try to make $\Msg_A$ as small as possible.
 \end{ex}
 
 \begin{ex}[formalising $\algo{VC3}$]
-    Present algorithm $\algo{VC3}$ from Section \ref{ssec:vc3} in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}. Try to make both $\Msg_A$ and $\States_A$ as small as possible.
+    Present algorithm $\algo{VC3}$ from Section \ref{sec:vc3} in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}. Try to make both $\Msg_A$ and $\States_A$ as small as possible.
     
     \hint{For the purposes of algorithm $\algo{VC3}$, it is sufficient to know which nodes are matched in $\algo{BMM}$\mydash we do not need to know with whom they are matched.}
+\end{ex}
+
+\begin{ex}[stopped nodes]\label{ex:stopped}
+    In the formalism of this chapter, a node that stops will repeatedly send messages to its neighbours. Show that this detail is irrelevant, and we can always re-write algorithms so that such messages are ignored. Put otherwise, a node that stops can also stop sending messages.
+    
+    More precisely, assume that $A$ is a distributed algorithm that solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T$. Show that there is another algorithm $A'$ such that (i)~$A'$ solves problem $\Pi$ on family $\calF$ given $\Pi'$ in time $T + O(1)$, and (ii)~in $A'$ the state transitions never depend on the messages that are sent by nodes that have stopped.
 \end{ex}
 
 \begin{ex}[more than two colours]
@@ -413,17 +494,17 @@ In summary, $\algo{VC3}$ finds a \Apx{3} of a minimum vertex cover in any graph 
     Is the analysis of $\algo{VC3}$ tight? That is, is it possible to construct a network $N$ such that $\algo{VC3}$ outputs a vertex cover that is exactly $3$ times as large as the minimum vertex cover of the underlying graph of $N$?
 \end{ex}
 
-\begin{ex}[implementation]\label{ex:simulator}
+\begin{exs}[implementation]\label{ex:simulator}
     Using your favourite programming language, implement a simulator that lets you play with distributed algorithms in the port-numbering model. Implement $\algo{BMM}$ and $\algo{VC3}$ and try them out in the simulator.
-\end{ex}
+\end{exs}
 
-\begin{ex}[composition]\label{ex:composition}
+\begin{exs}[composition]\label{ex:composition}
     Assume that algorithm $A_1$ solves problem $\Pi_1$ on family $\calF$ given $\Pi_0$ in time $T_1$, and algorithm $A_2$ solves problem $\Pi_2$ on family $\calF$ given $\Pi_1$ in time $T_2$.
     
     Is it always possible to design an algorithm $A$ that solves problem $\Pi_2$ on family $\calF$ given $\Pi_0$ in time $O(T_1 + T_2)$?
     
     \hint{This exercise is not trivial. If $T_1$ was a constant function $T_1(n) = c$, we could simply run $A_1$, and then start $A_2$ at time $c$, using the output of $A_1$ as the input of $A_2$. However, if $T_1$ is an arbitrary function of $|V|$, this strategy is not possible\mydash we do not know in advance when $A_1$ will stop.}
-\end{ex}
+\end{exs}
 
 
 \section{Bibliographic Notes}

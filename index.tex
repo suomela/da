@@ -27,6 +27,7 @@ These conventions are usually followed in the choice of symbols.
 {\raggedright
 \begin{notation}
     \item[$\alpha$] approximation factor
+    \item[$\chi$] range of unique identifiers, $\chi = |V|^c$
     \item[$\phi$] covering map, $\phi \colon V \to V'$
     \item[$\psi$] local isomorphism, $\psi \colon \ball_G(v,r) \to \ball_H(u,r)$
     \item[$\Delta$] maximum degree; an upper bound of the maximum degree
@@ -79,10 +80,10 @@ These conventions are usually followed in the choice of symbols.
     \item[$\algo{P2C}$] Deterministic algorithm for $2$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Section~\ref{ssec:algo-p2c}.
     \item[$\algo{BMM}$] Deterministic algorithm for finding a maximal matching in $2$-coloured graphs. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:bmm}.
     \item[$\algo{VC3}$] Deterministic algorithm for finding a \Apx{3} of minimum vertex cover. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:vc3}.
-    % \item[$\algo{Colour}$] fast colour reduction in bounded-degree graphs, Section~\ref{ssec:colour}.
-    % \item[$\algo{DPBit}$] fast colour reduction in directed pseudoforests, Section~\ref{ssec:dpbit}.
-    % \item[$\algo{DPGreedy}$] greedy colour reduction in directed pseudoforests, Section~\ref{ssec:dpgreedy}.
-    % \item[$\algo{DPSet}$] fast colour reduction in directed pseudoforests, Exercise~\ref{ex:dpset}.
-    % \item[$\algo{Gather}$] gathering information in port-numbered graphs, Section~\ref{sec:gather}.
-    % \item[$\algo{Greedy}$] greedy colour reduction, Section~\ref{ssec:greedy}.
+    \item[$\algo{Gather}$] Deterministic algorithm for gathering information on the communication network. Runs in $O(\diam(G))$ rounds in the $\LOCAL$ model. Section~\ref{sec:gather}.
+    \item[$\algo{Greedy}$] Greedy colour reduction. Section~\ref{sec:greedy}.
+    \item[$\algo{DPGreedy}$] Greedy colour reduction in directed pseudoforests. Section~\ref{sec:dpgreedy}.
+    \item[$\algo{DPBit}$] Fast colour reduction in directed pseudoforests. Section~\ref{sec:dpbit}.
+    \item[$\algo{DPSet}$] Fast colour reduction in directed pseudoforests. Exercise~\ref{ex:dpset}.
+    \item[$\algo{Colour}$] Fast colour reduction in bounded-degree graphs. Section~\ref{sec:colour}.
 \end{algorithms}

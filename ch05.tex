@@ -83,14 +83,19 @@ Clearly, the running time of the algorithm is $O(\diam(G))$.
 
 It is essential that all nodes have the same canonical representation of network $N$ (for example, $V$, $P$, and $p$ are represented as lists that are ordered lexicographically by node identifiers and port numbers), and that all nodes use the same deterministic algorithm $A'$ to solve $\Pi$. This way we are guaranteed that all nodes have locally computed the \emph{same} solution $f$, and hence the outputs $f(v)$ are globally consistent.
 
+
+\section{Focus on Computational Complexity}
+
 So far we have learned the key difference between $\PN$ and $\LOCAL$ models: while there are plenty of graph problems that cannot be solved at all in the $\PN$ model (recall the discussion in Section~\ref{sec:intro-challenges}), we know that all computable graph problems can be easily solved in the $\LOCAL$ model.
 
 Hence our focus shifts from computability to computational complexity. While it is trivial to determine if a problem can be solved in the $\LOCAL$ model, we would like to know which problems can be solved quickly. In particular, we would like to learn which problems can be solved in time that is much smaller than $\diam(G)$. It turns out that graph colouring is an example of such a problem.
 
+In the rest of this chapter, we will design an efficient distributed algorithm that finds a graph colouring in the $\LOCAL$ model. The algorithm will find a proper vertex colouring with $\Delta+1$ colours in $O(\Delta^2 + \log^* |V|)$ communication round, for any graph of maximum degree $\Delta$. We will first present with some simpler algorithms that will be used as subroutines\mydash many of these are straightforward generalisations of algorithms $\algo{P3C}$ and $\algo{P3CBit}$ that we saw in Chapter~\ref{ch:intro-pos}.
+
 
 \section{Greedy Colour Reduction}\label{sec:greedy}
 
-We already learned in Chapter~\ref{ch:intro-pos} that unique identifiers can be used to find a proper colouring of a path. In what follows, we will generalise this to arbitrary networks. We start with a generalisation of the simple strategy that we used in Section~\ref{sec:algo-p3c}. Let $x \in \NN$. We present an algorithm called ``$\algo{Greedy}$'' that reduces the number of colours from $x$ to
+Let $x \in \NN$. We present an algorithm called ``$\algo{Greedy}$'' that reduces the number of colours from $x$ to
 \[
     y = \max \{ x-1, \Delta+1 \},
 \]
@@ -123,7 +128,7 @@ Informally, a node whose colour is a local maximum re-colours itself with the fi
 \begin{figure}
     \centering
     \includegraphics[page=\PGreedy]{figs.pdf}
-    \caption{Greedy colour reduction. The active nodes have been highlighted. Note that in the original colouring $f$, the largest colour was $99$, while in the new colouring, the largest colour is strictly smaller than $99$\mydash we successfully reduced the number of colours in the graph.}\label{fig:greedy}
+    \caption{Greedy colour reduction. The active nodes have been highlighted. Note that in the original colouring $f$, the largest colour was $99$, while in the new colouring, the largest colour is strictly smaller than $99$\mydash we have successfully reduced the number of colours in the graph.}\label{fig:greedy}
 \end{figure}
 
 \subsection{Analysis}
@@ -163,18 +168,14 @@ Informally, a node whose colour is a local maximum re-colours itself with the fi
 
 A key observation in understanding the algorithm is that the set of active nodes forms an independent set. Therefore all active nodes can pick their new colours simultaneously in parallel, without any risk of choosing colours that might conflict with each other.
 
-\subsection{Discussion}
+\subsection{Remarks}
 
-Algorithm $\algo{Greedy}$ does not need to know the number of colours $x$ or the maximum degree $\Delta$; we only used them in the analysis. We can take any graph, blindly apply algorithm $\algo{Greedy}$, and we are guaranteed to reduce the number of colours by one\mydash provided that the number of colours was larger than $\Delta + 1$.
-
-In particular, we can apply algorithm $\algo{Greedy}$ repeatedly until we get stuck, at which point we have a \Dpocol{} of~$G$\mydash we will formalise and generalise this idea in Exercise~\ref{ex:greedy-iterate}.
-
-In principle, we could use this strategy in the $\LOCAL$ model to find a \Dpocol{} of any graph. However, such an algorithm would be extremely slow. In the worst case, we may have a long path of nodes, with increasing identifiers (colours) along the path, and in such a graph the running time of the greedy strategy would be linear in $|V|$: in each iteration, only one of the nodes is a local maximum. In the next sections, we will develop an algorithm that is much faster.
+Algorithm $\algo{Greedy}$ does not need to know the number of colours $x$ or the maximum degree $\Delta$; we only used them in the analysis. We can take any graph, blindly apply algorithm $\algo{Greedy}$, and we are guaranteed to reduce the number of colours by one\mydash provided that the number of colours was larger than $\Delta + 1$. In particular, we can apply algorithm $\algo{Greedy}$ repeatedly until we get stuck, at which point we have a \Dpocol{} of~$G$\mydash we will formalise and generalise this idea in Exercise~\ref{ex:greedy-iterate}.
 
 
 \section{Directed Pseudoforests}
 
-We will first study graph colouring in a seemingly simple special case: we are given a pseudoforest with a particular orientation. Once we have solved the special case, we turn our attention to the more general case of colouring bounded-degree graphs.
+We will next study graph colouring in so-called directed pseudoforests. Once we have solved the special case, we turn our attention to the more general case of bounded-degree graphs.
 
 \subsection{Definition}
 
@@ -194,11 +195,11 @@ We make the following observations:
     \item Let $H$ be a pseudoforest. There exists an orientation $G$ of $H$ such that $G$ is a directed pseudoforest.
     \item An orientation of a pseudoforest is not necessarily a directed pseudoforest.
 \end{enumerate}
-If $(u,v) \in E$, we say that $v$ is a \emph{successor} of $u$ and $u$ is a \emph{predecessor} of $v$. By definition, in a directed pseudoforest each node has at most one successor.
+If $(u,v) \in E$, we say that $v$ is a \emph{successor} of $u$ and $u$ is a \emph{predecessor} of~$v$. By definition, in a directed pseudoforest each node has at most one successor.
 
 
 
-\section{Greedy Colouring in Directed Pseudoforests}\label{sec:dpgreedy}
+\section{Greedy Colour Reduction in Directed Pseudoforests}\label{sec:dpgreedy}
 
 Let $G = (V,E)$ be a directed pseudoforest, and let $f$ be a proper vertex colouring of $G$ with $x$ colours, for some $x \ge 4$. We design a distributed algorithm $\algo{DPGreedy}$ that reduces the number of colours from $x$ to $x-1$ in two communication rounds.
 
@@ -240,9 +241,7 @@ Then we apply $\algo{Greedy}$ from Section~\ref{sec:greedy} to labelling $s$ to 
 
 \subsection{Analysis}
 
-By construction, we have $s(v) \ne f(v)$. Note that we can compute the values $s(v)$ for all nodes $v \in V$ with a simple distributed algorithm in one communication round.
-
-We will now prove that the values $s(v)$ form a proper $x$-colouring of $G$. Moreover, we show that each node is adjacent to only two different colours in colouring~$s$.
+We will first prove that the values $s(v)$ form a proper $x$-colouring of~$G$. Moreover, we will show that each node is adjacent to only two different colours in colouring~$s$.
 
 \begin{lemma}
     Function $s$ is an $x$-colouring of $G$.
@@ -269,18 +268,10 @@ We will now prove that the values $s(v)$ form a proper $x$-colouring of $G$. Mor
 
 Now let us consider what happens when we apply algorithm $\algo{Greedy}$ to construct labelling $g$. Each active node $v$ will choose a colour \[g(v) = \min \bar{C}(v) \in \{1,2,3\},\] while each passive node $v$ will output its old colour $g(v) = s(v)$. In particular, if the number of colours in $f$ was $x \ge 4$, then the number of colours in $g$ is at most $x - 1$.
 
-Note that it was crucial that we applied $\algo{Greedy}$ to colouring $s$, instead of colouring $f$; see Figure~\ref{fig:dpcritical} for examples.
-
-\begin{figure}
-    \centering
-    \includegraphics[page=\PDPCritical]{figs.pdf}
-    \caption{(a)~If we tried to apply algorithm $\algo{Greedy}$ directly in any given colouring $f$, the active nodes would not be able to pick new colours from the set $\{1,2,3\}$. (b)~In colouring $s$, algorithm $\algo{Greedy}$ will always find a new colour from the set $\{1,2,3\}$.}\label{fig:dpcritical}
-\end{figure}
-
 We conclude that we have designed algorithm $\algo{DPGreedy}$ that reduces the number of colours from $x \ge 4$ to $x-1$ in directed pseudoforests in $2$ communication rounds. In particular, we can reduce the number of colours from any number $x \ge 3$ to $3$ in ${2(x-3)}$ rounds.
 
 
-\section{Fast Colouring in Pseudoforests}\label{sec:dpbit}
+\section{Fast Colour Reduction in Pseudoforests}\label{sec:dpbit}
 
 So far we have only seen algorithms that reduce the number of colours by one in each iteration. In this section we will present an algorithm that is \emph{much} faster. We present algorithm $\algo{DPBit}$ that reduces the number of colours from $2^x$ to $2x$ in one communication round, in any directed pseudoforest. We will assume that $x \ge 1$ is a known constant. In essence, this is the same algorithm as $\algo{P3CBit}$ from Section~\ref{sec:algo-p3cbit}\mydash fast colour reduction in directed pseudoforests is almost as easy as fast colour reduction in directed paths.
 
@@ -333,36 +324,38 @@ The key observation is that the pairs $\bigl(i(v), b(v)\bigr)$ form a proper col
 
 Note that if we have $g(u) = g(v)$ for two nodes $u$ and $v$, this implies $b(u) = b(v)$ and $i(u) = i(v)$. Hence Lemma~\ref{lem:dpbit} implies that $g$ is a proper vertex colouring of $G$. Moreover, we have $1 \le g(v) \le 2x$, and hence $g$ is a $2x$-colouring of $G$.
 
-In summary, we have designed algorithm $\algo{DPBit}$ that reduces the number of colours from $2^x$ to $2x$ in one communication round\mydash given a $2^x$-colouring $f$, the algorithm outputs a $2x$-colouring $g$. Communication is only needed in order to discover the value $s(v)$ for each node $v$; the derivation of the values $i(v)$, $b(v)$, and $g(v)$ only needs local computation.
+In summary, we have designed algorithm $\algo{DPBit}$ that reduces the number of colours from $2^x$ to $2x$ in one communication round\mydash given a $2^x$-colouring $f$, the algorithm outputs a $2x$-colouring $g$.
 
 
-\section{Fast Colouring in General Graphs}\label{sec:colour}
+\section{Fast 3-Colouring in Directed Pseudoforests}\label{sec:dp3c}
 
-In this section, we will present algorithm $\algo{Colour}$ that reduces the number of colours from any number $x$ to $\Delta+1$ in any graph of maximum degree at most $\Delta$ much faster than an iterated application of algorithm $\algo{Greedy}$. Throughout this section, we will assume that the values of $x$ and $\Delta$ are known to all nodes.
+Assume that we know $|V|$. We will design algorithm $\algo{DP3C}$ that finds a $3$-colouring in $O(\log^* |V|)$ rounds in any directed pseudoforest. The algorithm proceeds as follows:
+\begin{enumerate}
+    \item Use the unique identifiers to construct a colouring with $\chi$ colours.
+    \item Iterate algorithm $\algo{DPBit}$ for $\log^* \chi$ steps to reduce the number of colours from $\chi$ to $6$.
+    \item Iterate algorithm $\algo{DPGreedy}$ for $3$ steps to reduce the number of colours from $6$ to~$3$.
+\end{enumerate}
+The analysis is, in essence, identical to what we already did in Exercise~\ref{ex:logstar}.
 
-\subsection{Definitions}
 
-Let $A$ be an algorithm that reduces the number of colours in a directed pseudoforest from $x$ to $3$ in time $T(x)$. For example, we can let $A$ be the combination of the iterated $\algo{DPBit}$ (reduces the number of colours from any $x$ to $6$) followed by the iterated $\algo{DPGreedy}$ (reduces the number of colours from $6$ to $3$). As we will see in Exercise~\ref{ex:logstar}, the running time of $A$ is then $T(x) = O(\log^* x)$.
+\section{Fast Colouring in General Graphs}\label{sec:bdcolour}
 
-Algorithm $\algo{Colour}$ uses $A$ as a subroutine, and the running time of $\algo{Colour}$ will be $O(\Delta^2) + T(x)$. For example, with the above choice of $A$, the running time of $\algo{Colour}$ is $O(\Delta^2 + \log^* x)$.
+Now we will turn our attention to bounded-degree graphs. Assume that we know $|V|$ and $\Delta$. We will now design a distributed algorithm $\algo{BDColour}$ that finds a $(\Delta+1)$-colouring in any graph of maximum degree at most $\Delta$ in $O(\Delta^2 + \log^* |V|)$ rounds.
 
-Let $G = (V,E)$ be a graph of maximum degree at most $\Delta$, and let $f \colon V \to \{1,2,\dotsc,x\}$ be an $x$-colouring of $G$. Let $N$ be a port-numbered network with $G$ as the underlying graph. Algorithm $\algo{Colour}$ constructs a \Dpocol{} $g$ of $G$ as follows.
+\subsection{Preliminaries}
 
-\subsection{Initialisation}
-
-For each node $v$ and each port number $i$, node $v$ sends the pair $(f(v), i)$ to port $i$. This way a node $u$ learns the following information about each node $v$ that is adjacent to~$u$: what is the old colour of $v$, which port of $u$ is connected to $v$, and which port of $v$ is connected to $u$. This step requires one communication round.
+For each node $v$ and each port number $i$, node $v$ sends the pair $(v, i)$ to port $i$. This way a node $u$ learns the following information about each node $v$ that is adjacent to~$u$: what is the unique identifier of $v$, which port of $u$ is connected to $v$, and which port of $v$ is connected to $u$. This step requires one communication round.
 
 \subsection{Orientation}
 
-We construct an orientation $G' = (V,E')$ of $G$ as follows: we have $(u,v) \in E'$ if and only if $\{u,v\} \in E$ and $f(u) < f(v)$. That is, we use the old colours of the nodes to orient the edges from a smaller colour to a larger colour; see Figure~\ref{fig:id-orient}.
+We construct an orientation $G' = (V,E')$ of $G$ as follows: we have $(u,v) \in E'$ if and only if $\{u,v\} \in E$ and $u < v$. That is, we use the unique identifiers to orient the edges; see Figure~\ref{fig:id-orient}. Each node only needs to know the orientation of its incident edges. This step requires zero communication rounds.
 
 \begin{figure}
     \centering
     \includegraphics[page=\PIdOrient]{figs.pdf}
-    \caption{Orientation $G'$ derived from the old colours\mydash in this example, the old colours were unique identifiers.}\label{fig:id-orient}
+    \caption{Orientation $G'$ derived from the unique identifiers.}\label{fig:id-orient}
 \end{figure}
 
-In the distributed algorithm, each node only needs to know the orientation of its incident edges. This step requires zero communication rounds.
 
 \subsection{Partition in Pseudoforests}
 
@@ -374,15 +367,13 @@ For each $i = 1,2,\dotsc,\Delta$, we construct a subgraph $G_i = (V,E_i)$ of $G'
     \caption{Subgraph $G_i$ of $G'$. Each node has outdegree at most one.}\label{fig:id-pick-class}
 \end{figure}
     
-Observe that the sets $E_1, E_2, \dotsc, E_\Delta$ form a partition of $E'$: for each directed edge $e \in E'$ there is precisely one $i$ such that $e \in E_i$. Also note that for each node $u \in V$ and for each index $i$ there is at most one neighbour $v$ such that $(u,v) \in E_i$. It follows that the outdegree of any node $v$ in $G_i = (V,E_i)$ is at most one, and therefore $G_i$ is a \emph{directed pseudoforest}. Function $f$ is an $x$-colouring of $G_i$ for all $i$.
+Observe that the sets $E_1, E_2, \dotsc, E_\Delta$ form a partition of $E'$: for each directed edge $e \in E'$ there is precisely one $i$ such that $e \in E_i$. Also note that for each node $u \in V$ and for each index $i$ there is at most one neighbour $v$ such that $(u,v) \in E_i$. It follows that the outdegree of any node $v$ in $G_i = (V,E_i)$ is at most one, and therefore $G_i$ is a \emph{directed pseudoforest}.
     
 In the distributed algorithm, each node only needs to know which of its incident edges are in which subset $E_i$. This step requires zero communication rounds.
 
 \subsection{Parallel Colouring of Pseudoforests}
 
-For each $i$, we use algorithm $A$ to construct a $3$-colouring $g_i$ of $G_i$.
-    
-In the distributed algorithm, each node $v \in V$ needs to know the value $g_i(v)$ for each $i$. This step takes only $T(x)$ rounds: we can simulate the execution of $A$ in parallel for all subgraphs $G_i$. In the simulation, each node has $\Delta$ different roles, one for each subgraph $G_i$.
+For each $i$, we use algorithm $\algo{DP3C}$ to construct a $3$-colouring $g_i$ of $G_i$. Each node $v \in V$ needs to know the value $g_i(v)$ for each $i$. This step takes only $O(\log^* |V|)$ rounds: we can simulate the execution of $A$ in parallel for all subgraphs $G_i$. In the simulation, each node has $\Delta$ different roles, one for each subgraph $G_i$.
 
 \subsection{Merging Colourings}
 
@@ -396,23 +387,26 @@ We will construct a sequence of colourings $g'_0, g'_1, \dotsc, g'_\Delta$ such 
 
 Our construction is recursive. The base case of $j = 0$ is trivial: we can choose $g'_0(v) = 1$ for all $v \in V$, and this is certainly a proper \Dpocol{} of $G'_0$.
 
-Now assume that we have already constructed a \Dpocol{} $g'_{j-1}$ of $G'_{j-1}$. Recall that $g_j$ is a $3$-colouring of $G_j$; see Figure~\ref{fig:merge-colours}. Define a function $h_j$ as follows:
-\[
-    h_j(v) = (\Delta+1) (g_j(v)-1) + g'_{j-1}(v).
-\]
-Observe that $h_j$ is a proper $3(\Delta+\nobreak 1)$-colouring of $G'_j$. To see this, consider an edge $(u,v) \in E'_j$. If $(u,v) \in E_j$, we have $g_j(u) \ne g_j(v)$, which implies $h_j(u) \ne h_j(v)$. Otherwise $(u,v) \in E'_{j-1}$, and we have $g'_{j-1}(u) \ne g'_{j-1}(v)$, which implies $h_j(u) \ne h_j(v)$.
-
 \begin{figure}
     \centering
     \includegraphics[page=\PMergeColours]{figs.pdf}
     \caption{Merging a $3$-colouring $g_j$ of directed pseudotree $G_j$ and a \Dpocol{} $g'_{j-1}$ of subgraph $G'_{j-1}$. The end result is a proper $3(\Delta\nobreak +1)$-colouring $h_j$ of subgraph $G'_j$.}\label{fig:merge-colours}
 \end{figure}
 
+Now assume that we have already constructed a \Dpocol{} $g'_{j-1}$ of $G'_{j-1}$. Recall that $g_j$ is a $3$-colouring of $G_j$; see Figure~\ref{fig:merge-colours}. Define a function $h_j$ as follows:
+\[
+    h_j(v) = (\Delta+1) (g_j(v)-1) + g'_{j-1}(v).
+\]
+Observe that $h_j$ is a proper $3(\Delta+\nobreak 1)$-colouring of $G'_j$. To see this, consider an edge $(u,v) \in E'_j$. If $(u,v) \in E_j$, we have $g_j(u) \ne g_j(v)$, which implies $h_j(u) \ne h_j(v)$. Otherwise $(u,v) \in E'_{j-1}$, and we have $g'_{j-1}(u) \ne g'_{j-1}(v)$, which implies $h_j(u) \ne h_j(v)$.
+
 Now we use $2(\Delta+\nobreak 1)$ iterations of $\algo{Greedy}$ to reduce the number of colours from $3(\Delta+\nobreak 1)$ to $\Delta+\nobreak 1$. This way we can construct a proper \Dpocol{} $g'_j$ of $G'_j$ in time $O(\Delta)$.
 
-\subsection{Analysis}
-
 After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$; the total running time is $O(\Delta^2)$, as each phase takes $O(\Delta)$ communication rounds.
+
+
+\subsection{Summary}
+
+In this section, we have seen how to find a proper vertex colouring with $\Delta+1$ colours in $O(\Delta^2 + \log^* x)$ communication round in the $\LOCAL$ model, for any graph of maximum degree $\Delta$. In the exercises, we will see that efficient algorithms for vertex colouring can be used as subroutines to solve many other problems.
 
 
 \section{Exercises}
@@ -425,7 +419,7 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
         \item Edge colouring with $O(\Delta)$ colours.
     \end{subex}
     
-    \hint{You can either use algorithm $\algo{Colour}$ as a subroutine, or you can modify the basic idea of $\algo{Colour}$ slightly to solve these problems.}
+    \hint{You can either use algorithm $\algo{BDColour}$ as a subroutine, or you can modify the basic idea of $\algo{BDColour}$ slightly to solve these problems.}
 \end{ex}
 
 \begin{ex}[vertex cover]
@@ -537,4 +531,4 @@ After $\Delta$ phases, we have eventually constructed colouring $g = g'_\Delta$;
 
 \section{Bibliographic Notes}
 
-The model of computing is from Linial's~\cite{linial92locality} seminal paper, and the name $\LOCAL$ is from Peleg's~\cite{peleg00distributed} book. Algorithm $\algo{DPBit}$ is based on the idea originally introduced by Cole and Vishkin~\cite{cole86deterministic} and further refined by Goldberg et al.~\cite{goldberg88parallel}. The idea of algorithm $\algo{DPSet}$ is from Naor and Stockmeyer~\cite{naor95what}. Algorithm $\algo{Colour}$ is from Goldberg et al.~\cite{goldberg88parallel} and Panconesi and Rizzi~\cite{panconesi01some}. The algorithm of Exercise~\ref{ex:greedy-domset} is from Friedman and Kogan~\cite{friedman11deterministic}.
+The model of computing is from Linial's~\cite{linial92locality} seminal paper, and the name $\LOCAL$ is from Peleg's~\cite{peleg00distributed} book. Algorithm $\algo{DPBit}$ is based on the idea originally introduced by Cole and Vishkin~\cite{cole86deterministic} and further refined by Goldberg et al.~\cite{goldberg88parallel}. The idea of algorithm $\algo{DPSet}$ is from Naor and Stockmeyer~\cite{naor95what}. Algorithm $\algo{BDColour}$ is from Goldberg et al.~\cite{goldberg88parallel} and Panconesi and Rizzi~\cite{panconesi01some}. The algorithm of Exercise~\ref{ex:greedy-domset} is from Friedman and Kogan~\cite{friedman11deterministic}.

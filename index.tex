@@ -73,18 +73,19 @@ These conventions are usually followed in the choice of symbols.
 
 \usection{Algorithms}
 
+{\raggedright
 \begin{algorithms}
-    \item[$\algo{P3C}$] Deterministic algorithm for $3$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Sections \ref{sec:algo-p3c} and \ref{sec:algo-p3c-formal}.
-    \item[$\algo{P3CBit}$] Deterministic algorithm for $3$-colouring a directed path. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:algo-p3cbit}.
-    \item[$\algo{P3CRand}$] Randomised algorithm for $3$-colouring a path. Runs in $O(\log n)$ rounds with high probability. Section~\ref{sec:algo-p3crand}.
-    \item[$\algo{P2C}$] Deterministic algorithm for $2$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Section~\ref{ssec:algo-p2c}.
-    \item[$\algo{BMM}$] Deterministic algorithm for finding a maximal matching in $2$-coloured graphs. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:bmm}.
-    \item[$\algo{VC3}$] Deterministic algorithm for finding a \Apx{3} of minimum vertex cover. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:vc3}.
-    \item[$\algo{Gather}$] Deterministic algorithm for gathering information on the communication network. Runs in $O(\diam(G))$ rounds in the $\LOCAL$ model. Section~\ref{sec:gather}.
+    \item[$\algo{P3C}$] $3$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Sections \ref{sec:algo-p3c} and \ref{sec:algo-p3c-formal}.
+    \item[$\algo{P3CBit}$] $3$-colouring a directed path. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:algo-p3cbit}.
+    \item[$\algo{P3CRand}$] $3$-colouring a path. Randomised algorithm, runs in $O(\log n)$ rounds with high probability. Section~\ref{sec:algo-p3crand}.
+    \item[$\algo{P2C}$] $2$-colouring a path. Runs in $O(n)$ rounds in the $\LOCAL$ model. Section~\ref{ssec:algo-p2c}.
+    \item[$\algo{BMM}$] Maximal matching in $2$-coloured graphs. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:bmm}.
+    \item[$\algo{VC3}$] \Apx{3} of a minimum vertex cover. Runs in $O(\Delta)$ rounds in the $\PN$ model. Section~\ref{sec:vc3}.
+    \item[$\algo{Gather}$] Gathering the full information on the communication network. Runs in $O(\diam(G))$ rounds in the $\LOCAL$ model. Section~\ref{sec:gather}.
     \item[$\algo{BDGreedy}$] Greedy colour reduction in bounded-degree graphs. Section~\ref{sec:bdgreedy}.
     \item[$\algo{DPGreedy}$] Greedy colour reduction in directed pseudoforests. Section~\ref{sec:dpgreedy}.
     \item[$\algo{DPBit}$] Fast colour reduction in directed pseudoforests. Section~\ref{sec:dpbit}.
     \item[$\algo{DPSet}$] Fast colour reduction in directed pseudoforests. Exercise~\ref{ex:dpset}.
-    \item[$\algo{DP3C}$] Deterministic algorithm for $3$-colouring a directed pseudoforest. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:dp3c}.
-    \item[$\algo{BDColour}$] Deterministic algorithm for $(\Delta+1)$-colouring graphs of maximum degree $\Delta$. Runs in $O(\Delta^2 + \log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:bdcolour}.
-\end{algorithms}
+    \item[$\algo{DP3C}$] $3$-colouring a directed pseudoforest. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:dp3c}.
+    \item[$\algo{BDColour}$] $(\Delta+1)$-colouring graphs of maximum degree $\Delta$. Runs in $O(\Delta^2 + \log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:bdcolour}.
+\end{algorithms}}

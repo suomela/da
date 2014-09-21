@@ -115,7 +115,7 @@ To make the idea more clear, we will give some more detailed examples.
 \end{enumerate}
 
 
-\section{Distributed Algorithms in the Port-Numbering Model}\label{sec:distr-alg}
+\section[Distributed Algorithms in the \tPN{} model]{Distributed Algorithms in the Port-Numbering Model}\label{sec:distr-alg}
 
 We will now give a formal definition of a distributed algorithm in the port-numbering model. In essence, a distributed algorithm is a state machine (not necessarily a finite-state machine). To run the algorithm on a certain port-numbered network, we put a copy of the same state machine at each node of the network.
 
@@ -249,7 +249,7 @@ We will not usually present distributed algorithms in the low-level state-machin
 In the next two sections we will give some non-trivial examples of $\PN$-algorithms. We will give informal descriptions of the algorithms; in the exercises we will see how to translate these algorithms into the state machine formalism.
 
 
-\section{Example: Maximal Matching in Two-Coloured Graphs}\label{sec:bmm}
+\section[Example: Bipartite Maximal Matching]{Example: Maximal Matching in Two-Coloured Graphs}\label{sec:bmm}
 
 In this section we present a distributed algorithm $\algo{BMM}$ that finds a maximal matching in a $2$-coloured graph. That is, $\calF$ is the family of bipartite graphs, we are given a $2$-colouring $f\colon V \to \{1,2\}$, and the algorithm will output an encoding of a maximal matching $M \subseteq E$.
 

@@ -89,7 +89,7 @@ Hence our focus shifts from computability to computational complexity. While it 
 In the rest of this chapter, we will design an efficient distributed algorithm that finds a graph colouring in the $\LOCAL$ model. The algorithm will find a proper vertex colouring with $\Delta+1$ colours in $O(\Delta^2 + \log^* |V|)$ communication round, for any graph of maximum degree $\Delta$. We will first present some simpler algorithms that will be used as subroutines\mydash many of these are generalisations and variants of algorithms $\algo{P3C}$ and $\algo{P3CBit}$ that we saw in Chapter~\ref{ch:intro-pos}.
 
 
-\section{Algorithm \talgo{BDGreedy}: Colour Reduction in Bounded-Degree Graphs}\label{sec:bdgreedy}
+\longsection{Algorithm \talgo{BDGreedy}}{Colour Reduction in Bounded-Degree Graphs}\label{sec:bdgreedy}
 
 Let $x \in \NN$. We present an algorithm called ``$\algo{BDGreedy}$'' that reduces the number of colours from $x$ to
 \[
@@ -190,8 +190,7 @@ We make the following observations:
 If $(u,v) \in E$, we say that $v$ is a \emph{successor} of $u$ and $u$ is a \emph{predecessor} of~$v$. By definition, in a directed pseudoforest each node has at most one successor.
 
 
-
-\section{Algorithm \talgo{DPGreedy}: Colour Reduction in Directed Pseudoforests}\label{sec:dpgreedy}
+\longsection{Algorithm \talgo{DPGreedy}}{Colour Reduction in Directed Pseudoforests}\label{sec:dpgreedy}
 
 Let $G = (V,E)$ be a directed pseudoforest, and let $f$ be a proper vertex colouring of $G$ with $x$ colours, for some $x \ge 4$. We design a distributed algorithm $\algo{DPGreedy}$ that reduces the number of colours from $x$ to $x-1$ in two communication rounds.
 
@@ -263,7 +262,7 @@ Now let us consider what happens when we apply algorithm $\algo{BDGreedy}$ to co
 We conclude that we have designed algorithm $\algo{DPGreedy}$ that reduces the number of colours from $x \ge 4$ to $x-1$ in directed pseudoforests in $2$ communication rounds. In particular, we can reduce the number of colours from any number $x \ge 3$ to $3$ in ${2(x-3)}$ rounds.
 
 
-\section{Algorithm \talgo{DPBit}: Fast Colour Reduction in Directed Pseudoforests}\label{sec:dpbit}
+\longsection{Algorithm \talgo{DPBit}}{Fast Colour Reduction in Directed Pseudoforests}\label{sec:dpbit}
 
 So far we have only seen algorithms that reduce the number of colours by one in each iteration. In this section we will present an algorithm that is \emph{much} faster. We present algorithm $\algo{DPBit}$ that reduces the number of colours from $2^x$ to $2x$ in one communication round, in any directed pseudoforest. We will assume that $x \ge 1$ is a known constant. In essence, this is the same algorithm as $\algo{P3CBit}$ from Section~\ref{sec:algo-p3cbit}\mydash fast colour reduction in directed pseudoforests is almost as easy as fast colour reduction in directed paths.
 
@@ -319,7 +318,7 @@ Note that if we have $g(u) = g(v)$ for two nodes $u$ and $v$, this implies $b(u)
 In summary, we have designed algorithm $\algo{DPBit}$ that reduces the number of colours from $2^x$ to $2x$ in one communication round\mydash given a $2^x$-colouring $f$, the algorithm outputs a $2x$-colouring $g$.
 
 
-\section{Algorithm \talgo{DP3C}: Fast 3-Colouring in Directed Pseudoforests}\label{sec:dp3c}
+\longsection{Algorithm \talgo{DP3C}}{Fast 3-Colouring in Directed Pseudoforests}\label{sec:dp3c}
 
 Assume that we know $|V|$. We will design algorithm $\algo{DP3C}$ that finds a $3$-colouring in $O(\log^* |V|)$ rounds in any directed pseudoforest. The algorithm proceeds as follows:
 \begin{enumerate}
@@ -330,7 +329,7 @@ Assume that we know $|V|$. We will design algorithm $\algo{DP3C}$ that finds a $
 The analysis is, in essence, identical to what we already did in Exercise~\ref{ex:logstar}.
 
 
-\section{Algorithm \talgo{BDColour}: Fast Colouring in Bounded-Degree Graphs}\label{sec:bdcolour}
+\longsection{Algorithm \talgo{BDColour}}{Fast Colouring in Bounded-Degree Graphs}\label{sec:bdcolour}
 
 Now we will turn our attention to bounded-degree graphs. Assume that we know $|V|$ and $\Delta$. We will now design a distributed algorithm $\algo{BDColour}$ that finds a $(\Delta+1)$-colouring in any graph of maximum degree at most $\Delta$ in $O(\Delta^2 + \log^* |V|)$ rounds.
 

@@ -91,7 +91,7 @@ In the rest of this chapter, we will design an efficient distributed algorithm t
 
 \longsection{Algorithm \talgo{BDGreedy}}{Colour Reduction in Bounded-Degree Graphs}\label{sec:bdgreedy}
 
-Let $x \in \NN$. We present an algorithm called ``$\algo{BDGreedy}$'' that reduces the number of colours from $x$ to
+Let $x \in \NN$. We present an algorithm called $\algo{BDGreedy}$ that reduces the number of colours from $x$ to
 \[
     y = \max \{ x-1, \Delta+1 \},
 \]
@@ -162,7 +162,7 @@ Informally, a node whose colour is a local maximum re-colours itself with the fi
     $g(v) = f(v) \in C(u)$; we have $g(u) \ne g(v)$.
 \end{proof}
 
-A key observation in understanding the algorithm is that the set of active nodes forms an independent set. Therefore all active nodes can pick their new colours simultaneously in parallel, without any risk of choosing colours that might conflict with each other.
+The key observation is that the set of active nodes forms an independent set. Therefore all active nodes can pick their new colours simultaneously in parallel, without any risk of choosing colours that might conflict with each other.
 
 \subsection{Remarks}
 
@@ -171,7 +171,7 @@ Algorithm $\algo{BDGreedy}$ does not need to know the number of colours $x$ or t
 
 \section{Directed Pseudoforests}
 
-We will next study graph colouring in so-called directed pseudoforests. Once we have solved the special case, we turn our attention to the more general case of bounded-degree graphs.
+We will next study graph colouring in so-called directed pseudoforests. As we will see later, algorithms that colour directed pseudoforests can be used as subroutines in algorithms that colour bounded-degree graphs.
 
 A \emph{directed pseudoforest} is a directed graph $G = (V,E)$ such that each node $v \in V$ has $\outdegree_G(v) \le 1$; see Figure~\ref{fig:dp} for an example.
 
@@ -181,7 +181,7 @@ A \emph{directed pseudoforest} is a directed graph $G = (V,E)$ such that each no
     \caption{A directed pseudoforest with a colouring~$f$.}\label{fig:dp}
 \end{figure}
 
-We make the following observations:
+Compare the definition of a directed pseudoforest with the definition of a \emph{pseudoforest} in Section~\ref{ssec:graphs-conn}. We make the following observations:
 \begin{enumerate}
     \item Let $H$ be an undirected graph, and let $G$ be an orientation of $H$. If $G$ is a directed pseudoforest, then $H$ is a pseudoforest.
     \item Let $H$ be a pseudoforest. There exists an orientation $G$ of $H$ such that $G$ is a directed pseudoforest.
@@ -238,9 +238,7 @@ We will first prove that the values $s(v)$ form a proper $x$-colouring of~$G$. M
     Function $s$ is an $x$-colouring of $G$.
 \end{lemma}
 \begin{proof}
-    By construction, we have $s(v) \in \{1,2,\dotsc,x\}$.
-    
-    Now let $(u,v) \in E$. We need to show that $s(u) \ne s(v)$. To see this, observe that $v$ is a successor of $u$. Hence
+    By construction, we have $s(v) \in \{1,2,\dotsc,x\}$. Now let $(u,v) \in E$. We need to show that $s(u) \ne s(v)$. To see this, observe that $v$ is a successor of $u$. Hence
     \[
         s(u) = f(v) \ne s(v). \qedhere
     \]
@@ -360,7 +358,7 @@ For each $i = 1,2,\dotsc,\Delta$, we construct a subgraph $G_i = (V,E_i)$ of $G'
     
 Observe that the sets $E_1, E_2, \dotsc, E_\Delta$ form a partition of $E'$: for each directed edge $e \in E'$ there is precisely one $i$ such that $e \in E_i$. Also note that for each node $u \in V$ and for each index $i$ there is at most one neighbour $v$ such that $(u,v) \in E_i$. It follows that the outdegree of any node $v$ in $G_i = (V,E_i)$ is at most one, and therefore $G_i$ is a \emph{directed pseudoforest}.
     
-In the distributed algorithm, each node only needs to know which of its incident edges are in which subset $E_i$. This step requires zero communication rounds.
+Each node only needs to know which of its incident edges are in which subset $E_i$. This step requires zero communication rounds.
 
 \subsection{Parallel Colouring of Pseudoforests}
 

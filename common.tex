@@ -136,17 +136,20 @@
 \newcommand{\NNpos}{\mathbb{Z}^+}
 \newcommand{\RR}{\mathbb{R}}
 
-\newcommand{\algo}[1]{\textsf{#1}}
-\newcommand{\state}[1]{\textsf{#1}}
+\newcommand{\mysf}[1]{\textup{\sffamily #1}}
+\newcommand{\tmysf}[1]{\texorpdfstring{\mysf{#1}}{#1}}
+
+\newcommand{\algo}[1]{\mysf{#1}}
+\newcommand{\state}[1]{\mysf{#1}}
 \newcommand{\msg}[1]{`\emph{#1}'}
 \newcommand{\bin}[1]{\langle #1 \rangle}
 
-\newcommand{\tmodel}[1]{\texorpdfstring{{\sffamily #1}}{#1}}
-\newcommand{\talgo}[1]{\texorpdfstring{{\normalfont\sffamily #1}}{#1}}
+\newcommand{\tmodel}{\tmysf}
+\newcommand{\talgo}{\tmysf}
 
-\newcommand{\PN}{\textsf{PN}}
-\newcommand{\LOCAL}{\textsf{LOCAL}}
-\newcommand{\CONGEST}{\textsf{CONGEST}}
+\newcommand{\PN}{\mysf{PN}}
+\newcommand{\LOCAL}{\mysf{LOCAL}}
+\newcommand{\CONGEST}{\mysf{CONGEST}}
 \newcommand{\tPN}{\tmodel{PN}}
 \newcommand{\tLOCAL}{\tmodel{LOCAL}}
 \newcommand{\tCONGEST}{\tmodel{CONGEST}}

@@ -4,20 +4,45 @@ FIXME: $\CONGEST$ model
 
 \section{Exercises}
 
-\begin{ex}[counting]
-    The \emph{counting problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if $g(v) = |V|$ for all $v \in V$. That is, in the counting problem each node has to output the value $|V|$, i.e., it has to indicate how many nodes there are in the network.
-
-    Design an algorithm that solves the counting problem on cycle graphs in the $\CONGEST$ model in time $O(|V|)$. Present the algorithm in a formally precise manner, using the definitions of Sections \ref{sec:pnn} and \ref{sec:distr-alg}.
+\begin{ex}[prior algorithms]
+    In Chapters \ref{ch:pn} and \ref{ch:local} we have seen examples of algorithms that were designed for the $\PN$ and $\LOCAL$ models. Many of these algorithms use only small messages\mydash they can be used directly in the $\CONGEST$ model. Give at least three examples of such algorithms.
 \end{ex}
 
-\begin{ex}[leader election]
-    The \emph{leader election problem} $\Pi$ is defined as follows: if $N = (V,P,p)$ is a port-numbered network, then $g \in \Pi(N)$ if and only if there is precisely one node $u \in V$ such that
-    \[
-        g(v) = \begin{cases}
-            1 & \text{if $v = u$}, \\
-            0 & \text{otherwise}.
-        \end{cases}
-    \]
-    Design an algorithm that solves the leader election problem on connected graphs in the $\CONGEST$ model in time $O(|V|)$.
+\begin{ex}[edge counting]
+    The \emph{edge counting} problem is defined as follows: each node has to output the value $|E|$, i.e., it has to indicate how many edges there are in the graph.
+
+    Assume that the input graph is connected. Design an algorithm that solves the edge counting problem in the $\CONGEST$ model in time $O(\diam(G))$.
 \end{ex}
 
+\begin{ex}[detecting bipartite graphs]
+    Assume that the input graph is connected. Design an algorithm that solves the following problem in the $\CONGEST$ model in time $O(\diam(G))$:
+    \begin{itemize}[noitemsep]
+        \item If the input graph is bipartite, all nodes output $1$.
+        \item Otherwise all nodes outputs $0$.
+    \end{itemize}
+\end{ex}
+
+\begin{ex}[detecting complete graphs]
+    We say that a graph $G = (V,E)$ is \emph{complete} if for all nodes $u, v \in V$, $u \ne v$, there is an edge $\{u,v\} \in E$.
+
+    Assume that the input graph is connected. Design an algorithm that solves the following problem in the $\CONGEST$ model in time $O(1)$:
+    \begin{itemize}[noitemsep]
+        \item If the input graph is a complete graph, all nodes output $1$.
+        \item Otherwise all nodes output $0$.
+    \end{itemize}
+\end{ex}
+
+\begin{ex}[gathering]
+    Assume that the input graph is connected. In Section~\ref{sec:gather} we saw how to gather full information on the input graph in time $O(\diam(G))$ in the $\LOCAL$ model. Design an algorithm that solves the problem in time $O(|E|)$ in the $\CONGEST$ model.
+\end{ex}
+
+\begin{exs}[lower bounds]
+    Prove that there is no algorithm that gathers full information on the input graph in time $O(\diam(G))$ in the $\CONGEST$ model.
+
+    \hint{To reach a contradiction, assume that $A$ is an algorithm that solves the problem. Fix a diameter $d$, e.g., $d = 4$. Let $T$ be the running time of algorithm~$A$ in graphs of diameter~$d$. Consider the family $\calF$ of graphs with the following properties: there is a node $v$ with unique identifier $1$, the degree of node $v$ is $1$, and the diameter of the graph is $d$. Then compare the following two quantities:
+    \begin{enumerate}
+        \item How many different graphs there are in family $\calF$.
+        \item How many different message sequences node $v$ may receive during the execution of algorithm~$A$.
+    \end{enumerate}
+    Then argue that there are at least two different graphs $G_1, G_2 \in \calF$ such that node $v$ receives the same information when we run $A$ in either of these graphs.}
+\end{exs}

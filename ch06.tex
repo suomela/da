@@ -1,10 +1,59 @@
 %!TEX root = da-dev.tex
 
-FIXME: $\CONGEST$ model
+In the previous chapter, we learned about the $\LOCAL$ model. We saw that with the help of unique identifiers, it is possible to gather the full information on a connected input graph in $O(\diam(G))$ rounds. To achieve this, we heavily abused the fact that we can send arbitrarily large messages. In this chapter we will see what can be done if we are only allowed to send small messages. With this restriction, we arrive at a model that is commonly known as the ``$\CONGEST$ model''.
+
+
+\section{Definitions}\label{sec:unique-id}
+
+Let $A$ be a distributed algorithm that solves a problem $\Pi$ on graph family $\calF$ in the $\LOCAL$ model. Assume that $\Msg_A$ is a countable set; without loss of generality, we can then assume that
+\[
+    \Msg_A = \NN,
+\]
+that is, the messages are encoded as natural numbers. Now we say that $A$ solves problem $\Pi$ on graph family $\calF$ in the $\CONGEST$ model if the following holds for some constant $C$: for any graph $G = (V,E) \in \calF$, algorithm $A$ only sends messages from set $\{0, 1, \dotsc, |V|^C\}$.
+
+Put otherwise, we have the following \emph{bandwidth restriction}: in each communication round, along each edge, we can only send $O(\log n)$-bit messages, where $n$ is the total number of nodes.
+
+
+\section{Examples}
+
+Assume that we have an algorithm $A$ that was designed for the $\LOCAL$ model. Moreover, assume that during the execution of $A$ on a graph $G = (V,E)$, we only needs to send the following pieces of information along each edge:
+\begin{itemize}[noitemsep]
+    \item $O(1)$ node identifiers.
+    \item $O(1)$ edges, encoded as a pair of node identifiers.
+    \item $O(1)$ counters that take values from $0$ to $\diam(G)$.
+    \item $O(1)$ counters that take values from $0$ to $|V|$.
+    \item $O(1)$ counters that take values from $0$ to $|E|$.
+\end{itemize}
+Now it is easy to see that we can encode all of this as a binary string with $O(\log n)$ bits. Hence $A$ is not just an algorithm for the $\LOCAL$ model, but it is also an algorithm for the $\CONGEST$ model.
+
+Many algorithms that we have encountered in this book so far are also $\CONGEST$ algorithms; we did not need to abuse large messages (see Exercise~\ref{ex:congest-prior}). However, there is a notable exception: algorithm $\algo{Gather}$ from Section~\ref{sec:gather}. In this algorithm, we may need to send up to $\Theta(n^2)$ bits of information along an edge:
+\begin{itemize}
+    \item To encode the set of nodes, we may need up to $\Theta(n \log n)$ bits. For example, we can encode it as a list of $n$ identifiers, each of which is $\Theta(\log n)$ bits long.
+    \item To encode the set of edges, we may need up to $\Theta(n^2)$ bits. For example, we can give the adjacency matrix.
+\end{itemize}
+Of course we can write an algorithm that sends arbitrarily long bit strings in the $\CONGEST$ model, too, but this will take several communication rounds.
+
+While algorithms with a running time of $O(\diam(G))$ or $O(n)$ are trivial in the $\LOCAL$ model, this is no longer the case in the $\CONGEST$ model. Indeed, there graph problems that \emph{cannot} be solved in time $O(n)$ in the $\CONGEST$ model.
+
+In this chapter, we will learn techniques that can be used to design efficient algorithms in the $\CONGEST$ model. We will use the all-pairs shortest path problem as a running example.
+
+
+\section{All-Pairs Shortest Paths}
+
+Throughout this chapter, we will assume that the input graph $G = (V,E)$ is connected. In the \emph{all-pairs shortest path} problem (APSP in brief), the goal is to find the distances between all pairs of nodes. More precisely, the local output of node $v \in V$ is
+\[
+    f(v) = \bigl\{ (u, d) : u \in V,\ d = dist_G(v, u) \bigr\}.
+\]
+That is, $v$ has to know the identities of all other nodes, as well as the shortest-path distance between itself and all other nodes.
+
+Note that just to represent $f(v)$ we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, it is possible to prove that any algorithm that solves the APSP problem in the $\CONGEST$ will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
+
+In this chapter, we will present an optimal distributed algorithm for the APSP problem: it solves the problem in any connected graph in $O(n)$ rounds.
+
 
 \section{Exercises}
 
-\begin{ex}[prior algorithms]
+\begin{ex}[prior algorithms]\label{ex:congest-prior}
     In Chapters \ref{ch:pn} and \ref{ch:local} we have seen examples of algorithms that were designed for the $\PN$ and $\LOCAL$ models. Many of these algorithms use only small messages\mydash they can be used directly in the $\CONGEST$ model. Give at least three examples of such algorithms.
 \end{ex}
 
@@ -36,13 +85,22 @@ FIXME: $\CONGEST$ model
     Assume that the input graph is connected. In Section~\ref{sec:gather} we saw how to gather full information on the input graph in time $O(\diam(G))$ in the $\LOCAL$ model. Design an algorithm that solves the problem in time $O(|E|)$ in the $\CONGEST$ model.
 \end{ex}
 
-\begin{exs}[lower bounds]
-    Prove that there is no algorithm that gathers full information on the input graph in time $O(\diam(G))$ in the $\CONGEST$ model.
+\begin{exs}[gathering lower bounds]\label{ex:congest-gather-lb}
+    Assume that the input graph is connected. Prove that there is no algorithm that gathers full information on the input graph in time $O(|V|)$ in the $\CONGEST$ model.
 
-    \hint{To reach a contradiction, assume that $A$ is an algorithm that solves the problem. Fix a diameter $d$, e.g., $d = 4$. Let $T$ be the running time of algorithm~$A$ in graphs of diameter~$d$. Consider the family $\calF$ of graphs with the following properties: there is a node $v$ with unique identifier $1$, the degree of node $v$ is $1$, and the diameter of the graph is $d$. Then compare the following two quantities:
+    \hint{To reach a contradiction, assume that $A$ is an algorithm that solves the problem. For each $n$, let $\calF(n)$ consists of all graphs with the following properties: there are $n$ nodes with unique identifiers $1,2,\dotsc,n$, the graph is connected, and the degree of node $1$ is $1$. Then compare the following two quantities as a function of~$n$:
     \begin{enumerate}
-        \item How many different graphs there are in family $\calF$.
-        \item How many different message sequences node $v$ may receive during the execution of algorithm~$A$.
+        \item $f(n) = {}$how many different graphs there are in family $\calF(n)$.
+        \item $g(n) = {}$how many different message sequences node number $1$ may receive during the execution of algorithm~$A$ if we run it on any graph $G \in \calF(n)$.
     \end{enumerate}
-    Then argue that there are at least two different graphs $G_1, G_2 \in \calF$ such that node $v$ receives the same information when we run $A$ in either of these graphs.}
+    Argue that for a sufficiently large $n$, we will have $f(n) > g(n)$. Then there are at least two different graphs $G_1, G_2 \in \calF(n)$ such that node $1$ receives the same information when we run $A$ on either of these graphs.}
 \end{exs}
+
+\begin{exs}[APSP lower bounds]\label{ex:apsp-lb}
+    Assume that the input graph is connected. Prove that there is no algorithm that solves the APSP problem in time $o(|V|)$ in the $\CONGEST$ model.
+\end{exs}
+
+
+\section{Bibliographic Notes}
+
+The name $\CONGEST$ is from Peleg's~\cite{peleg00distributed} book. Algorithm $\algo{APSP}$ is due to Holzer and Wattenhofer \cite{holzer12apsp}\mydash surprisingly, it was published only as recently as in 2012.

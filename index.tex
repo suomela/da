@@ -45,6 +45,7 @@ These conventions are usually followed in the choice of symbols.
     \item[$N$] port-numbered network, $N = (V,P,p)$
     \item[$P$] set of ports
     \item[$T$] running time (number of rounds)
+    \item[$T$] tree
     \item[$U$] subset of nodes
     \item[$V$] set of nodes
     \item[$c,C,d$] natural number
@@ -88,4 +89,8 @@ These conventions are usually followed in the choice of symbols.
     \item[$\algo{DPSet}$] Fast colour reduction in directed pseudoforests. Exercise~\ref{ex:dpset}.
     \item[$\algo{DP3C}$] $3$-colouring a directed pseudoforest. Runs in $O(\log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:dp3c}.
     \item[$\algo{BDColour}$] $(\Delta+1)$-colouring graphs of maximum degree $\Delta$. Runs in $O(\Delta^2 + \log^* n)$ rounds in the $\LOCAL$ model. Section~\ref{sec:bdcolour}.
+    \item[$\algo{Wave}$] Single-source shortest paths. Runs in $O(\diam(G))$ rounds in the $\CONGEST$ model. Section~\ref{sec:wave}.
+    \item[$\algo{BFS}$] Breadth-first search tree. Runs in $O(\diam(G))$ rounds in the $\CONGEST$ model. Section~\ref{sec:bfs}.
+    \item[$\algo{Leader}$] Leader election. Runs in $O(\diam(G))$ rounds in the $\CONGEST$ model. Section~\ref{sec:leader}.
+    \item[$\algo{APSP}$] All-pairs shortest paths. Runs in $O(n)$ rounds in the $\CONGEST$ model. Section~\ref{sec:apsp}.
 \end{algorithms}}

@@ -26,16 +26,15 @@ Assume that we have an algorithm $A$ that is designed for the $\LOCAL$ model. Mo
 \end{itemize}
 Now it is easy to see that we can encode all of this as a binary string with $O(\log n)$ bits. Hence $A$ is not just an algorithm for the $\LOCAL$ model, but it is also an algorithm for the $\CONGEST$ model.
 
-Many algorithms that we have encountered in this book so far are also $\CONGEST$ algorithms; we did not need to abuse large messages (see Exercise~\ref{ex:congest-prior}). However, there is a notable exception: algorithm $\algo{Gather}$ from Section~\ref{sec:gather}. In this algorithm, we may need to send up to $\Theta(n^2)$ bits of information along an edge:
+Many algorithms that we have encountered in this book so far are of the above form, and hence they are also $\CONGEST$ algorithms (see Exercise~\ref{ex:congest-prior}). However, there is a notable exception: algorithm $\algo{Gather}$ from Section~\ref{sec:gather}. In this algorithm, we need to send messages of size up to $\Theta(n^2)$ bits:
 \begin{itemize}
-    \item To encode the set of nodes, we may need up to $\Theta(n \log n)$ bits. For example, we can encode it as a list of $n$ identifiers, each of which is $\Theta(\log n)$ bits long.
-    \item To encode the set of edges, we may need up to $\Theta(n^2)$ bits. For example, we can give the adjacency matrix.
+    \item To encode the set of nodes, we may need up to $\Theta(n \log n)$ bits (a list of $n$ identifiers, each of which is $\Theta(\log n)$ bits long).
+    \item To encode the set of edges, we may need up to $\Theta(n^2)$ bits (the adjacency matrix).
 \end{itemize}
-Of course we can write an algorithm that sends arbitrarily long bit strings in the $\CONGEST$ model, too, but this will take several communication rounds.
 
-While algorithms with a running time of $O(\diam(G))$ or $O(n)$ are trivial in the $\LOCAL$ model, this is no longer the case in the $\CONGEST$ model. Indeed, there graph problems that \emph{cannot} be solved in time $O(n)$ in the $\CONGEST$ model.
+While algorithms with a running time of $O(\diam(G))$ or $O(n)$ are trivial in the $\LOCAL$ model, this is no longer the case in the $\CONGEST$ model. Indeed, there graph problems that \emph{cannot} be solved in time $O(n)$ in the $\CONGEST$ model (see Exercise~\ref{ex:congest-gather-lb}).
 
-In this chapter, we will learn techniques that can be used to design efficient algorithms in the $\CONGEST$ model. We will use the all-pairs shortest path problem as a running example.
+In this chapter, we will learn techniques that can be used to design efficient algorithms in the $\CONGEST$ model. We will use the all-pairs shortest path problem as the running example.
 
 
 \section{All-Pairs Shortest Path Problem}
@@ -46,20 +45,22 @@ Throughout this chapter, we will assume that the input graph $G = (V,E)$ is conn
 \]
 That is, $v$ has to know the identities of all other nodes, as well as the shortest-path distance between itself and all other nodes.
 
-Note that just to represent $f(v)$ we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, it is possible to prove that any algorithm that solves the APSP problem in the $\CONGEST$ will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
+Note that to represent the local output $f(v)$ we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, we can prove that any algorithm that solves the APSP problem in the $\CONGEST$ model will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
 
-In this chapter, we will present an optimal distributed algorithm for the APSP problem: it solves the problem in any connected graph in $O(n)$ rounds.
+In this chapter, we will present an optimal distributed algorithm for the APSP problem: it solves the problem in $O(n)$ rounds in the $\CONGEST$ model.
 
 \newcommand{\BFS}{\algo{BFS}}
 \newcommand{\Wave}{\algo{Wave}}
 
 \longsection{Algorithm \talgo{Wave}}{Single-Source Shortest Paths}\label{sec:wave}
 
-As a warm-up, we will start with a much simpler problem. Assume that we have elected a leader $s \in V$, that is, we have an input in which precisely one node, $s$, is labelled with $1$ and all other nodes are labelled with $0$. We will design an algorithm such that each node $v \in V$ outputs
+As a warm-up, we will start with a much simpler problem. Assume that we have elected a leader $s \in V$, that is, there is precisely one node $s$ with input $1$ and all other nodes have input $0$. We will design an algorithm such that each node $v \in V$ outputs
 \[
     f(v) = \dist_G(s,v),
 \]
-that is, its shortest-path distance to leader $s$. This is very simple. Initially, each node is in state $\bot$. In the first round, the leader will send message \msg{wave} to all neighbours and switch to state $0$ and stop. In round $i$, each node $v$ proceeds as follows: if $v$ has not stopped, and if it receives message \msg{wave} from some ports, it will send message \msg{wave} to all other ports, and then switch to state $i$ and stop. See Figure~\ref{fig:wave}.
+i.e., its shortest-path distance to leader $s$.
+
+The algorithm proceeds as follows. In the first round, the leader will send message \msg{wave} to all neighbours, switch to state $0$, and stop. In round $i$, each node $v$ proceeds as follows: if $v$ has not stopped, and if it receives message \msg{wave} from some ports, it will send message \msg{wave} to all other ports, switch to state $i$, and stop; otherwise it does nothing. See Figure~\ref{fig:wave}.
 
 \begin{figure}
     \centering
@@ -72,7 +73,7 @@ The analysis of the algorithm is simple. By induction, all nodes at distance $i$
 
 \longsection{Algorithm \talgo{BFS}}{Breadth-First Search Tree}\label{sec:bfs}
 
-Algorithm $\Wave$ finds the shortest-path distances from a single source $s$. Now we will do something slightly more demanding: calculate not just distances but also a tree that represents all shortest paths.
+Algorithm $\Wave$ finds the shortest-path distances from a single source $s$. Now we will do something slightly more demanding: calculate not just distances but also the shortest paths.
 
 More precisely, our goal is to construct a \emph{breadth-first search tree} (BFS tree) $T$ rooted at $s$. This is a spanning subgraph $T = (V,E')$ of $G$ such that $T$ is a tree, and for each node $v \in V$, the shortest path from $s$ to $v$ in tree $T$ is also a shortest path from $s$ to $v$ in graph $G$. We will also label each node $v \in V$ with a \emph{distance label} $d(v)$, so that for each node $v \in V$ we have
 \[
@@ -90,18 +91,18 @@ There is a simple centralised algorithm that constructs the BFS tree and distanc
 
 We can implement the same idea as a distributed algorithm in the CONGEST model. We will call this algorithm $\BFS$. In the algorithm, each node $v$ maintains the following variables:
 \begin{itemize}
-    \item $d(v)$: when the algorithm finishes, $d(v)$ will be the distance label of node $v$.
+    \item $d(v)$: distance to the root.
     \item $p(v)$: pointer to the parent of node $v$ in tree $T$ (port number).
     \item $C(v)$: the set of children of node $v$ in tree $T$ (port numbers).
-    \item $a(v)$: acknowledgement, set to $1$ when the subtree rooted at $v$ has been constructed.
+    \item $a(v)$: acknowledgement\mydash set to $1$ when the subtree rooted at $v$ has been constructed.
 \end{itemize}
 Here $a(v) = 1$ denotes a stopping state. When the algorithm stops, variables $d(v)$ will be distance labels, tree $T$ is encoded in variables $p(v)$ and $C(v)$, and all nodes will have $a(v) = 1$.
 
-Initially, we set $d(v) \gets \bot$, $p(v) \gets \bot$, $C(v) \gets \bot$, and $a(v) \gets 0$ for each node $v$, except for the root which has $d(s) = 0$. We will grow tree $T$ from $s$ with simple two-round iterations:
+Initially, we set $d(v) \gets \bot$, $p(v) \gets \bot$, $C(v) \gets \bot$, and $a(v) \gets 0$ for each node $v$, except for the root which has $d(s) = 0$. We will grow tree $T$ from $s$ by iterating the following steps:
 \begin{itemize}
     \item Each node $v$ with $d(v) \ne \bot$ and $C(v) = \bot$ will send a \emph{proposal} with value $d(v)$ to all neighbours.
-    \item If a node $u$ with $d(u) = \bot$ receives some proposals with value $j$, it will \emph{accept} one of them and \emph{reject} all other proposals. It will send $p(u)$ to point to the node whose proposal it accepted, and it will set $d(u) \gets j$.
-    \item Each node $v$ that sent some proposals will set $C(v)$ to contain all neighbours that accepted proposals.
+    \item If a node $u$ with $d(u) = \bot$ receives some proposals with value $j$, it will \emph{accept} one of them and \emph{reject} all other proposals. It will set $p(u)$ to point to the node whose proposal it accepted, and it will set $d(u) \gets j$.
+    \item Each node $v$ that sent some proposals will set $C(v)$ to be the set of neighbours that accepted proposals.
 \end{itemize}
 This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we will send acknowledgements back towards the root:
 \begin{itemize}

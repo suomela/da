@@ -101,7 +101,7 @@ Here $a(v) = 1$ denotes a stopping state. When the algorithm stops, variables $d
 Initially, we set $d(v) \gets \bot$, $p(v) \gets \bot$, $C(v) \gets \bot$, and $a(v) \gets 0$ for each node $v$, except for the root which has $d(s) = 0$. We will grow tree $T$ from $s$ by iterating the following steps:
 \begin{itemize}
     \item Each node $v$ with $d(v) \ne \bot$ and $C(v) = \bot$ will send a \emph{proposal} with value $d(v)$ to all neighbours.
-    \item If a node $u$ with $d(u) = \bot$ receives some proposals with value $j$, it will \emph{accept} one of them and \emph{reject} all other proposals. It will set $p(u)$ to point to the node whose proposal it accepted, and it will set $d(u) \gets j$.
+    \item If a node $u$ with $d(u) = \bot$ receives some proposals with value $j$, it will \emph{accept} one of them and \emph{reject} all other proposals. It will set $p(u)$ to point to the node whose proposal it accepted, and it will set $d(u) \gets j+1$.
     \item Each node $v$ that sent some proposals will set $C(v)$ to be the set of neighbours that accepted proposals.
 \end{itemize}
 This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we will send acknowledgements back towards the root:

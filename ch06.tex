@@ -112,24 +112,24 @@ This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we wil
 \end{itemize}
 It is straightforward to verify that the algorithm indeed works and it constructs a BFS tree with distance labels in $O(\diam(G))$ rounds in the $\CONGEST$ model.
 
-Note that the acknowledgements would not be strictly necessary in order to construct the tree. However, they will be very helpful in subsequent sections when we use algorithm $\BFS$ as a subroutine.
+Note that the acknowledgements would not be strictly necessary in order to construct the tree. However, they will be very helpful in the next section when we use algorithm $\BFS$ as a subroutine.
 
 
 \longsection{Algorithm \talgo{Leader}}{Leader Election}\label{sec:leader}
 
-Algorithm $\BFS$ constructs a BFS tree rooted at a single leader. Now we will show how to elect a leader. Surprisingly, we can use algorithm $\BFS$ here to \emph{elect} a leader, even if $\BFS$ \emph{assumes} that we have a leader!
+Algorithm $\BFS$ constructs a BFS tree rooted at a single leader, assuming that we have already elected a leader. Now we will show how to elect a leader. Surprisingly, we can use algorithm $\BFS$ to do it!
 
 We will design an algorithm $\algo{Leader}$ that finds the node with the smallest identifier; this node will be the leader. The basic idea is very simple:
 \begin{enumerate}
-    \item We modify algorithm $\BFS$ so that we can run multiple copies of it in parallel, with different root nodes. We augment messages with the identity of the root node, and each node keeps track of variables $d$, $p$, $C$, and $a$ separately for each possible root.
-    \item Then we pretend that all nodes are leaders and start running $\BFS$. In essence, we will run $n$ copies of $\BFS$ in parallel, and hence we will construct $n$ BFS trees, one rooted at each node. We will denote with $\BFS_v$ the $\BFS$ process rooted at node $v \in V$, and we will write $T_v$ for the output of this process.
+    \item We modify algorithm $\BFS$ so that we can run multiple copies of it in parallel, with different root nodes. We augment the messages with the identity of the root node, and each node keeps track of the variables $d$, $p$, $C$, and $a$ separately for each possible root.
+    \item Then we pretend that all nodes are leaders and start running $\BFS$. In essence, we will run $n$ copies of $\BFS$ in parallel, and hence we will construct $n$ BFS trees, one rooted at each node. We will denote by $\BFS_v$ the $\BFS$ process rooted at node $v \in V$, and we will write $T_v$ for the output of this process.
 \end{enumerate}
 However, there are two problems: First, it is not yet obvious how all this would help with leader election. Second, we cannot implement this idea directly in the $\CONGEST$ model\mydash nodes would need to send up to $n$ distinct messages per communication round, one per each $\BFS$ process, and there is not enough bandwidth for all those messages.
 
 \begin{figure}
     \centering
     \includegraphics[page=\PLeader]{figs.pdf}
-    \caption{Leader election. Each node $v$ will launch a process $\BFS_v$ that attempts to construct a BFS tree $T_v$ rooted at $v$. Other nodes will happily follow $\BFS_v$ if $v$ is the smallest leader they have seen so far; otherwise they will start to ignore messages related to $\BFS_v$. Eventually, precisely one of the processes will complete successfully, while all other process will get stuck at some point. In this example, here node $1$ will be the leader, as it has the smallest identifier. For example, process $\BFS_2$ will never succeed, as node $1$ (as well as all other nodes that are aware of node $1$) will ignore all messages related to $\BFS_2$. Node $1$ is the only root that will receive acknowledgements from every child.}\label{fig:leader}
+    \caption{Leader election. Each node $v$ will launch a process $\BFS_v$ that attempts to construct a BFS tree $T_v$ rooted at $v$. Other nodes will happily follow $\BFS_v$ if $v$ is the smallest leader they have seen so far; otherwise they will start to ignore messages related to $\BFS_v$. Eventually, precisely one of the processes will complete successfully, while all other process will get stuck at some point. In this example, node $1$ will be the leader, as it has the smallest identifier. Process $\BFS_2$ will never succeed, as node $1$ (as well as all other nodes that are aware of node $1$) will ignore all messages related to $\BFS_2$. Node $1$ is the only root that will receive acknowledgements from every child.}\label{fig:leader}
 \end{figure}
 
 Fortunately, we can solve both of these issues very easily; see Figure~\ref{fig:leader}:

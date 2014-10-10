@@ -107,8 +107,8 @@ Initially, we set $d(v) \gets \bot$, $p(v) \gets \bot$, $C(v) \gets \bot$, and $
 This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we will send acknowledgements back towards the root:
 \begin{itemize}
     \item Each node $v$ with $a(v) = 0$ and $C(v) = \emptyset$ will set $a(v) \gets 1$.
-    \item Each node $v$ with $a(v) = 1$ and $p(v) \ne \bot$ will send \emph{acknowledgements} to port $p(v)$.
-    \item Each node $v$ with $a(v) = 0$ and $C(v) \ne \emptyset$ will set $a(v) \gets 1$ when it receives acknowledgements from each port of $C(v)$.
+    \item Each node $v$ with $a(v) = 1$ and $p(v) \ne \bot$ will send an \emph{acknowledgement} to port $p(v)$.
+    \item Each node $v$ with $a(v) = 0$ and $C(v) \notin \{ \bot, \emptyset \}$ will set $a(v) \gets 1$ when it has received acknowledgements from each port of $C(v)$.
 \end{itemize}
 It is straightforward to verify that the algorithm indeed works and it constructs a BFS tree with distance labels in $O(\diam(G))$ rounds in the $\CONGEST$ model.
 

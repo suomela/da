@@ -5,23 +5,23 @@ In the previous chapter, we learned about the $\LOCAL$ model. We saw that with t
 
 \section{Definitions}\label{sec:congest}
 
-Let $A$ be a distributed algorithm that solves a problem $\Pi$ on graph family $\calF$ in the $\LOCAL$ model. Assume that $\Msg_A$ is a countable set; without loss of generality, we can then assume that
+Let $A$ be a distributed algorithm that solves a problem $\Pi$ on a graph family $\calF$ in the $\LOCAL$ model. Assume that $\Msg_A$ is a countable set; without loss of generality, we can then assume that
 \[
     \Msg_A = \NN,
 \]
-that is, the messages are encoded as natural numbers. Now we say that $A$ solves problem $\Pi$ on graph family $\calF$ in the $\CONGEST$ model if the following holds for some constant $C$: for any graph $G = (V,E) \in \calF$, algorithm $A$ only sends messages from set $\{0, 1, \dotsc, |V|^C\}$.
+that is, the messages are encoded as natural numbers. Now we say that $A$ solves problem $\Pi$ on graph family $\calF$ in the $\CONGEST$ model if the following holds for some constant $C$: for any graph $G = (V,E) \in \calF$, algorithm $A$ only sends messages from the set $\{0, 1, \dotsc, |V|^C\}$.
 
 Put otherwise, we have the following \emph{bandwidth restriction}: in each communication round, along each edge, we can only send $O(\log n)$-bit messages, where $n$ is the total number of nodes.
 
 
 \section{Examples}
 
-Assume that we have an algorithm $A$ that was designed for the $\LOCAL$ model. Moreover, assume that during the execution of $A$ on a graph $G = (V,E)$, we only needs to send the following pieces of information along each edge:
+Assume that we have an algorithm $A$ that is designed for the $\LOCAL$ model. Moreover, assume that during the execution of $A$ on a graph $G = (V,E)$, we only need to send the following pieces of information along each edge:
 \begin{itemize}[noitemsep]
-    \item $O(1)$ node identifiers.
-    \item $O(1)$ edges, encoded as a pair of node identifiers.
-    \item $O(1)$ counters that take values from $0$ to $\diam(G)$.
-    \item $O(1)$ counters that take values from $0$ to $|V|$.
+    \item $O(1)$ node identifiers,
+    \item $O(1)$ edges, encoded as a pair of node identifiers,
+    \item $O(1)$ counters that take values from $0$ to $\diam(G)$,
+    \item $O(1)$ counters that take values from $0$ to $|V|$,
     \item $O(1)$ counters that take values from $0$ to $|E|$.
 \end{itemize}
 Now it is easy to see that we can encode all of this as a binary string with $O(\log n)$ bits. Hence $A$ is not just an algorithm for the $\LOCAL$ model, but it is also an algorithm for the $\CONGEST$ model.

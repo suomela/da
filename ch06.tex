@@ -45,7 +45,7 @@ Throughout this chapter, we will assume that the input graph $G = (V,E)$ is conn
 \]
 That is, $v$ has to know the identities of all other nodes, as well as the shortest-path distance between itself and all other nodes.
 
-Note that to represent the local output $f(v)$ we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, we can prove that any algorithm that solves the APSP problem in the $\CONGEST$ model will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
+Note that to represent the local output of a single node we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, we can prove that any algorithm that solves the APSP problem in the $\CONGEST$ model will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
 
 In this chapter, we will present an optimal distributed algorithm for the APSP problem: it solves the problem in $O(n)$ rounds in the $\CONGEST$ model.
 

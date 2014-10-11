@@ -11,12 +11,12 @@ Let $A$ be a distributed algorithm that solves a problem $\Pi$ on a graph family
 \]
 that is, the messages are encoded as natural numbers. Now we say that $A$ solves problem $\Pi$ on graph family $\calF$ in the $\CONGEST$ model if the following holds for some constant $C$: for any graph $G = (V,E) \in \calF$, algorithm $A$ only sends messages from the set $\{0, 1, \dotsc, |V|^C\}$.
 
-Put otherwise, we have the following \emph{bandwidth restriction}: in each communication round, along each edge, we can only send $O(\log n)$-bit messages, where $n$ is the total number of nodes.
+Put otherwise, we have the following \emph{bandwidth restriction}: in each communication round, over each edge, we only send $O(\log n)$-bit messages, where $n$ is the total number of nodes.
 
 
 \section{Examples}
 
-Assume that we have an algorithm $A$ that is designed for the $\LOCAL$ model. Moreover, assume that during the execution of $A$ on a graph $G = (V,E)$, we only need to send the following pieces of information along each edge:
+Assume that we have an algorithm $A$ that is designed for the $\LOCAL$ model. Moreover, assume that during the execution of $A$ on a graph $G = (V,E)$, in each communication round, we only need to send the following pieces of information over each edge:
 \begin{itemize}[noitemsep]
     \item $O(1)$ node identifiers,
     \item $O(1)$ edges, encoded as a pair of node identifiers,
@@ -39,13 +39,13 @@ In this chapter, we will learn techniques that can be used to design efficient a
 
 \section{All-Pairs Shortest Path Problem}
 
-Throughout this chapter, we will assume that the input graph $G = (V,E)$ is connected. In the \emph{all-pairs shortest path} problem (APSP in brief), the goal is to find the distances between all pairs of nodes. More precisely, the local output of node $v \in V$ is
+Throughout this chapter, we will assume that the input graph $G = (V,E)$ is connected, and as usual, we have $n = |V|$. In the \emph{all-pairs shortest path} problem (APSP in brief), the goal is to find the distances between all pairs of nodes. More precisely, the local output of node $v \in V$ is
 \[
     f(v) = \bigl\{ (u, d) : u \in V,\ d = \dist_G(v, u) \bigr\}.
 \]
 That is, $v$ has to know the identities of all other nodes, as well as the shortest-path distance between itself and all other nodes.
 
-Note that to represent the local output of a single node we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, we can prove that any algorithm that solves the APSP problem in the $\CONGEST$ model will need $\Omega(n)$ rounds model\mydash see Exercise~\ref{ex:apsp-lb}.
+Note that to represent the local output of a single node we need $\Theta(n \log n)$ bits, and just to transmit this information along a single edge we would need $\Theta(n)$ communication rounds. Indeed, we can prove that any algorithm that solves the APSP problem in the $\CONGEST$ model takes $\Omega(n)$ rounds\mydash see Exercise~\ref{ex:apsp-lb}.
 
 In this chapter, we will present an optimal distributed algorithm for the APSP problem: it solves the problem in $O(n)$ rounds in the $\CONGEST$ model.
 

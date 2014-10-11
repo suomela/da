@@ -106,9 +106,8 @@ Initially, we set $d(v) \gets \bot$, $p(v) \gets \bot$, $C(v) \gets \bot$, and $
 \end{itemize}
 This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we will send acknowledgements back towards the root:
 \begin{itemize}
-    \item Each node $v$ with $a(v) = 0$ and $C(v) = \emptyset$ will set $a(v) \gets 1$.
     \item Each node $v$ with $a(v) = 1$ and $p(v) \ne \bot$ will send an \emph{acknowledgement} to port $p(v)$.
-    \item Each node $v$ with $a(v) = 0$ and $C(v) \notin \{ \bot, \emptyset \}$ will set $a(v) \gets 1$ when it has received acknowledgements from each port of $C(v)$.
+    \item Each node $v$ with $a(v) = 0$ and $C(v) \ne \bot$ will set $a(v) \gets 1$ when it has received acknowledgements from each port of $C(v)$. In particular, if a node sets $C(v) \gets \emptyset$, it can immediately set $a(v) \gets 1$.
 \end{itemize}
 It is straightforward to verify that the algorithm indeed works and it constructs a BFS tree with distance labels in $O(\diam(G))$ rounds in the $\CONGEST$ model.
 
@@ -134,22 +133,22 @@ However, there are two problems: First, it is not yet obvious how all this would
 
 Fortunately, we can solve both of these issues very easily; see Figure~\ref{fig:leader}:
 \begin{enumerate}[resume]
-    \item Each node will only process and send messages related to the tree that has the \emph{smallest identifier as the root}. More precisely, for each node $v$, let $U(v) \subseteq V$ denote the set of nodes $u$ such that $v$ has received messages related to process $\BFS_u$, and let $\ell(v) = \min U(v)$ be the smallest of these nodes. Then $v$ will simply ignore messages related to process $\BFS_u$ for all $u \ne \ell(v)$, and it will only process and send messages related to process $\BFS_{\ell(v)}$.
+    \item Each node will only process and send messages related to the tree that has the \emph{smallest identifier as the root}. More precisely, for each node $v$, let $U(v) \subseteq V$ denote the set of nodes $u$ such that $v$ has received messages related to process $\BFS_u$, and let $\ell(v) = \min U(v)$ be the smallest of these nodes. Then $v$ will ignore messages related to process $\BFS_u$ for all $u \ne \ell(v)$, and it will only send messages related to process $\BFS_{\ell(v)}$.
 \end{enumerate}
 We make the following observations:
 \begin{itemize}
-    \item In each round, each node will only need to send messages related to at most one $\BFS$ process. Hence we have solved the second problem: now we can easily implement this algorithm in the $\CONGEST$ model.
-    \item Let $s = \min V$ be the node with the smallest identifier. Then whenever process $\BFS_s$ reaches a node $v$, it will set $\ell(v) = s$ and never change it again. Hence all nodes will faithfully run $\BFS_s$ from start to end, and thanks to the acknowledgements, node $s$ will eventually know that we have successfully constructed a BFS tree $T_s$ rooted at it.
-    \item Let $u \ne \min V$ be any other node. Now there is at least one node, $s$, that will ignore all messages related to process $\BFS_u$. Hence $\BFS_u$ will never finish; node $u$ will never receive acknowledgements related to tree $T_u$.
+    \item In each round, each node will only send messages related to at most one $\BFS$ process. Hence we have solved the second problem\mydash this algorithm can be implemented in the $\CONGEST$ model.
+    \item Let $s = \min V$ be the node with the smallest identifier. Then whenever messages related to $\BFS_s$ reach a node $v$, it will set $\ell(v) = s$ and never change it again. Hence all nodes will follow process $\BFS_s$ from start to end, and thanks to the acknowledgements, node $s$ will eventually know that we have successfully constructed a BFS tree $T_s$ rooted at it.
+    \item Let $u \ne \min V$ be any other node. Now there is at least one node, $s$, that will ignore all messages related to process $\BFS_u$. Hence $\BFS_u$ will never finish; node $u$ will never receive the acknowledgements related to tree $T_u$ from all neighbours.
 \end{itemize}
-That is, we now have an algorithm with the following properties: after $O(\diam(G))$ rounds, there is precisely one node $s$ that knows that it is the unique node $s = \min V$. To finish the leader election process, node $s$ will simply use $T_s$ to inform all other nodes that leader election is over; node $s$ will output $1$ and all other nodes will output $0$ and stop.
+That is, we now have an algorithm with the following properties: after $O(\diam(G))$ rounds, there is precisely one node $s$ that knows that it is the unique node $s = \min V$. To finish the leader election process, node $s$ will inform all other nodes that leader election is over; node $s$ will output $1$ and all other nodes will output $0$ and stop.
 
 
 \longsection{Algorithm \talgo{APSP}}{All-Pairs Shortest Paths}\label{sec:apsp}
 
 In this section, we will design algorithm $\algo{APSP}$ that solves the all-pairs shortest path problem (APSP) in time $O(n)$.
 
-We already know how to find the shortest-path distances from a single source; this is efficiently solved with algorithm $\Wave$. Just like we did with the $\BFS$ algorithm, we can also augment $\Wave$ with the root identifier and hence have a separate process $\Wave_v$ for each possible root $v \in V$. If we could run all these processes, then each node would receive a wave from every other node, letting us to solve the APSP problem. However, it is not obvious how to achieve a good performance in the $\CONGEST$ model:
+We already know how to find the shortest-path distances from a single source; this is efficiently solved with algorithm $\Wave$. Just like we did with the $\BFS$ algorithm, we can also augment $\Wave$ with the root identifier and hence have a separate process $\Wave_v$ for each possible root $v \in V$. If we could somehow run all these processes, then each node would receive a wave from every other node, letting us to solve the APSP problem. However, it is not obvious how to achieve a good performance in the $\CONGEST$ model:
 \begin{itemize}
     \item If we try to run all $\Wave_v$ processes simultaneously in parallel, we may need to send messages related to several waves simultaneously along a single edge, and there is not enough bandwidth to do that.
     \item If we try to run all $\Wave_v$ processes sequentially, it will take a lot of time: the running time would be $O(n \diam(G))$ instead of $O(n)$.
@@ -164,14 +163,14 @@ To achieve this, we start with the leader election and the construction of a BFS
     \caption{(a)~BFS tree $T_s$ rooted at $s$. (b)~A depth-first traversal $w_s$ of $T_s$.}\label{fig:dfs}
 \end{figure}
 
-More concretely, we move a \emph{token} along walk $w_s$. Moreover, we move the token \emph{slowly}: we always spend 2 communication rounds before we move the token to an adjacent node. Whenever the token reaches a new node $v$ that we have not encountered previously during the walk, we launch process $\Wave_v$. This is the entire algorithm!
+More concretely, we move a \emph{token} along walk $w_s$. We move the token \emph{slowly}: we always spend 2 communication rounds before we move the token to an adjacent node. Whenever the token reaches a new node $v$ that we have not encountered previously during the walk, we launch process $\Wave_v$. This is the entire algorithm!
 
-The key observation here is that the token moves slower than the waves. The waves move at speed $1$ edge per round, while the token moves at speed $0.5$ edges per round. This guarantees that two waves never collide. To see this, consider two waves $\Wave_u$ and $\Wave_v$, so that $\Wave_u$ was launched before $\Wave_v$. Let $d = \dist_G(u,v)$. Now it took us at least $2d$ rounds to move the token from $u$ to $v$, but only $d$ rounds for $\Wave_u$ to reach node $v$. Hence $\Wave_u$ was already past $v$ before we triggered $\Wave_v$, and $\Wave_v$ will never catch up with $\Wave_u$ as both travel at the same speed. See Figure~\ref{fig:pipeline} for an illustration.
+The key observation here is that the token moves slower than the waves. The waves move at speed $1$ edge per round (along the edges of $G$), while the token moves at speed $0.5$ edges per round (along the edges of $T_s$, which is a subgraph of $G$). This guarantees that two waves never collide. To see this, consider two waves $\Wave_u$ and $\Wave_v$, so that $\Wave_u$ was launched before $\Wave_v$. Let $d = \dist_G(u,v)$. Then it will take us at least $2d$ rounds to move the token from $u$ to $v$, but only $d$ rounds for $\Wave_u$ to reach node $v$. Hence $\Wave_u$ was already past $v$ before we triggered $\Wave_v$, and $\Wave_v$ will never catch up with $\Wave_u$ as both travel at the same speed. See Figure~\ref{fig:pipeline} for an illustration.
 
 \begin{figure}
     \centering
     \includegraphics[page=\PPipeline]{figs.pdf}
-    \caption{Algorithm $\algo{APSP}$: the token walks along the BFS tree at speed $0.5$ (thick arrows), while each $\Wave_v$ moves along the original graph at speed $1$ (dashed lines). The waves are strictly nested: if $\Wave_v$ was triggered after $\Wave_u$, it will never collide with $\Wave_u$.}\label{fig:pipeline}
+    \caption{Algorithm $\algo{APSP}$: the token walks along the BFS tree at speed $0.5$ (thick arrows), while each $\Wave_v$ moves along the original graph at speed $1$ (dashed lines). The waves are strictly nested: if $\Wave_v$ was triggered after $\Wave_u$, it will never catch up with $\Wave_u$.}\label{fig:pipeline}
 \end{figure}
 
 Hence we have an algorithm $\algo{APSP}$ that is able to trigger all $\Wave_v$ processes in $O(n)$ time, without collisions, and each of them completes $O(\diam(G))$ rounds after it was launched. Overall, it takes $O(n)$ rounds for all nodes to learn distances to all other nodes. Already during $\algo{Leader}$ all nodes learned the identifiers of all other nodes, so we will also know when it is safe to stop: as soon as we have sent the token back towards the root and we have received all waves from all other nodes.

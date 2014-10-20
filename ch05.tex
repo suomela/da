@@ -321,10 +321,10 @@ In summary, we have designed algorithm $\algo{DPBit}$ that reduces the number of
 Assume that we know $|V|$. We will design algorithm $\algo{DP3C}$ that finds a $3$-colouring in $O(\log^* |V|)$ rounds in any directed pseudoforest. The algorithm proceeds as follows:
 \begin{enumerate}
     \item Use the unique identifiers to construct a colouring with $\chi$ colours.
-    \item Iterate algorithm $\algo{DPBit}$ for $\log^* \chi$ steps to reduce the number of colours from $\chi$ to $6$.
-    \item Iterate algorithm $\algo{DPGreedy}$ for $3$ steps to reduce the number of colours from $6$ to~$3$.
+    \item Repeat algorithm $\algo{DPBit}$ for $\log^* \chi$ times to reduce the number of colours from $\chi$ to $6$.
+    \item Repeat algorithm $\algo{DPGreedy}$ for $3$ times to reduce the number of colours from $6$ to~$3$.
 \end{enumerate}
-The analysis is, in essence, identical to what we already did in Exercise~\ref{ex:logstar}.
+Here phase~(a) takes $0$ communication rounds, phase~(b) takes $\log^* \chi$ communication rounds, and phase~(c) takes $6$ communication rounds. The analysis is, in essence, identical to what we already did in Exercise~\ref{ex:logstar}.
 
 
 \longsection{Algorithm \talgo{BDColour}}{Fast Colouring in Bounded-Degree Graphs}\label{sec:bdcolour}

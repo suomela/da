@@ -204,12 +204,65 @@ Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algori
 
 \section{Exercises}
 
-\begin{ex}[max cut]
-    FIXME
+\begin{ex}[larger palette]\label{ex:bdrand2delta}
+    Consider the following algorithm for colouring graphs. Each node $u$ proceeds as follows until it stops:
+    \begin{itemize}
+        \item Node $u$ picks a colour $c(u)$ from $\{1,2,\dotsc,2d\}$ uniformly at random; here $d$ is the degree of node~$u$.
+        \item Node $u$ compares its value $c(u)$ with the values of all neighbours. If $c(u)$ is different from the values of its neighbours, $u$ outputs $c(u)$ and stops.
+    \end{itemize}
+    Present this algorithm in a formally precise manner, using the state-machine formalism. Analyse the algorithm, and prove that it finds a $2\Delta$-colouring in time $O(\log n)$ with high probability.
 \end{ex}
+
+\begin{ex}[unique identifiers]
+    Design a randomised $\PN$ algorithm $A$ with that solves the following problem in $O(1)$ time:
+    \begin{itemize}[noitemsep]
+        \item As input, all nodes get value $|V|$.
+        \item Algorithm outputs a labelling $f\colon V \to \{1,2,\dotsc,\chi\}$ for some $\chi = |V|^{O(1)}$.
+        \item With high probability, $f(u) \ne f(v)$ for all nodes $u \ne v$.
+    \end{itemize}
+    Analyse your algorithm and prove that it indeed solves the problem correctly.
+
+    In essence, algorithm $A$ demonstrates that we can use randomness to construct unique identifiers, assuming that we have some information on the size of the network. Hence we can take any algorithm $B$ designed for the $\LOCAL$ model, and combine it with $A$ to obtain a $\PN$ algorithm $B'$ that solves the same problem as $B$ (with high probability).
+    \hint{Pick the labels randomly from a sufficiently large set; this takes $0$ communication rounds.}
+\end{ex}
+
+\begin{ex}[large independent sets]
+    Design a randomised $\PN$ algorithm $A$ with the following guarantee: in any graph $G = (V,E)$ of maximum degree $\Delta$, algorithm $A$ outputs an independent set $I$ such that the \emph{expected} size of the $I$ is $|V|/O(\Delta)$. The running time of the algorithm should be $O(1)$. You can assume that all nodes know $\Delta$.
+    \hint{Each node $u$ picks a random number $f(u)$. Nodes that are local maxima with respect to the labelling $f$ will join $I$.}
+\end{ex}
+
+\begin{ex}[max cut problem]
+    Let $G = (V,E)$ be a graph. A \emph{cut} is a function $f\colon V \to \{0,1\}$. An edge $\{u,v\} \in E$ is a \emph{cut edge} in $f$ if $f(u) \ne f(v)$. The \emph{size} of cut $f$ is the number of cut edges, and a \emph{maximum cut} is a cut of the largest possible size.
+    \begin{subex}
+        \item Prove: If $G = (V,E)$ is a bipartite graph, then a maximum cut has $|E|$ edges.
+        \item Prove: If $G = (V,E)$ is has a cut with $|E|$ edges, then $G$ is bipartite.
+        \item Prove: For any $\alpha > 1/2$, there exists a graph $G = (V,E)$ in which the maximum cut has at most $\alpha |E|$ edges.
+    \end{subex}
+    \hint{For the last part, consider a complete graph with a sufficiently large number of nodes.}
+\end{ex}
+
+\begin{ex}[max cut algorithm]
+    Design a randomised $\PN$ algorithm $A$ with the following guarantee: in any graph $G = (V,E)$, algorithm $A$ outputs a cut $f$ such that the \emph{expected} size of cut $f$ is at least $|E|/2$. The running time of the algorithm should be $O(1)$.
+
+    Note that the existence of algorithm $A$ also implies that for any graph there exists a cut with at least $|E|/2$.
+
+    \hint{Each node chooses an output $0$ or $1$ uniformly at random and stops; this takes $0$ communication rounds. To analyse the algorithm, prove that each edge is a cut edge with probability $1/2$.}
+\end{ex}
+
+\begin{ex}[maximal independent sets]
+    Design a randomised $\PN$ algorithm that finds a maximal independent set in time $O(\Delta + \log n)$ model with high probability.
+
+    \hint{Use algorithm \algo{BDRand}.}
+\end{ex}
+
+\begin{exs}[maximal independent sets quickly]
+    Design a randomised distributed algorithm that finds a maximal independent set in time $O(\log n)$ with high probability.
+
+    \hint{Look up ``Luby's algorithm''.}
+\end{exs}
 
 
 
 \section{Bibliographic Notes}
 
-Algorithm $\algo{BDRand}$ is from Barenboim and Elkin's book \cite[Section 10.1]{barenboim13distributed}.
+Algorithm $\algo{BDRand}$ and the algorithm of Exercise~\ref{ex:bdrand2delta} are from Barenboim and Elkin's book \cite[Section 10.1]{barenboim13distributed}.

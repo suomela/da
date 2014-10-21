@@ -81,35 +81,46 @@ be the \emph{colour palette} of the node; node $u$ will output one of the colour
 
 In the algorithm, node $u$ maintains the following variables:
 \begin{itemize}[noitemsep]
-    \item State $s(u) \in \{\state{run},\state{decide},\state{stop}\}$
+    \item State $s(u) \in \{0,1\}$
     \item Colour $c(u) \in \{\bot\} \cup C(u)$.
 \end{itemize}
-Initially, $s(u) \gets \state{run}$ and $c(u) \gets \bot$. When $s(u) = \state{stop}$, node stops and outputs the colour $c(u)$.
+Initially, $s(u) \gets 1$ and $c(u) \gets \bot$. When $s(u) = 1$ and $c(u) \ne \bot$, node stops and outputs colour $c(u)$.
 
-In each state, node $u$ behaves as follows.
+In each state, node always sends $c(u)$ to each port. The incoming messages are processed as follows:
 \begin{itemize}
-    \item $s(u) = \state{run}$:
+    \item $s(u) = 1$ and $c(u) \ne \bot$:
     \begin{itemize}
-        \item Send $\bot$ to each port.
-        \item Let $M(u)$ be the set of messages received, and let $F(u) = C(u) \setminus M(u)$ be the set of \emph{free colours}. Set $s(u) \gets \state{decide}$. With probability $1/2$, set $c(u) \gets \bot$; otherwise choose $c(u)$ from $C(u)$ uniformly at random.
+        \item This is a stopping state, ignore incoming messages.
     \end{itemize}
-    \item $s(u) = \state{decide}$:
+    \item $s(u) = 1$ and $c(u) = \bot$:
     \begin{itemize}
-        \item Send $c(u)$ to each port.
-        \item Let $M(u)$ be the set of messages received. If $c(u) \in M(u)$, set $c(u) \gets \bot$ and $s(u) \gets \state{run}$. Otherwise set $s(u) \gets \state{stop}$.
+        \item Let $M(u)$ be the set of messages received.
+        \item Let $F(u) = C(u) \setminus M(u)$ be the set of \emph{free colours}.
+        \item With probability $1/2$, set $c(u) \gets \bot$; otherwise choose $c(u)$ from $F(u)$ uniformly at random.
+        \item Set $s(u) \gets 0$.
     \end{itemize}
-    \item $s(u) = \state{stop}$:
+    \item $s(u) = 0$:
     \begin{itemize}
-        \item Send $c(u)$ to each port.
-        \item Ignore incoming messages.
+        \item Let $M(u)$ be the set of messages received.
+        \item If $c(u) \in M(u)$, set $c(u) \gets \bot$.
+        \item Set $s(u) \gets 1$.
     \end{itemize}
 \end{itemize}
 
+Informally, the algorithm proceeds as follows. For each node $u$, its state $s(u)$ alternates between $1$ and $0$:
+\begin{itemize}
+    \item When $s(u) = 1$, the node either decides to be \emph{passive} and sets $c(u) = \bot$, or it is \emph{active}, and picks a random colour $c(u) \in F(u)$. Here $F(u)$ is the set of colours that are not yet used by any of the nodes that are stopped.
+    \item When $s(u) = 0$, the node \emph{verifies} its choice. If the current colour $c(u)$ conflicts with one of the neighbours, we go back to the initial state $s(u) \gets 1$ and $c(u) \gets \bot$. However, if we were lucky and managed to pick a colour that does not conflict with any of our neighbours, we keep the current value of $c(u)$ and switch to the stopping state.
+\end{itemize}
 
 
 \subsection{Analysis}
 
-FIXME
+It is easy to see that if the algorithm stops, then the output is a proper ${(\Delta+1)}$-colouring of the underlying graph. Let us now analyse how long it takes for the nodes to stop.
+
+\begin{lemma}
+    Let $u \in V$ be a node, and assume that we have currently $s(u) = 1$ and $c(u) = \bot$. FIXME
+\end{lemma}
 
 
 

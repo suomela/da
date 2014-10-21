@@ -118,9 +118,62 @@ Informally, the algorithm proceeds as follows. For each node $u$, its state $s(u
 
 It is easy to see that if the algorithm stops, then the output is a proper ${(\Delta+1)}$-colouring of the underlying graph. Let us now analyse how long it takes for the nodes to stop.
 
+In the analysis, we will write $s_t(u)$ and $c_t(u)$ for values of variables $s(u)$ and $c(u)$ after round $t$, and $M_t(u)$ and $F_t(u)$ for the values of $M(u)$ and $F(u)$ during round $t$. We also write
+\[
+    K_t(u) = \bigl\{ v \in V : \{u,v\} \in E,\ s_{t-1}(u) = 1, c_{t-1} = \bot \bigr\}
+\]
+for the set of \emph{competitors} of node $u$ during round $t$.
+
+First, let us prove that with probability at least $1/4$, each node succeeds in picking a colour that does not conflict with any of its neighbours.
 \begin{lemma}
-    Let $u \in V$ be a node, and assume that we have currently $s(u) = 1$ and $c(u) = \bot$. FIXME
+    Fix a node $u \in V$ and time $t = 2,4,6,\dotsc$. Assume that have $s_{t-1}(u) = 1$ and $c_{t-1}(u) = \bot$, i.e., $u$ will be active during round $t$. Then with probability at least $1/4$, we have $s_{t+1}(u) = 1$ and $c_{t+1}(u) \ne \bot$, i.e., $u$ will stop after round $t+1$.
 \end{lemma}
+\begin{proof}
+    Let $f = |F_t(u)|$ be the number of free colours during round $t$, and let $k = |K_t(u)|$ be the number of competitors during round $t$. Note that $f \ge k + 1$, as we the size of the palette is one larger than the number of neighbours.
+
+    Let us first study the case that $u$ is active. As we have got $f$ free colours, for any given colour $x \in \NN$ we have
+    \[
+        \Pr\bigl[ c_t(u) = x \bigm| c_t(u) \ne \bot \bigr] \le 1/f.
+    \]
+    In particular, this holds for any colour $x = c_t(v)$ chosen by any active competitor $v \in K_t(u)$:
+    \[
+        \Pr\bigl[ c_t(u) = c_t(v) \bigm| c_t(u) \ne \bot,\  c_t(v) \ne \bot \bigr] \le 1/f.
+    \]
+    That is, we conflict with an active competitor with probability at most $1/f$. Naturally, we cannot conflict with a passive competitor:
+    \[
+        \Pr\bigl[ c_t(u) = c_t(v) \bigm| c_t(u) \ne \bot,\  c_t(v) = \bot \bigr] = 0.
+    \]
+    As we have
+    \[
+        \Pr\bigl[ c_t(v) \ne \bot \bigr] = 1/2,
+    \]
+    and the random variables $c_t(u)$ and $c_t(v)$ are independent, the probability that we conflict with a given competitor $v \in K_t(u)$ is
+    \[
+        \Pr\bigl[ c_t(u) = c_t(v) \bigm| c_t(u) \ne \bot \bigr] \le \frac{1}{2f}.
+    \]
+    By the union bound, the probability that we conflict with some competitor is
+    \[
+        \Pr\bigl[ c_t(u) = c_t(v) \text{ for some $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] \le \frac{k}{2f},
+    \]
+    which is less than $1/2$ for all $k \ge 0$ and all $f \ge k+1$. Put otherwise, node $u$ will avoid conflicts with probability
+    \[
+        \Pr\bigl[ c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] > \frac{1}{2},
+    \]
+
+    So far we have studied the conditional probabilities assuming that $u$ is active. This happens with probability
+    \[
+        \Pr\bigl[ c_t(u) \ne \bot \bigr] = 1/2.
+    \]
+    Therefore node $u$ will stop after round $t+1$ with probability
+    \[
+    \begin{split}
+        &\Pr\bigl[ c_{t+1}(u) \ne \bot] = \\
+        &\Pr\bigl[ c_t(u) \ne \bot \text { and } c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} ] > 1/4.
+        \qedhere
+    \end{split}
+    \]
+\end{proof}
+
 
 
 

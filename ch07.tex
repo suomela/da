@@ -125,7 +125,7 @@ In the analysis, we will write $s_t(u)$ and $c_t(u)$ for values of variables $s(
 for the set of \emph{competitors} of node $u$ during round $t$.
 
 First, let us prove that with probability at least $1/4$, each node succeeds in picking a colour that does not conflict with any of its neighbours.
-\begin{lemma}
+\begin{lemma}\label{lem:bdrand-onestep}
     Fix a node $u \in V$ and time $t = 2,4,6,\dotsc$. Assume that have $s_{t-1}(u) = 1$ and $c_{t-1}(u) = \bot$, i.e., $u$ will be active during round $t$. Then with probability at least $1/4$, we have $s_{t+1}(u) = 1$ and $c_{t+1}(u) \ne \bot$, i.e., $u$ will stop after round $t+1$.
 \end{lemma}
 \begin{proof}
@@ -174,7 +174,32 @@ First, let us prove that with probability at least $1/4$, each node succeeds in 
     \]
 \end{proof}
 
+Now we can continue with the same argument as what we did in Section~\ref{sec:algo-p3crand} to analyse the running time. Fix a constant $c > 0$. Define
+\[
+    T(n) = 2(c+1) \log_{4/3} n.
+\]
+We will prove that algorithm $\algo{BDRand}$ stops in $T(n)$ rounds. First, let us consider an individual node. Note the exponent $c+1$ instead of $c$ in the statement of the lemma; this will be helpful later.
 
+\begin{lemma}\label{lem:bdrand-onenode}
+    Fix a node $u \in V$. The probability that $u$ has not stopped after $T(n)$ rounds is at most $1/n^{c+1}$.
+\end{lemma}
+\begin{proof}
+    By Lemma~\ref{lem:bdrand-onestep}, if node $u$ has not stopped after round $2i$, it will stop after round $2i+2$ with probability at least $1/4$. Hence the probability that it has not stopped after $T(n)$ rounds is at most
+    \[
+        (3/4)^{T(n)/2} = \frac{1}{(4/3)^{(c+1) \log_{4/3} n}} = \frac{1}{n^{c+1}}. \qedhere
+    \]
+\end{proof}
+
+Now we are ready to analyse the time until all nodes stop.
+
+\begin{theorem}\label{thm:bdrand}
+    The probability that all nodes have not stopped after $T(n)$ rounds is at least $1 - 1/n^c$.
+\end{theorem}
+\begin{proof}
+    Follows from Lemma~\ref{lem:bdrand-onenode} by the union bound.
+\end{proof}
+
+Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algorithm $\algo{BDRand}$ stops in $O(\log n)$ rounds with high probability, and when it stops, it outputs a vertex colouring with $\Delta+1$ colours.
 
 
 \section{Exercises}

@@ -73,9 +73,38 @@ Informally, the reason why this works well is the following. Assume that we have
 
 \subsection{Algorithm}
 
-Let us now formalise the algorithm.
+Let us now formalise the algorithm. For each node $u$, let
+\[
+    C(u) = \{1,2,\dotsc,\deg_G(u)+1\}
+\]
+be the \emph{colour palette} of the node; node $u$ will output one of the colours of $C(u)$. 
 
-FIXME
+In the algorithm, node $u$ maintains the following variables:
+\begin{itemize}[noitemsep]
+    \item State $s(u) \in \{\state{run},\state{decide},\state{stop}\}$
+    \item Colour $c(u) \in \{\bot\} \cup C(u)$.
+\end{itemize}
+Initially, $s(u) \gets \state{run}$ and $c(u) \gets \bot$. When $s(u) = \state{stop}$, node stops and outputs the colour $c(u)$.
+
+In each state, node $u$ behaves as follows.
+\begin{itemize}
+    \item $s(u) = \state{run}$:
+    \begin{itemize}
+        \item Send $\bot$ to each port.
+        \item Let $M(u)$ be the set of messages received, and let $F(u) = C(u) \setminus M(u)$ be the set of \emph{free colours}. Set $s(u) \gets \state{decide}$. With probability $1/2$, set $c(u) \gets \bot$; otherwise choose $c(u)$ from $C(u)$ uniformly at random.
+    \end{itemize}
+    \item $s(u) = \state{decide}$:
+    \begin{itemize}
+        \item Send $c(u)$ to each port.
+        \item Let $M(u)$ be the set of messages received. If $c(u) \in M(u)$, set $c(u) \gets \bot$ and $s(u) \gets \state{run}$. Otherwise set $s(u) \gets \state{stop}$.
+    \end{itemize}
+    \item $s(u) = \state{stop}$:
+    \begin{itemize}
+        \item Send $c(u)$ to each port.
+        \item Ignore incoming messages.
+    \end{itemize}
+\end{itemize}
+
 
 
 \subsection{Analysis}

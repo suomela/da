@@ -24,14 +24,74 @@ So far we have defined randomised $\PN$ algorithms. We can now extend the defini
 
 With the introduction of randomness, the guarantees that we have typically become probabilistic. For example, we may claim that algorithm $A$ \emph{stops in time $T$ with probability $p$}.
 
-Note that all probabilities are over the random choices that the state machines make. We do not assume that our network or the local inputs are somehow random. For example, if we claim that algorithm $A$ solves problem $\Pi$ on graph family $\calF$ in time $T(n)$ with probability $p$, then we can take \emph{any} graph $G \in \calF$ and \emph{any} port-numbered network $N$ with $G$ as its underlying graph, and we guarantee that with probability at least $p$ the execution of $A$ in $N$ stops in time $T(n)$ and produces a correct output $g \in \Pi(G)$.
+Note that all probabilities are over the random choices that the state machines make. We do not assume that our network or the local inputs are somehow random. For example, if we claim that algorithm $A$ solves problem $\Pi$ on graph family $\calF$ in time $T(n)$ with probability $p$, then we can take \emph{any} graph $G \in \calF$ and \emph{any} port-numbered network $N$ with $G$ as its underlying graph, and we guarantee that with probability at least $p$ the execution of $A$ in $N$ stops in time $T(n)$ and produces a correct output $g \in \Pi(G)$; as usual, here $n$ is the number of nodes in the network.
 
 We may occasionally want to emphasise the distinction between ``Monte Carlo'' and ``Las Vegas'' type algorithms:
 \begin{itemize}
     \item Monte Carlo: Algorithm $A$ always stops in time $T(n)$; the output is a correct solutions to problem $\Pi$ with probability $p$.
     \item Las Vegas: Algorithm $A$ stops in time $T(n)$ with probability $p$; when it stops, the output is always a correct solutions to problem $\Pi$.
 \end{itemize}
-However, Monte Carlo algorithms are not as useful in the field of distributed computing as they were in the context of centralised algorithms. In centralised algorithms, we can usually take a Monte Carlo algorithm and just run it repeatedly until it produces a feasible solution; hence we can turn a Monte Carlo algorithm into a Las Vegas algorithm. This is not necessarily the case with distributed algorithms: verifying the output of an algorithm may require global information on the entire output, and gathering such information may take a long time. In this chapter, we will focus on Las Vegas algorithms that are always correct but may occasionally be slow.
+However, Monte Carlo algorithms are not as useful in the field of distributed computing as they were in the context of centralised algorithms. In centralised algorithms, we can usually take a Monte Carlo algorithm and just run it repeatedly until it produces a feasible solution; hence we can turn a Monte Carlo algorithm into a Las Vegas algorithm. This is not necessarily the case with distributed algorithms: verifying the output of an algorithm may require global information on the entire output, and gathering such information may take a long time. In this chapter, we will mainly focus on Las Vegas algorithms, i.e., algorithms that are always correct but may occasionally be slow, but in the exercises we will also encounter Monte Carlo algorithms.
+
+
+\section{With High Probability}
+
+We will use the word \emph{failure} to refer to the event that the algorithm did not meet its guarantees\mydash in the case of a Las Vegas algorithm, it did not stop in time $T(n)$, and in the case of Monte Carlo algorithms, it did not produce a correct output. Naturally, the word \emph{success} refers to the opposite case.
+
+Usually we want to show that the probability of a failure is negligible. In computer science, we are usually interested in asymptotic analysis, and hence in the context of randomised algorithms, it is convenient if we can demonstrate that the probability of a success rapidly approaches $1$ when $n$ increases. Even better, we would like to let the user of the algorithm choose how quickly the  probability approaches~$1$.
+
+This idea is captured in the phrase \emph{with high probability} (commonly abbreviated \emph{w.h.p.}). Please note that this phrase is not a vague subjective statement but it carries a precise mathematical meaning: it refers to the success probability of $1 - 1/n^c$, where we can choose any constant $c > 0$. (Unfortunately, different sources use slightly different definitions; for example, it may also refer to the success probability of $1 - O(1)/n^c$ for any constant $c > 0$.)
+
+In our context, we say that algorithm $A$ solves problem $\Pi$ on graph family $\calF$ in time $O(T(n))$ \emph{with high probability} if the following holds:
+\begin{itemize}
+    \item I can choose any constant $c > 0$. Algorithm $A$ may depend on this constant.
+    \item Then if we run $A$ in any network $N$ with an underlying graph in $\calF$, algorithm $A$ stops in time $O(T(n))$ with probability at least $1 - 1/n^c$.
+\end{itemize}
+Note that the $O(\cdot)$ notation in the running time is used to hide the dependence on $c$. This is a crucial point. For example, it would not make much sense to say that the running time is $\log n$ with probability $1 - 1/n^c$ for any constant $c > 0$. However, it is perfectly reasonable to say that the running time is $c \log n$ or $2^c \log n$ or simply $O(\log n)$ with probability $1 - 1/n^c$ for any constant $c > 0$.
+
+
+\longsection{Algorithm \talgo{BDRand}}{Randomised Colouring in Bounded-Degree Graphs}\label{sec:bdrand}
+
+In Section~\ref{sec:bdcolour} we presented a \emph{deterministic} algorithm $\algo{BDColour}$ that finds a ${(\Delta+1)}$-colouring in a graph of maximum degree $\Delta$. In this section, we will design a \emph{randomised} algorithm $\algo{BDRand}$ that solves the same problem. The running times are different:
+\begin{itemize}[noitemsep]
+    \item $\algo{BDColour}$ runs in $O(\Delta^2 + \log^* n)$ rounds.
+    \item $\algo{BDRand}$ runs in $O(\log n)$ rounds with high probability.
+\end{itemize}
+Hence for large values of $\Delta$, algorithm $\algo{BDRand}$ can be much faster.
+
+
+\subsection{Algorithm Idea}
+
+A running time of $O(\log n)$ is very typical for a randomised distributed algorithm. Often randomised algorithms follow the strategy that in each step each node picks a random value\mydash if the value conflicts with the values of the neighbours, the node will try again next time; otherwise the node outputs the current value and stops. Now if we can prove that each node stops in each round with a constant probability, we can prove that after $\Theta(\log n)$ all nodes have stopped w.h.p. This is precisely what we saw in the analysis of the randomised path-colouring algorithm in Section~\ref{sec:algo-p3crand}.
+
+However, adapting the same strategy to graphs of maximum degree $\Delta$ requires some thought. If each node just repeatedly tries to pick a random colour from $\{1,2,\dotsc,\Delta+1\}$, the success probability may be fairly low for large values of $\Delta$.
+
+Therefore we will adopt a strategy in which nodes are slightly less aggressive. Nodes that are still running will first randomly choose whether they are active or passive in this round; each node is passive with probability $1/2$. Only active nodes will then try to pick a random colour among those colours that are not yet used by their neighbours.
+
+Informally, the reason why this works well is the following. Assume that we have a node $v$ with $d$ neighbours that have not yet stopped. Then there are at least $d+1$ colours among which $v$ can choose whenever it is active. If all of the $d$ neighbours were also active and if they happened to pick distinct colours, we would have only a \[\frac{1}{d+1}\] chance of picking a colour that is not used by any of the neighbours. However, on average only $d/2$ neighbours are active, and in those cases we will succeed in picking a free colour with probability at least \[\frac{d+1 - d/2}{d+1} > \frac{1}{2},\] regardless of what the active neighbours do.
+
+
+\subsection{Algorithm}
+
+Let us now formalise the algorithm.
+
+FIXME
+
+
+\subsection{Analysis}
+
+FIXME
 
 
 
+\section{Exercises}
+
+\begin{ex}[max cut]
+    FIXME
+\end{ex}
+
+
+
+\section{Bibliographic Notes}
+
+Algorithm $\algo{BDRand}$ is from Barenboim and Elkin's book \cite[Section 10.1]{barenboim13distributed}.

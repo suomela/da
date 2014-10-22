@@ -109,7 +109,7 @@ This way $T$ will grow towards the leaf nodes. Once we reach a leaf node, we wil
     \item Each node $v$ with $a(v) = 1$ and $p(v) \ne \bot$ will send an \emph{acknowledgement} to port $p(v)$.
     \item Each node $v$ with $a(v) = 0$ and $C(v) \ne \bot$ will set $a(v) \gets 1$ when it has received acknowledgements from each port of $C(v)$. In particular, if a node has $C(v) = \emptyset$, it can set $a(v) \gets 1$ without waiting for any acknowledgements.
 \end{itemize}
-It is straightforward to verify that the algorithm indeed works and it constructs a BFS tree in $O(\diam(G))$ rounds in the $\CONGEST$ model.
+It is straightforward to verify that the algorithm works correctly and constructs a BFS tree in $O(\diam(G))$ rounds in the $\CONGEST$ model.
 
 Note that the acknowledgements would not be strictly necessary in order to construct the tree. However, they will be very helpful in the next section when we use algorithm $\BFS$ as a subroutine.
 

@@ -1,23 +1,23 @@
 %!TEX root = da-dev.tex
 
-So far we have been using the model of computing that we introduced in Chapter~\ref{ch:pn}: a distributed algorithm $A$ is a state machine that whose state transitions determined by functions $\Init_{A,d}$, $\Send_{A,d}$, and $\Receive_{A,d}$. Everything has been fully deterministic: for a given port-numbered network and a fixed input, the algorithm will always produce the same output. In this chapter, we will extend the model so that we can study randomised distributed algorithms.
+All models of computing that we have studied so far were based on the formalism that we introduced in Chapter~\ref{ch:pn}: a distributed algorithm $A$ is a state machine whose state transitions are determined by functions $\Init_{A,d}$, $\Send_{A,d}$, and $\Receive_{A,d}$. Everything has been fully deterministic: for a given port-numbered network and a fixed input, the algorithm will always produce the same output. In this chapter, we will extend the model so that we can study randomised distributed algorithms.
 
 
 \section{Definitions}\label{sec:randomised}
 
 Let us first define a \emph{randomised distributed algorithms in the $\PN$ model} or, in brief, a \emph{randomised $\PN$ algorithm}. We extend the definitions of Section~\ref{sec:distr-alg} so that the state transitions are chosen randomly according to some probability distribution that may depend on the current state and incoming messages.
 
-More formally, the values of the functions $\Init_{A,d}$ and $\Receive_{A,d}$ are discrete probability distributions over $\States_A$. Then the initial state of a node $u$ is a random variable
+More formally, the values of the functions $\Init_{A,d}$ and $\Receive_{A,d}$ are discrete probability distributions over $\States_A$. The initial state of a node $u$ is a random variable
 \[
     x_0(u) \sim \Init_{A,d}(f(u))
 \]
-chosen from a discrete probability distribution $\Init_{A,d}(f(u))$ that may depend on the initial state $f(u)$, and the state at time $t$ is a random variable
+chosen from a discrete probability distribution $\Init_{A,d}(f(u))$ that may depend on the initial state $f(u)$. The state at time $t$ is a random variable
 \[
-    x_t(u) \sim \Receive_{A,d}\bigl(x_{t-1}(u), m_t(u) \bigr).
+    x_t(u) \sim \Receive_{A,d}\bigl(x_{t-1}(u), m_t(u) \bigr)
 \]
 chosen from a discrete probability distribution $\Receive_{A,d}(x_{t-1}(u), m_t(u))$ that may depend on the previous state $x_{t-1}(u)$ and on the incoming messages $m_t(u)$. All other parts of the model are as before. In particular, function $\Send_{A,d}$ is deterministic.
 
-So far we have defined randomised $\PN$ algorithms. We can now extend the definitions in a natural manner to define randomised algorithms in the $\LOCAL$ model (add unique identifiers, see Chapter~\ref{ch:local}) and randomised algorithms in the $\CONGEST$ model (add unique identifiers and limit the size of the messages, see Chapter~\ref{ch:congest}).
+Above we have defined randomised $\PN$ algorithms. We can now extend the definitions in a natural manner to define randomised algorithms in the $\LOCAL$ model (add unique identifiers, see Chapter~\ref{ch:local}) and randomised algorithms in the $\CONGEST$ model (add unique identifiers and limit the size of the messages, see Chapter~\ref{ch:congest}).
 
 
 \section{Probabilistic Analysis}

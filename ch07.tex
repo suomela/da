@@ -54,7 +54,7 @@ Hence for large values of $\Delta$, algorithm $\algo{BDRand}$ can be much faster
 
 \subsection{Algorithm Idea}
 
-A running time of $O(\log n)$ is very typical for a randomised distributed algorithm. Often randomised algorithms follow the strategy that in each step each node picks a value randomly from some probability distribution. If the value conflicts with the values of the neighbours, the node will try again next time; otherwise the node outputs the current value and stops. Now if we can prove that each node stops in each round with a constant probability, we can prove that after $\Theta(\log n)$ all nodes have stopped w.h.p. This is precisely what we saw in the analysis of the randomised path-colouring algorithm in Section~\ref{sec:algo-p3crand}.
+A running time of $O(\log n)$ is very typical for a randomised distributed algorithm. Often randomised algorithms follow the strategy that in each step each node picks a value randomly from some probability distribution. If the value conflicts with the values of the neighbours, the node will try again next time; otherwise the node outputs the current value and stops. If we can prove that each node stops in each round with a constant probability, we can prove that after $\Theta(\log n)$ all nodes have stopped w.h.p. This is precisely what we saw in the analysis of the randomised path-colouring algorithm in Section~\ref{sec:algo-p3crand}.
 
 However, adapting the same strategy to graphs of maximum degree $\Delta$ requires some thought. If each node just repeatedly tries to pick a random colour from $\{1,2,\dotsc,\Delta+1\}$, the success probability may be fairly low for large values of $\Delta$.
 
@@ -76,13 +76,13 @@ In the algorithm, node $u$ maintains the following variables:
     \item State $s(u) \in \{0,1\}$
     \item Colour $c(u) \in \{\bot\} \cup C(u)$.
 \end{itemize}
-Initially, $s(u) \gets 1$ and $c(u) \gets \bot$. When $s(u) = 1$ and $c(u) \ne \bot$, node stops and outputs colour $c(u)$.
+Initially, $s(u) \gets 1$ and $c(u) \gets \bot$. When $s(u) = 1$ and $c(u) \ne \bot$, node $u$ stops and outputs colour $c(u)$.
 
-In each state, node $u$ always sends $c(u)$ to each port. The incoming messages are processed as follows:
+In each round, node $u$ always sends $c(u)$ to each port. The incoming messages are processed as follows, depending on the current state of the node:
 \begin{itemize}
     \item $s(u) = 1$ and $c(u) \ne \bot$:
     \begin{itemize}
-        \item This is a stopping state, ignore incoming messages.
+        \item This is a stopping state; ignore incoming messages.
     \end{itemize}
     \item $s(u) = 1$ and $c(u) = \bot$:
     \begin{itemize}
@@ -101,7 +101,7 @@ In each state, node $u$ always sends $c(u)$ to each port. The incoming messages 
 
 Informally, the algorithm proceeds as follows. For each node $u$, its state $s(u)$ alternates between $1$ and $0$:
 \begin{itemize}
-    \item When $s(u) = 1$, the node either decides to be \emph{passive} and sets $c(u) = \bot$, or it decides to be \emph{active} and picks a random colour $c(u) \in F(u)$. Here $F(u)$ is the set of colours that are not yet used by any of the nodes that are stopped.
+    \item When $s(u) = 1$, the node either decides to be \emph{passive} and sets $c(u) = \bot$, or it decides to be \emph{active} and picks a random colour $c(u) \in F(u)$. Here $F(u)$ is the set of colours that are not yet used by any of the neighbours that are stopped.
     \item When $s(u) = 0$, the node \emph{verifies} its choice. If the current colour $c(u)$ conflicts with one of the neighbours, we go back to the initial state $s(u) \gets 1$ and $c(u) \gets \bot$. However, if we were lucky and managed to pick a colour that does not conflict with any of our neighbours, we keep the current value of $c(u)$ and switch to the stopping state.
 \end{itemize}
 
@@ -135,7 +135,7 @@ First, let us prove that with probability at least $1/4$, a running node succeed
     \[
         \Pr\bigl[ c_t(u) = c_t(v) \bigm| c_t(u) \ne \bot,\  c_t(v) = \bot \bigr] = 0.
     \]
-    As we have
+    As a competitor is active with probability
     \[
         \Pr\bigl[ c_t(v) \ne \bot \bigr] = 1/2,
     \]
@@ -206,7 +206,7 @@ Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algori
 \end{ex}
 
 \begin{ex}[unique identifiers]
-    Design a randomised $\PN$ algorithm $A$ that solves the following problem in $O(1)$ time:
+    Design a randomised $\PN$ algorithm $A$ that solves the following problem in $O(1)$ rounds:
     \begin{itemize}[noitemsep]
         \item As input, all nodes get value $|V|$.
         \item Algorithm outputs a labelling $f\colon V \to \{1,2,\dotsc,\chi\}$ for some $\chi = |V|^{O(1)}$.
@@ -227,7 +227,7 @@ Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algori
     Let $G = (V,E)$ be a graph. A \emph{cut} is a function $f\colon V \to \{0,1\}$. An edge $\{u,v\} \in E$ is a \emph{cut edge} in $f$ if $f(u) \ne f(v)$. The \emph{size} of cut $f$ is the number of cut edges, and a \emph{maximum cut} is a cut of the largest possible size.
     \begin{subex}
         \item Prove: If $G = (V,E)$ is a bipartite graph, then a maximum cut has $|E|$ edges.
-        \item Prove: If $G = (V,E)$ is has a cut with $|E|$ edges, then $G$ is bipartite.
+        \item Prove: If $G = (V,E)$ has a cut with $|E|$ edges, then $G$ is bipartite.
         \item Prove: For any $\alpha > 1/2$, there exists a graph $G = (V,E)$ in which the maximum cut has at most $\alpha |E|$ edges.
     \end{subex}
     \hint{For the last part, consider a complete graph with a sufficiently large number of nodes.}

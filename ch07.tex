@@ -28,7 +28,7 @@ However, Monte Carlo algorithms are not as useful in the field of distributed co
 
 \section{With High Probability}
 
-We will use the word \emph{failure} to refer to the event that the algorithm did not meet its guarantees\mydash in the case of a Las Vegas algorithm, it did not stop in time $T(n)$, and in the case of Monte Carlo algorithms, it did not produce a correct output. Naturally, the word \emph{success} refers to the opposite case.
+We will use the word \emph{failure} to refer to the event that the algorithm did not meet its guarantees\mydash in the case of a Las Vegas algorithm, it did not stop in time $T(n)$, and in the case of Monte Carlo algorithms, it did not produce a correct output. The word \emph{success} refers to the opposite case.
 
 Usually we want to show that the probability of a failure is negligible. In computer science, we are usually interested in asymptotic analysis, and hence in the context of randomised algorithms, it is convenient if we can show that the success probability approaches $1$ when $n$ increases. Even better, we would like to let the user of the algorithm choose how quickly the success probability approaches~$1$.
 
@@ -37,7 +37,7 @@ This idea is captured in the phrase ``\emph{with high probability}'' (commonly a
 In our context, we say that algorithm $A$ solves problem $\Pi$ on graph family $\calF$ in time $O(T(n))$ \emph{with high probability} if the following holds:
 \begin{itemize}
     \item I can choose any constant $c > 0$. Algorithm $A$ may depend on this constant.
-    \item Then if I run $A$ in any network $N$ with an underlying graph in $\calF$, it will stop in time $O(T(n))$ with probability at least $1 - 1/n^c$, and the output is a feasible solution to problem $\Pi$.
+    \item Then if I run $A$ in any network $N$ that has its underlying graph in $\calF$, the algorithm will stop in time $O(T(n))$ with probability at least $1 - 1/n^c$, and the output is a feasible solution to problem $\Pi$.
 \end{itemize}
 Note that the $O(\cdot)$ notation in the running time is used to hide the dependence on $c$. This is a crucial point. For example, it would not make much sense to say that the running time is at most $\log n$ with probability $1 - 1/n^c$ for any constant $c > 0$. However, it is perfectly reasonable to say that the running time is, e.g., at most $c \log n$ or $2^c \log n$ or simply $O(\log n)$ with probability $1 - 1/n^c$ for any constant $c > 0$.
 

@@ -1,5 +1,5 @@
-A Course on Distributed Algorithms
-==================================
+Distributed Algorithms
+======================
 
 Online textbook by Jukka Suomela.
 

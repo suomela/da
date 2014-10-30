@@ -1,15 +1,15 @@
 %!TEX root = da-dev.tex
 
-\section{Ramsey's Theorem}
+In this chapter we will prove Ramsey's theorem, which is a mathematical statement with numerous applications. This chapter is pure combinatorics; we will not discuss distributed algorithms at all. In Chapter~\ref{ch:ramsey-app} we will then see how to apply Ramsey's theorem to prove negative results related to distributed algorithms.
+
+
+\section{Monochromatic Subsets}
 
 Let $Y$ be a finite set. We say that $X$ is a \emph{$k$-subset} of $Y$ if $X \subseteq Y$ and $|X| = k$. We use the notation
 \[
     Y^{(k)} = \{ X \subseteq Y : |X| = k \}
 \]
 for the collection of all $k$-subsets of $Y$.
-
-
-\subsection{Monochromatic Subsets}
 
 A \emph{$c$-labelling} of $Y^{(k)}$ is an arbitrary function
 \[
@@ -39,7 +39,7 @@ See Figure~\ref{fig:monochromatic} for examples. Monochromatic subsets are a cen
 \end{figure}
 
 
-\subsection{Ramsey Numbers}
+\section{Ramsey Numbers}
 
 For all positive integers $c$, $n$, and $k$, we define the numbers $R_c(n;k)$ and $\bar{R}_c(n;k)$ as follows.
 \begin{enumerate}
@@ -55,7 +55,7 @@ Numbers $R_c(n;k)$ are called \emph{Ramsey numbers}, and Ramsey's theorem shows 
 We will prove Theorem~\ref{thm:ramsey} in Section~\ref{ssec:ramsey-proof}; let us first have a look at an application.
 
 
-\subsection{An Application}
+\section{An Application}
 
 In the case of $k = 2$, Ramsey's theorem can be used to derive various graph-theoretic results. As a simple application, we can use Ramsey's theorem to prove that sufficiently large graphs necessarily contain large cliques or large independent sets.
 
@@ -85,7 +85,7 @@ Let $G = (V,E)$ be a graph. Recall that an \emph{independent set} is a subset $X
 \end{proof}
 
 
-\subsection{Proof}\label{ssec:ramsey-proof}
+\section{Proof}\label{ssec:ramsey-proof}
 
 Let us now prove Theorem~\ref{thm:ramsey}. Throughout this section, let $c$ be fixed. We will show that $R_c(n;k)$ is finite for all $n$ and $k$. The proof outline is as follows:
 \begin{enumerate}

@@ -1,8 +1,10 @@
 %!TEX root = da-dev.tex
 
-A covering map is a topological concept that finds applications in many areas of mathematics, including graph theory. We will focus on one special case: covering maps between port-numbered networks.
+Chapters \ref{ch:pn}--\ref{ch:rand} have focused on positive results; now we will turn our attention to techniques that can be used to prove negative results. We will start with so-called covering maps\mydash we will use covering maps to prove that many problems cannot be solved at all with deterministic $\PN$-algorithms.
 
 \section{Definition}
+
+A covering map is a topological concept that finds applications in many areas of mathematics, including graph theory. We will focus on one special case: covering maps between port-numbered networks.
 
 Let $N = (V,P,p)$ and $N' = (V'\!,P'\!,p')$ be port-numbered networks, and let $\phi \colon V \to V'$. We say that $\phi$ is a \emph{covering map from $N$ to $N'$} if the following holds:
 \begin{enumerate}\raggedright
@@ -37,14 +39,14 @@ We can also consider labelled networks, for example, networks with local inputs.
 
 \section{Covers and Executions}
 
-Now we will study covering maps from the perspective of distributed algorithms. The basic idea is that a covering map $\phi$ from $N$ to $N'$ fools any distributed algorithm $A$: a node $v$ in $N$ is indistinguishable from the node $\phi(v)$ in $N'$.
+Now we will study covering maps from the perspective of deterministic $\PN$-algorithms. The basic idea is that a covering map $\phi$ from $N$ to $N'$ fools any $\PN$-algorithm $A$: a node $v$ in $N$ is indistinguishable from the node $\phi(v)$ in $N'$.
 
 Without further ado, we state the main result and prove it\mydash many applications and examples will follow.
 
 \begin{theorem}\label{thm:cover}
     Assume that
     \begin{enumerate}[itemsep=0ex]\raggedright
-        \item $A$ is a distributed algorithm with $X = \Input_A$,
+        \item $A$ is a deterministic $\PN$-algorithm with $X = \Input_A$,
         \item $N = (V,P,p)$ and $N' = (V'\!,P'\!,p')$ are port-numbered networks,
         \item $f\colon V \to X$ and $f'\colon V' \to X$ are arbitrary functions, and
         \item $\phi\colon V \to V'$ is a covering map from $(N,f)$ to $(N'\!,f')$.
@@ -83,10 +85,10 @@ In particular, if the execution of $A$ on $(N,f)$ stops in time $T$, the executi
 
 \section{Examples}
 
-We will give representative examples of negative results that we can easily derive from Theorem~\ref{thm:cover}. First, we will observe that a distributed algorithm cannot break symmetry in a cycle\mydash unless we provide some symmetry-breaking information in local inputs.
+We will give representative examples of negative results that we can easily derive from Theorem~\ref{thm:cover}. First, we will observe that a deterministic $\PN$-algorithm cannot break symmetry in a cycle\mydash unless we provide some symmetry-breaking information in local inputs.
 
 \begin{lemma}\label{lem:cycle-symmetric}
-    Let $G = (V,E)$ be a cycle graph, let $A$ be a distributed algorithm, and let $f$ be a constant function $f\colon V \to \{0\}$. Then there is a simple port-numbered network $N = (V,P,p)$ such that
+    Let $G = (V,E)$ be a cycle graph, let $A$ be a deterministic $\PN$-algorithm, and let $f$ be a constant function $f\colon V \to \{0\}$. Then there is a simple port-numbered network $N = (V,P,p)$ such that
     \begin{enumerate}
         \item the underlying graph of $N$ is $G$, and
         \item if $A$ stops on $(N,f)$, the output is a constant function $g\colon V \to \{c\}$ for some $c$.
@@ -118,7 +120,7 @@ In the above proof, we never assumed that the execution of $A$ on $N'$ makes any
 Lemma~\ref{lem:cycle-symmetric} has many immediate corollaries.
 
 \begin{corollary}\label{cor:cycle-symmetric}
-    Let $\calF$ be the family of cycle graphs. Then there is no distributed algorithm that solves any of the following problems on $\calF$:
+    Let $\calF$ be the family of cycle graphs. Then there is no deterministic $\PN$-algorithm that solves any of the following problems on~$\calF$:
     \begin{enumerate}[noitemsep]
         \item maximal independent set,
         \item \Apx{1.999} of a minimum vertex cover,
@@ -136,7 +138,7 @@ Lemma~\ref{lem:cycle-symmetric} has many immediate corollaries.
 \end{proof}
 
 \begin{lemma}
-    There is no algorithm that finds a weak colouring for any \Reg{3} graph.
+    There is no deterministic $\PN$-algorithm that finds a weak colouring for any \Reg{3} graph.
 \end{lemma}
 \begin{proof}
     Again, we are going to apply the standard technique: pick a suitable \Reg{3} graph $G$, find a port-numbered network $N$ that has $G$ as its underlying graph, find a smaller network $N'$ such that we have a covering map $\phi$ from $N$ to $N'$, and apply Theorem~\ref{thm:cover}.
@@ -161,7 +163,7 @@ In the above proof, we could have also partitioned the edges of $G$ into three $
 So far we have used only one covering map in our proofs; the following lemma gives an example of the use of more than one covering map.
 
 \begin{lemma}\label{lem:cycles-and-covers}
-    Let $\calF = \Set{G_3, G_4}$, where $G_3$ is the cycle graph with $3$ nodes, and $G_4$ is the cycle graph with $4$ nodes. There is no distributed algorithm that solves the following problem $\Pi$ on $\calF$: in $\Pi(G_3)$ all nodes output $3$ and in $\Pi(G_4)$ all nodes output $4$.
+    Let $\calF = \Set{G_3, G_4}$, where $G_3$ is the cycle graph with $3$ nodes, and $G_4$ is the cycle graph with $4$ nodes. There is no deterministic $\PN$-algorithm that solves the following problem $\Pi$ on $\calF$: in $\Pi(G_3)$ all nodes output $3$ and in $\Pi(G_4)$ all nodes output $4$.
 \end{lemma}
 \begin{proof}
     We again apply the construction of Lemma~\ref{lem:cycle-symmetric}; for each $i \in \{3,4\}$, let $N_i$ be the symmetric port-numbered network that has $G_i$ as the underlying graph.
@@ -174,10 +176,10 @@ So far we have used only one covering map in our proofs; the following lemma giv
         \caption{The structure of the proof of Lemma~\ref{lem:cycles-and-covers}.}\label{fig:cycles-and-covers}
     \end{figure}
     
-    Let $A$ be a distributed algorithm, and let $c$ be the output of the only node of $N'$. If we apply Theorem~\ref{thm:cover} to $\phi_3$, we conclude that all nodes of $N_3$ output $c$; if $A$ solves $\Pi$ on $G_3$, we must have $c = 3$. However, if we apply Theorem~\ref{thm:cover} to $\phi_4$, we learn that all nodes of $N_4$ also output $c = 3$, and hence $A$ cannot solve $\Pi$ on $\calF$.
+    Let $A$ be a $\PN$-algorithm, and let $c$ be the output of the only node of $N'$. If we apply Theorem~\ref{thm:cover} to $\phi_3$, we conclude that all nodes of $N_3$ output $c$; if $A$ solves $\Pi$ on $G_3$, we must have $c = 3$. However, if we apply Theorem~\ref{thm:cover} to $\phi_4$, we learn that all nodes of $N_4$ also output $c = 3$, and hence $A$ cannot solve $\Pi$ on $\calF$.
 \end{proof}
 
-We have learned that a distributed algorithm cannot determine the length of a cycle. In particular, a distributed algorithm cannot determine if a graph is bipartite.
+We have learned that a deterministic $\PN$-algorithm cannot determine the length of a cycle. In particular, a deterministic $\PN$-algorithm cannot determine if the underlying graph is bipartite.
 
 
 \section{Exercises}
@@ -190,47 +192,54 @@ We use the following definition in the exercises. A graph $G$ is \emph{homogeneo
     \begin{figure}
         \centering
         \includegraphics[page=\PCoverExThreeReg]{figs.pdf}
-        \caption{Graph $G$ and network $N'$ for Exercises \ref{ex:cover-three-reg1} and \ref{ex:cover-three-reg2}.}\label{fig:cover-ex-three-reg}
+        \caption{Graph $G$ and network $N'$ for Exercises \ref{ex:cover-three-reg1} and \ref{ex:cover-reg}b.}\label{fig:cover-ex-three-reg}
     \end{figure}
 \end{ex}
 
 \begin{ex}[homogeneity]
-    Assume that $G$ is homogeneous and it contains a node with degree at least two. Give several examples of graph problems that cannot be solved with any distributed algorithm in any family of graphs that contains $G$.
+    Assume that $G$ is homogeneous and it contains a node of degree at least two. Give several examples of graph problems that cannot be solved with any deterministic $\PN$-algorithm in any family of graphs that contains $G$.
 \end{ex}
 
-\begin{ex}[\Reg{4} and homogeneous]\label{ex:cover-four-reg}
-    Show that the graph illustrated in Figure~\ref{fig:cover-ex-four-reg} is homogeneous.
+\begin{ex}[regular and homogeneous]\label{ex:cover-reg}
+    Show that the following graphs are homogeneous:
+    \begin{subex}
+        \item the graph illustrated in Figure~\ref{fig:cover-ex-four-reg},
+        \item the graph illustrated in Figure~\ref{fig:cover-ex-three-reg}.
+    \end{subex}
 
-    \hint{Apply the result of Exercise~\ref{ex:2fact}.}
+    \hint{(a)~Apply the result of Exercise~\ref{ex:2fact}. (b)~Find a $1$-factor.}
 
     \begin{figure}
         \centering
         \includegraphics[page=\PCoverExFourReg]{figs.pdf}
-        \caption{Graph for Exercise~\ref{ex:cover-four-reg}.}\label{fig:cover-ex-four-reg}
+        \caption{Graph for Exercise~\ref{ex:cover-reg}a.}\label{fig:cover-ex-four-reg}
     \end{figure}
 \end{ex}
 
-\begin{ex}[\Reg{3} and homogeneous]\label{ex:cover-three-reg2}
-    Show that the graph illustrated in Figure~\ref{fig:cover-ex-three-reg} is homogeneous.
-
-    \hint{Find a $1$-factor.}
-\end{ex}
-
-\begin{ex}[even degrees]
-    Show that any $2k$-regular graph is homogeneous, for any positive integer $k$.
-\end{ex}
-
 \begin{ex}[complete graphs]\label{ex:cover-complete}
-    Show that any complete graph is homogeneous.
-
-    \hint{Show that if we have a complete graph with an even number of nodes, there is a $1$-factorisation.}
+    Recall that we say that a graph $G = (V,E)$ is \emph{complete} if for all nodes $u, v \in V$, $u \ne v$, there is an edge $\{u,v\} \in E$. Show that
+    \begin{subex}
+        \item any $2k$-regular graph is homogeneous,
+        \item any complete graph with $2k$ nodes has a $1$-factorisation,
+        \item any complete graph is homogeneous.
+    \end{subex}
 \end{ex}
 
-\begin{ex}[\Reg{3} and not homogeneous]\label{ex:cover-three-reg-b}
+\begin{ex}[dominating sets]\label{ex:domset}
+    Let $\Delta \in \{2,3,\dotsc\}$, let $\epsilon > 0$, and let $\calF$ consist of all graphs of maximum degree at most $\Delta$. Show that it is possible to find a \Apx{(\Delta+1)} of a minimum dominating set in constant time in family~$\calF$ with a deterministic $\PN$-algorithm. Show that it is not possible to find a \Apx{(\Delta+1-\epsilon)} with a deterministic $\PN$-algorithm.
+    
+    \hint{For the lower bound, use the result of Exercise~\ref{ex:cover-complete}c.}
+\end{ex}
+
+\begin{ex}[covers with covers]\label{ex:cover-cover}
+    What is the connection between covering maps and algorithm $\algo{VC3}$ of Section~\ref{sec:vc3}?
+\end{ex}
+
+\begin{exs}[\Reg{3} and not homogeneous]\label{ex:cover-three-reg-b}
     Consider the graph $G$ illustrated in Figure~\ref{fig:cover-ex-three-reg-b}.
     \begin{subex}
         \item Show that $G$ is not homogeneous.
-        \item Present a distributed algorithm $A$ with the following property: if $N$ is a simple port-numbered network that has $G$ as the underlying graph, and we execute $A$ on $N$, then $A$ stops and produces an output where at least one node outputs $0$ and at least one node outputs $1$.
+        \item Present a deterministic $\PN$-algorithm $A$ with the following property: if $N$ is a simple port-numbered network that has $G$ as the underlying graph, and we execute $A$ on $N$, then $A$ stops and produces an output where at least one node outputs $0$ and at least one node outputs $1$.
         \item Find a simple port-numbered network $N$ that has $G$ as the underlying graph, a port-numbered network $N'$, and a covering map $\phi$ from $N$ to $N'$ such that $N'$ has the smallest possible number of nodes.
     \end{subex}
     \hint{Show that if a \Reg{3} graph is homogeneous, then it has a $1$-factor. Show that $G$ does not have any $1$-factor.}
@@ -240,50 +249,26 @@ We use the following definition in the exercises. A graph $G$ is \emph{homogeneo
         \includegraphics[page=\PCoverExThreeRegB]{figs.pdf}
         \caption{Graph $G$ for Exercise~\ref{ex:cover-three-reg-b}.}\label{fig:cover-ex-three-reg-b}
     \end{figure}
-\end{ex}
+\end{exs}
 
-\begin{ex}[covers with covers]\label{ex:cover-cover}
-    What is the connection between covering maps and algorithm $\algo{VC3}$ of Section~\ref{sec:vc3}?
-\end{ex}
-
-\begin{ex}[covers and connectivity]
+\begin{exs}[covers and connectivity]
     Assume that $N = (V,P,p)$ and $N' = (V'\!,P'\!,p')$ are simple port-numbered networks such that there is a covering map $\phi$ from $N$ to $N'$. Let $G$ be the underlying graph of network $N$, and let $G'$ be the underlying graph of network~$N'$.
     \begin{subex}
         \item Is it possible that $G$ is connected and $G'$ is not connected?
         \item Is it possible that $G$ is not connected and $G'$ is connected?
     \end{subex}
-\end{ex}
+\end{exs}
 
-\begin{ex}[$k$-fold covers]
-    Assume that $N = (V,P,p)$ and $N' = (V'\!,P'\!,p')$ are simple port-numbered networks,
-    assume that the underlying graphs of $N$ and $N'$ are connected, and
+\begin{exs}[$k$-fold covers]
+    Let $N = (V,P,p)$ and $N' = (V'\!,P'\!,p')$ be simple port-numbered networks
+    such that the underlying graphs of $N$ and $N'$ are connected, and
     assume that $\phi\colon V \to V'$ is a covering map from $N$ to $N'$.
-
     Prove that there exists a positive integer $k$ such that the following holds:
     $|V| = k |V'|$ and for each node $v' \in V'$ we have $|\phi^{-1}(v')| = k$.
-
     Show that the claim does not necessarily hold if the underlying graphs are not connected.
-\end{ex}
-
-\begin{ex}[isomorphisms]
-    Construct port-numbered networks $N_1 \allowbreak = (V_1,P_1,p_1)$ and $N_2 = (V_2,P_2,p_2)$ such that $|V_1| = |V_2|$, both $N_1$ and $N_2$ are simple, the underlying graphs of $N_1$ and $N_2$ are connected, the underlying graphs of $N_1$ and $N_2$ are \emph{not} isomorphic, and the following holds:
-    \begin{subex}
-        \item There is a port-numbered network $N$, a covering map $\phi_1$ from $N_1$ to $N$, and a covering map $\phi_2$ from $N_2$ to $N$.
-        \item There is a port-numbered network $N'$, a covering map $\phi'_1$ from $N'$ to $N_1$, and a covering map $\phi'_2$ from $N'$ to $N_2$.
-    \end{subex}
-\end{ex}
-
-\begin{ex}[\Reg{3} graphs]
-    Is it possible to construct connected \Reg{3} graphs $G = (V,E)$ and $G' = (V'\!,E')$ with $|V| = |V'|$ such that the following holds: if $N$ and $N'$ are simple port-numbered networks that have $G$ and $G'$ as their underlying graphs, then there is no covering map from $N$ to $N'$?
-\end{ex}
-
-\begin{ex}[dominating sets]\label{ex:domset}
-    Let $\Delta \in \{2,3,\dotsc\}$, let $\epsilon > 0$, and let $\calF$ consist of all graphs of maximum degree at most $\Delta$. Show that it is possible to find a \Apx{(\Delta+1)} of a minimum dominating set in constant time in family~$\calF$. Show that it is not possible to find a \Apx{(\Delta+1-\epsilon)}.
-    
-    \hint{For the lower bound, use the result of Exercise~\ref{ex:cover-complete}.}
-\end{ex}
+\end{exs}
 
 
 \section{Bibliographic Notes}
 
-The use of covering maps in the context of distributed algorithm was introduced by Angluin~\cite{angluin80local}. The general idea of Exercise~\ref{ex:cover-three-reg-b} can be traced back to Yamashita and Kameda~\cite{yamashita96computing}, while the specific construction in Figure~\ref{fig:cover-ex-three-reg-b} is from Bondy and Murty's textbook~\cite[Figure~5.10]{bondy76graph-theory}. Exercises \ref{ex:cover-three-reg1}, \ref{ex:cover-four-reg}, \ref{ex:cover-complete}, and \ref{ex:domset} are inspired by our work \cite{suomela10eds,astrand10weakly-coloured}.
+The use of covering maps in the context of distributed algorithm was introduced by Angluin~\cite{angluin80local}. The general idea of Exercise~\ref{ex:cover-three-reg-b} can be traced back to Yamashita and Kameda~\cite{yamashita96computing}, while the specific construction in Figure~\ref{fig:cover-ex-three-reg-b} is from Bondy and Murty's textbook~\cite[Figure~5.10]{bondy76graph-theory}. Parts of exercises \ref{ex:cover-three-reg1}, \ref{ex:cover-reg}, \ref{ex:cover-complete}, and \ref{ex:domset} are inspired by our work \cite{suomela10eds,astrand10weakly-coloured}.

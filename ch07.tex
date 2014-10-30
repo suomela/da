@@ -197,7 +197,7 @@ Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algori
 \section{Exercises}
 
 \begin{ex}[larger palette]\label{ex:bdrand2delta}
-    We will design a graph-colouring algorithm $A$ that is a bit easier to understand and analyse than algorithm $\algo{BDRand}$. In algorithm $A$, each node $u$ proceeds as follows until it stops:
+    Assume that we have a graph without any isolated nodes. We will design a graph-colouring algorithm $A$ that is a bit easier to understand and analyse than algorithm $\algo{BDRand}$. In algorithm $A$, each node $u$ proceeds as follows until it stops:
     \begin{itemize}
         \item Node $u$ picks a colour $c(u)$ from $\{1,2,\dotsc,2d\}$ uniformly at random; here $d$ is the degree of node~$u$.
         \item Node $u$ compares its value $c(u)$ with the values of all neighbours. If $c(u)$ is different from the values of its neighbours, $u$ outputs $c(u)$ and stops.

@@ -185,7 +185,7 @@ We will prove that algorithm $\algo{BDRand}$ stops in $T(n)$ rounds. First, let 
 Now we are ready to analyse the time until all nodes stop.
 
 \begin{theorem}\label{thm:bdrand}
-    The probability that all nodes have not stopped after $T(n)$ rounds is at least $1 - 1/n^c$.
+    The probability that all nodes have stopped after $T(n)$ rounds is at least $1 - 1/n^c$.
 \end{theorem}
 \begin{proof}
     Follows from Lemma~\ref{lem:bdrand-onenode} by the union bound.

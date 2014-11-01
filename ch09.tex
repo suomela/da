@@ -133,16 +133,16 @@ To apply Theorem~\ref{thm:local-neighbourhood} in the $\LOCAL$ model, we need to
     \end{subex}
 \end{exs}
 
+\begin{figure}
+    \centering
+    \includegraphics[page=\PNeighEx]{figs.pdf}
+    \caption{Graphs for Exercise~\ref{ex:neigh-ex}.}\label{fig:neigh-ex}
+\end{figure}
+
 \begin{exs}[local indistinguishability]\label{ex:neigh-ex}
     Consider the graphs $G_1$ and $G_2$ illustrated in Figure~\ref{fig:neigh-ex}. Assume that $A$ is a deterministic $\PN$-algorithm with running time $2$. Show that $A$ cannot distinguish between nodes $v_1$ and $v_2$. That is, there are simple port-numbered networks $N_1$ and $N_2$ such that $N_i$ has $G_i$ as the underlying graph, and the output of $v_1$ in $N_1$ equals the output of $v_2$ in~$N_2$.
 
     \hint{We need to combine the results of Theorems \ref{thm:cover} and \ref{thm:local-neighbourhood}. For $i = 1,2$, construct a network $N'_i$ and a covering map $\phi_i$ from $N'_i$ to $N_i$. Let $v'_i \in \phi^{-1}_i(v_i)$. Show that $v'_1$ and $v'_2$ have isomorphic radius-$2$ neighbourhoods; hence $v'_1$ and $v'_2$ produce the same output. Then use the covering maps to argue that $v_1$ and $v_2$ also produce the same outputs. In the construction of $N'_1$, you will need to eliminate the $3$-cycle; otherwise $v'_1$ and $v'_2$ cannot have isomorphic neighbourhoods.}
-
-    \begin{figure}
-        \centering
-        \includegraphics[page=\PNeighEx]{figs.pdf}
-        \caption{Graphs for Exercise~\ref{ex:neigh-ex}.}\label{fig:neigh-ex}
-    \end{figure}
 \end{exs}
 
 

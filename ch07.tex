@@ -145,11 +145,11 @@ First, let us prove that with probability at least $1/4$, a running node succeed
     \]
     By the union bound, the probability that we conflict with some competitor is
     \[
-        \Pr\bigl[ c_t(u) = c_t(v) \text{ for some $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] \le \frac{k}{2f},
+        \Pr\bigl[ c_t(u) = c_t(v) \text{ for some $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] \le \frac{k}{2f},
     \]
     which is less than $1/2$ for all $k \ge 0$ and all $f \ge k+1$. Put otherwise, node $u$ will avoid conflicts with probability
     \[
-        \Pr\bigl[ c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] > \frac{1}{2}.
+        \Pr\bigl[ c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} \bigm| c_t(u) \ne \bot \bigr] > \frac{1}{2}.
     \]
 
     So far we have studied the conditional probabilities assuming that $u$ is active. This happens with probability
@@ -160,7 +160,7 @@ First, let us prove that with probability at least $1/4$, a running node succeed
     \[
     \begin{split}
         &\Pr\bigl[ c_{t+1}(u) \ne \bot] = \\
-        &\Pr\bigl[ c_t(u) \ne \bot \text { and } c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} ] > 1/4.
+        &\Pr\bigl[ c_t(u) \ne \bot \text { and } c_t(u) \ne c_t(v) \text{ for all $v \in K_t(u)$} ] > 1/4.
         \qedhere
     \end{split}
     \]
@@ -224,7 +224,7 @@ Note that $T(n) = O(\log n)$ for any constant $c$. Hence we conclude that algori
 \end{ex}
 
 \begin{ex}[max cut problem]
-    Let $G = (V,E)$ be a graph. A \emph{cut} is a function $f\colon V \to \{0,1\}$. An edge $\{u,v\} \in E$ is a \emph{cut edge} in $f$ if $f(u) \ne f(v)$. The \emph{size} of cut $f$ is the number of cut edges, and a \emph{maximum cut} is a cut of the largest possible size.
+    Let $G = (V,E)$ be a graph. A \emph{cut} is a function $f\colon V \to \{0,1\}$. An edge $\{u,v\} \in E$ is a \emph{cut edge} in $f$ if $f(u) \ne f(v)$. The \emph{size} of cut $f$ is the number of cut edges, and a \emph{maximum cut} is a cut of the largest possible size.
     \begin{subex}
         \item Prove: If $G = (V,E)$ is a bipartite graph, then a maximum cut has $|E|$ edges.
         \item Prove: If $G = (V,E)$ has a cut with $|E|$ edges, then $G$ is bipartite.

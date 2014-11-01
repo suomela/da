@@ -250,7 +250,7 @@ So far we have used unique identifiers to break symmetry. Another possibility is
 
 Let us formalise the algorithm that we sketched above; we will call this algorithm $\algo{P3CRand}$. Each node $u$ has a flag $s(u) \in \{0,1\}$ indicating whether it has stopped, and a variable $c(u) \in \{1,2,3\}$ that stores its current colour. If $s(u) = 1$, a node has stopped and its output is $c(u)$.
 
-In each step, each node $u$ with $s(u) = 0$ picks a new colour $c(u) \in \{1,2,3\}$ uniformly at random. Then each node sends its current colour $c(u)$ to its neighbours. If $c(u)$ is different from the colours of its neighbours, $u$ will set $s(u) = 1$ and stop; otherwise it tries again in the next round.
+In each step, each node $u$ with $s(u) = 0$ picks a new colour $c(u) \in \{1,2,3\}$ uniformly at random. Then each node sends its current colour $c(u)$ to its neighbours. If $c(u)$ is different from the colours of its neighbours, $u$ will set $s(u) = 1$ and stop; otherwise it tries again in the next round.
 
 
 \subsection{Analysis}

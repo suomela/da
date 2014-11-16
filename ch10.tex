@@ -227,16 +227,34 @@ Now Ramsey's theorem follows by induction on $k$: the base case is Lemma~\ref{le
 \section{Exercises}
 
 \begin{ex}
-    Prove that $R_c(n;1) = c(n-1)+1$.
+    Prove that $R_c(n;1) = c\cdot(n-1)+1$.
     
-    \hint{The proof of Lemma~\ref{lem:pigeonhole} shows that \[R_c(n;1) \le c(n-1)+1.\] You need to show that \[R_c(n;1) > c(n-\nobreak 1).\]}
+    \hint{The proof of Lemma~\ref{lem:pigeonhole} shows that \[R_c(n;1) \le c\cdot(n-1)+1.\] You need to show that \[R_c(n;1) > c\cdot(n-1).\]}
 \end{ex}
 
 \begin{ex}
-    Prove that $R_2(3;2) = 6$.
+    Prove that $R_2(3;2) \ge 6$.
+
+    \hint{Prove that $R_2(3;2) > 5$. That is, show that there is a labelling of $2$-subsets of a base set of size $5$ such that there is no monocromatic subset of size $3$.}
 \end{ex}
+
+\begin{ex}
+    Prove that $R_2(3;2) \le 6$. Together with the previous exercise, this will show that $R_2(3;2) = 6$.
+\end{ex}
+
+\begin{ex}
+    Prove a non-trivial lower bound on $R_2(4;2)$. For example, show that $R_2(4;2) \ge 10$.
+\end{ex}
+
+\begin{ex}
+    Prove some concrete upper bound on $R_2(4;2)$. For example, show that $R_2(4;2) \le 100$.
+\end{ex}
+
+\begin{exs}
+    Find the exact value of $R_2(4;2)$.
+\end{exs}
 
 
 \section{Bibliographic Notes}
 
-Ramsey's theorem dates back to 1930s~\cite{ramsey30problem}; our proof follows Ne{\v s}et{\v r}il~\cite{nesetril95ramsey}, and the notation is from Radziszowski~\cite{radziszowski11ramsey}.
+Ramsey's theorem dates back to 1930s~\cite{ramsey30problem}; our proof follows Ne{\v s}et{\v r}il \cite{nesetril95ramsey}, and the notation is from Radziszowski~\cite{radziszowski11ramsey}.

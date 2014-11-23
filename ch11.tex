@@ -1,8 +1,6 @@
 %!TEX root = da-dev.tex
 
-In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following fact: in the $\LOCAL$ model, it is not possible to find a $3$-colouring of a directed cycle in $O(1)$ rounds. In this chapter, we will give another proof for the same claim, this time with the help of Ramsey's theorem (recall Chapter~\ref{ch:ramsey}).
-
-In essence, Ramsey's theorem will show that for any $O(1)$-time algorithm $A$, there is a graph $G$ and an assignment of unique identifiers so that $A$ will produce a constant value in some part of $G$. Naturally, such algorithms cannot find e.g.\ vertex colourings, maximal independent sets, or maximal matchings. In the exercises, we will see plenty of applications of Ramsey's theorem in this context.
+In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following result: in the $\LOCAL$ model, it is not possible to find a $3$-colouring of a directed cycle in $O(1)$ rounds. In this chapter, we will give another proof of the same result, this time with the help of Ramsey's theorem (recall Chapter~\ref{ch:ramsey}). In the exercises, we will see plenty of other applications of Ramsey's theorem in this context, some of which would be rather difficult to prove with the technique that we used in Section~\ref{sec:intro-neg-logstar}.
 
 
 \section{Claim}
@@ -10,7 +8,7 @@ In essence, Ramsey's theorem will show that for any $O(1)$-time algorithm $A$, t
 We will prove the following theorem.
 
 \begin{theorem}\label{thm:colour-lb}
-    Assume that $A$ is a distributed algorithm for the model of unique identifiers. Assume that there is a constant $T \in \NN$ such that $A$ stops in time $T$ in any directed cycle $G = (V,E)$, and outputs a labelling $g\colon V \to \{1,2,3\}$. Then there exists a directed cycle $G$ such that if we execute $A$ on $G$, the output of $A$ is not a proper vertex colouring of~$G$.
+    Assume that $A$ is a distributed algorithm for the model of unique identifiers. Assume that there is a constant $T \in \NN$ such that $A$ stops in time $T$ in any directed cycle $G = (V,E)$, and outputs a labelling $g\colon V \to \{1,2,3\}$. Then there exists a directed cycle $G$ and an assignment of unique identifiers such that if we execute $A$ on $G$, the output of $A$ is not a proper vertex colouring of~$G$.
 \end{theorem}
 
 
@@ -48,7 +46,7 @@ Informally, $G_X$ is constructed as follows: first take all nodes of $X$, in the
 
 \section{Labelling}
 
-If $B \subseteq V$ is a $k$-subset, then we define that the \emph{internal node} $i(B)$ is the median of the set $B$. Put otherwise, $i(B)$ is the unique node in $B$ that is not among the $T$ smallest nodes of $B$, nor among the $T$ largest nodes of $B$.
+If $B \subseteq V$ is a $k$-subset, then we define that the \emph{internal node} $i(B)$ is the median of the set $B$. Put otherwise, $i(B)$ is the unique node in $B$ that is not among the $T$ smallest nodes of $B$, nor among the $T$ largest nodes of~$B$.
 
 We will use algorithm $A$ to construct a $c$-labelling $f$ of $V^{(k)}$ as follows. For each $k$-subsets $B \subseteq V$, we construct the cycle $G_B$, execute $A$ on $G_B$, and define that $f(B)$ is the output of node $i(B)$ in $G_B$. See Figure~\ref{fig:colour-lb} for an illustration.
 
@@ -89,11 +87,7 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
         \item $\Input_A = \{1,2,\dotsc,c\}$ for a constant $c = O(1)$,
         \item the running time of $A$ is bounded by a constant $T = O(1)$.
     \end{itemize}
-    Prove: There exists a port-numbered network $N=(V,P,p)$ and an assignment of unique identifiers in $N$ such that
-    \begin{itemize}
-        \item the underlying graph of $N$ is a cycle $G$ with diameter larger than~$\ell$,
-        \item there is a node $v$ in $G$ such that all nodes of $G$ within distance $\ell$ from $v$ output the same value.
-    \end{itemize}
+    Prove: There exists a cycle $G$ of diameter larger than $\ell$, and an assignment of unique identifiers in $G$ such that for some node $v$, all nodes in the radius-$\ell$ neighbourhood of $v$ output the same value.
 \end{ex}
 
 \begin{ex}[impossibility in cycles]\label{ex:ramsey-cycle-app}
@@ -119,7 +113,7 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
     Using the result of Exercise~\ref{ex:ramsey-highdeg}, generalise the result of Exercise~\ref{ex:ramsey-cycle-app} to $4$-regular graphs.
 \end{ex}
 
-\begin{ex}[impossibility in $3$-regular graphs]\label{ex:ramsey-highdeg}
+\begin{ex}[impossibility in $3$-regular graphs]
     Prove that there is no constant-time algorithm that finds a vertex colouring with $O(1)$ colours in the $\LOCAL$ model in the family of $3$-regular graphs.
 
     \hint{Consider a ladder graph that consists of two $n$-cycles connected by $n$ rungs.}

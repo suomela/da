@@ -1,41 +1,20 @@
 %!TEX root = da-dev.tex
 
-\section{Introduction}
+In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following fact: in the $\LOCAL$ model, it is not possible to find a $3$-colouring of a directed cycle in $O(1)$ rounds. In this chapter, we will give another proof for the same claim, this time with the help of Ramsey's theorem (recall Chapter~\ref{ch:ramsey}).
 
-As a running example in this chapter, we will use the following task: find a $3$-colouring of a directed cycle in the model of unique identifiers.
-
-In a \emph{directed cycle}, we assume that we are given a graph $G = (V,E)$ that is an orientation of a cycle graph. In particular, we assume that each node $v \in V$ has
-\[
-    \outdegree_G(v) = \indegree_G(v) = 1,
-\]
-that is, there is precisely one incoming edge and one outgoing edge. Without loss of generality, we will assume that the incoming edge is connected to port number 1 and the outgoing edge is connected to port number 2 in each node \mydash if this was not the case, each node could renumber its ports locally. See Figure~\ref{fig:directed-cycle} for an illustration.
-
-\begin{figure}
-    \centering
-    \includegraphics[page=\PDirectedCycle]{figs.pdf}
-    \caption{A directed cycle with unique identifiers.}\label{fig:directed-cycle}
-\end{figure}
-
-Clearly, directed cycles are a special case of directed pseudoforests, and we already know how to find a $3$-colouring of a directed pseudoforest in the model of unique identifiers. Indeed, there are several possible strategies.
-\begin{itemize}
-    \item The greedy algorithm is simple but slow; in the case of directed cycles, it requires $\Omega(n)$ rounds in the worst case.
-    \item Algorithm $\algo{DPBit}$ is much faster\mydash as we saw in Exercise~\ref{ex:logstar}, algorithm $\algo{DPBit}$ finds a $6$-colouring in $O(\log^* n)$ rounds, and we can then use the greedy algorithm to reduce the number of colours from $6$ to $3$ in constant time.
-    \item Algorithm $\algo{DPBit}$ is in no way unique, and there are many alternative strategies that we can use to $3$-colour a directed pseudoforest. Exercises \ref{ex:dpbit-base} and \ref{ex:dpset} explore some possible ideas.
-\end{itemize}
-Moreover, directed cycles are a simple special case of directed pseudoforests, and whenever we have an algorithm that finds a $3$-colouring in any directed pseudoforest, we can construct a slightly faster algorithm that finds a $3$-colouring in directed cycles\mydash for example, we can easily speed up algorithm $\algo{DPGreedy}$ by a factor of two in directed cycles, as the construction of intermediate colouring $s$ becomes unnecessary.
-
-However, no matter what combination of algorithm ideas we use, it appears that the worst-case running time of the algorithm is always $\Omega(\log^* n)$. That is, the running time \emph{slightly} increases as the number of nodes $n$ increases.
-
-In this chapter we will prove that this is indeed necessary. We show that there is no $O(1)$-time algorithm that $3$-colours any directed cycle in the model of unique identifiers.
+In essence, Ramsey's theorem will show that for any $O(1)$-time algorithm $A$, there is a graph $G$ and an assignment of unique identifiers so that $A$ will produce a constant value in some part of $G$. Naturally, such algorithms cannot find e.g.\ vertex colourings, maximal independent sets, or maximal matchings. In the exercises, we will see plenty of applications of Ramsey's theorem in this context.
 
 
-\section{Speed Limits}\label{sec:speed-limits}
+\section{Claim}
 
-We will now use Ramsey's theorem to prove that directed cycles cannot be $3$-coloured in constant time.
+We will prove the following theorem.
 
 \begin{theorem}\label{thm:colour-lb}
     Assume that $A$ is a distributed algorithm for the model of unique identifiers. Assume that there is a constant $T \in \NN$ such that $A$ stops in time $T$ in any directed cycle $G = (V,E)$, and outputs a labelling $g\colon V \to \{1,2,3\}$. Then there exists a directed cycle $G$ such that if we execute $A$ on $G$, the output of $A$ is not a proper vertex colouring of~$G$.
 \end{theorem}
+
+
+\section{Preliminaries}
 
 To prove Theorem~\ref{thm:colour-lb}, let $n = 2T+2$, $k = 2T+1$, and $c = 3$. By Ramsey's theorem, $R_c(n;k)$ is finite. Choose any $N \ge R_c(n;k)$.
 
@@ -43,7 +22,8 @@ We will construct a directed cycle $G = (V,E)$ with $N$ nodes. In our constructi
 
 With the set of nodes fixed, we proceed to define the set of edges. In essence, we only need to specify in which order the nodes are placed along the cycle.
 
-\subsection{Subsets and Cycles}
+
+\section{Subsets and Cycles}
 
 For each subset $X \subseteq V$, we define a directed cycle $G_X = (V,E_X)$ as follows; see Figure~\ref{fig:subset-cycle}. Let $\ell = |X|$. Label the nodes by $x_1, x_2, \dotsc, x_N$ such that
 \begin{align*}
@@ -66,7 +46,7 @@ Then choose the edges
 Informally, $G_X$ is constructed as follows: first take all nodes of $X$, in the order of increasing identifiers, and then take all other nodes, again in the order of increasing identifiers.
 
 
-\subsection{Labelling}
+\section{Labelling}
 
 If $B \subseteq V$ is a $k$-subset, then we define that the \emph{internal node} $i(B)$ is the median of the set $B$. Put otherwise, $i(B)$ is the unique node in $B$ that is not among the $T$ smallest nodes of $B$, nor among the $T$ largest nodes of $B$.
 
@@ -79,7 +59,7 @@ We will use algorithm $A$ to construct a $c$-labelling $f$ of $V^{(k)}$ as follo
 \end{figure}
 
 
-\subsection{Monochromatic Subsets}
+\section{Monochromatic Subsets}
 
 We have constructed a certain $c$-labelling $f$. As $N$ is sufficiently large, there exists an $n$-subset $X \subseteq V$ that is monochromatic in~$f$. Let us label the nodes of $X$ by
 \[

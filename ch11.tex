@@ -1,6 +1,6 @@
 %!TEX root = da-dev.tex
 
-In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following result: in the $\LOCAL$ model, it is not possible to find a $3$-colouring of a directed cycle in $O(1)$ rounds. In this chapter, we will give another proof of the same result, this time with the help of Ramsey's theorem (recall Chapter~\ref{ch:ramsey}). In the exercises, we will see plenty of other applications of Ramsey's theorem in this context, some of which would be rather difficult to prove with the technique that we used in Section~\ref{sec:intro-neg-logstar}.
+In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following result: in the $\LOCAL$ model, it is not possible to find a $3$-colouring of a directed cycle in $O(1)$ rounds with deterministic algorithms. In this chapter, we will give another proof of the same result, this time with the help of Ramsey's theorem (recall Chapter~\ref{ch:ramsey}). In the exercises, we will see plenty of other applications of Ramsey's theorem in this context, some of which would be rather difficult to prove with the technique that we used in Section~\ref{sec:intro-neg-logstar}.
 
 
 \section{Claim}
@@ -8,7 +8,7 @@ In Section~\ref{sec:intro-neg-logstar}, we gave a proof of the following result:
 We will prove the following theorem.
 
 \begin{theorem}\label{thm:colour-lb}
-    Assume that $A$ is a distributed algorithm for the model of unique identifiers. Assume that there is a constant $T \in \NN$ such that $A$ stops in time $T$ in any directed cycle $G = (V,E)$, and outputs a labelling $g\colon V \to \{1,2,3\}$. Then there exists a directed cycle $G$ and an assignment of unique identifiers such that if we execute $A$ on $G$, the output of $A$ is not a proper vertex colouring of~$G$.
+    Assume that $A$ is a deterministic distributed algorithm for the $\LOCAL$ model. Assume that there is a constant $T \in \NN$ such that $A$ stops in time $T$ in any directed cycle $G = (V,E)$, and outputs a labelling $g\colon V \to \{1,2,3\}$. Then there exists a directed cycle $G$ and an assignment of unique identifiers such that if we execute $A$ on $G$, the output of $A$ is not a proper vertex colouring of~$G$.
 \end{theorem}
 
 
@@ -82,7 +82,7 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
 \section{Exercises}
 
 \begin{ex}[Ramsey and cycles]\label{ex:ramsey-cycle}
-    You are given a constant $\ell = O(1)$. Let $A$ be any distributed algorithm in the $\LOCAL$ model such that:
+    You are given a constant $\ell = O(1)$. Let $A$ be any deterministic distributed algorithm in the $\LOCAL$ model such that:
     \begin{itemize}[noitemsep]
         \item $\Input_A = \{1,2,\dotsc,c\}$ for a constant $c = O(1)$,
         \item the running time of $A$ is bounded by a constant $T = O(1)$.
@@ -91,7 +91,7 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
 \end{ex}
 
 \begin{ex}[impossibility in cycles]\label{ex:ramsey-cycle-app}
-    Use the result of Exercise~\ref{ex:ramsey-cycle} to prove that there is no constant-time algorithm that solves any of the following problems in the $\LOCAL$ model in the family of cycle graphs:
+    Use the result of Exercise~\ref{ex:ramsey-cycle} to prove that there is no deterministic constant-time algorithm that solves any of the following problems in the $\LOCAL$ model in the family of cycle graphs:
     \begin{subex}[noitemsep]
         \item Vertex colouring with $O(1)$ colours.
         \item Edge colouring with $O(1)$ colours.
@@ -114,17 +114,17 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
 \end{ex}
 
 \begin{ex}[impossibility in $3$-regular graphs]
-    Prove that there is no constant-time algorithm that finds a vertex colouring with $O(1)$ colours in the $\LOCAL$ model in the family of $3$-regular graphs.
+    Prove that there is no deterministic constant-time algorithm that finds a vertex colouring with $O(1)$ colours in the $\LOCAL$ model in the family of $3$-regular graphs.
 
     \hint{Consider a ladder graph that consists of two $n$-cycles connected by $n$ rungs.}
 \end{ex}
 
 \begin{exs}[positive results in $3$-regular graphs]\label{ex:weak-col}
-    Prove that there is a constant-time algorithm that finds a weak colouring with $O(1)$ colours in the $\LOCAL$ model in the family of $3$-regular graphs.
+    Prove that there is a deterministic constant-time algorithm that finds a weak colouring with $O(1)$ colours in the $\LOCAL$ model in the family of $3$-regular graphs.
 \end{exs}
 
 \begin{exs}[impossibility of approximations]\label{ex:is-apx-lb}
-    Prove that there is no constant-time algorithm that finds an \Apx{O(1)} of a maximum independent set in any cycle in the $\LOCAL$ model.
+    Prove that there is no deterministic constant-time algorithm that finds an \Apx{O(1)} of a maximum independent set in any cycle in the $\LOCAL$ model.
     
     \hint{You will need several applications of Ramsey's theorem. First, choose a (very large) space of unique identifiers. Then apply Ramsey's theorem to find a large monochromatic subset, remove the set, and repeat. This way you have partitioned \emph{almost} all identifiers into monochromatic subsets. Each monochromatic subset is used to construct a fragment of the cycle.}
 \end{exs}

@@ -26,9 +26,9 @@ With the set of nodes fixed, we proceed to define the set of edges. In essence, 
 For each subset $X \subseteq V$, we define a directed cycle $G_X = (V,E_X)$ as follows; see Figure~\ref{fig:subset-cycle}. Let $\ell = |X|$. Label the nodes by $x_1, x_2, \dotsc, x_N$ such that
 \begin{align*}
     X &= \Set{ x_1, x_2, \dotsc, x_{\ell} }, \\
-    V \setminus X &= \Set{ x_{\ell+1}, x_{\ell+1}, \dotsc, x_N }, \\
+    V \setminus X &= \Set{ x_{\ell+1}, x_{\ell+2}, \dotsc, x_N }, \\
     x_1 &< x_2 < \dotsb < x_{\ell}, \\
-    x_{\ell+1} &< x_{\ell+1} < \dotsb < x_N.
+    x_{\ell+1} &< x_{\ell+2} < \dotsb < x_N.
 \end{align*}
 Then choose the edges
 \[

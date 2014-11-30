@@ -84,7 +84,66 @@ We have also encountered two concepts that go beyond elementary graph theory. Th
 
 \section{What Else Exists?}
 
-FIXME
+Distributed computing is a vast topic and we have merely scratched the surface of it so far. This book has focused on what is often known as \emph{distributed graph algorithms}, to distinguish it from many other areas of distributed computing, and we have focused on the most basic models of distributed algorithms. There are many questions related to distributed computing that we have not addressed at all; here are a few examples.
+
+
+\paragraph{Fault-tolerant Algorithms.}
+
+The nodes may fail, and the communication links can be unreliable. We may e.g.\ want to tolerate \emph{Byzantine failures}, in which a small number of nodes may be controlled by an adversary. Or we may want to design \emph{self-stabilising algorithms}, in which the algorithm must work correctly, no matter what are the initial states of the nodes.
+
+
+\paragraph{Asynchronous Algorithms.}
+
+There is no global clock that guarantees that all nodes take steps simultaneously in parallel. Communication links may have unpredictable delays. This is not a major issue if we do not need to tolerate failures---we can apply efficient \emph{synchronisers}. However, if the nodes may fail, it becomes impossible to distinguish between e.g.\ a node behind a very slow links and a node that has stopped responding.
+
+
+\paragraph{Shared Memory.}
+
+Our model of computing can be seen as a \emph{message-passing system}: nodes send messages (data packets) to each other. A commonly studied alternative is a system with \emph{shared memory}: each node has a shared register, and the nodes can communicate with each other by reading and writing the shared registers.
+
+
+\paragraph{Physical Models.}
+
+We have pretended that computers are connected to each other by physical wires. If we connect the nodes by wireless links, the physical properties of \emph{radio waves} (e.g., reflection, refraction, multipath propagation, attenuation, interference, and noise) give rise to new models and new algorithmic challenges. The \emph{physical locations} of the nodes as well as the properties of the environment become relevant.
+
+
+\paragraph{Robot Navigation.}
+
+In our model, nodes are active computational entities, and they cannot move around in the network\mydash they can only send information around in the network. Another possibility is to study computation with autonomous agents (``robots'') that can move around in the network. Typically, nodes are then passive entities, and the robots can communicate with each other by e.g.\ leaving some tokens in the nodes.
+
+
+\paragraph{Nondeterministic Algorithms.}
+
+Just like we can study nondeterministic Turing machines, we can study nondeterministic distributed algorithms. In this setting, it is sufficient that there exists a \emph{proof} that can be verified efficiently in a distributed setting; we do not need to construct the proof efficiently.
+
+
+\paragraph{Complexity Measures.}
+
+For us the main complexity measure has been the number of synchronous communication rounds. Many other possibilities exist: e.g., how many bits of memory we need per node, and how many messages do we need to send in total?
+
+
+\paragraph{High-Performance Computing.}
+
+For the general public, distributed computing often refers to large-scale high-performance computing in a computer network. This includes scientific computing on grids and clusters, and volunteer computing projects. Here a key question is how to partition the computation and the data set efficiently among multiple computers; this is closely related to similar questions in traditional \emph{parallel computing}.
+
+
+\paragraph{Practice of Networking.}
+
+This book has focused on the theory of distributed algorithms. There is of course also the practical side. We need physical hardware to run our algorithms, and we need modulation techniques to transmit digital information over communication links. We need standards, communication protocols to make things work together, and good software engineering practices, good programming languages, and reusable libraries to keep the task of implementing algorithms manageable. In the real world, we will also need to worry about privacy and security.
+
+
+\section{Research in Distributed Algorithms}
+
+There are two main conferences related to the theory of distributed computing:
+\begin{itemize}
+    \item PODC, Symposium on Principles of Distributed Computing
+
+    \url{http://www.podc.org/}
+    \item DISC, International Symposium on Distributed Computing
+
+    \url{http://www.disc-conference.org/}
+\end{itemize}
+The proceedings of the recent editions of these conferences provide a good overview of the state-of-the-art of this research area.
 
 
 \section{Exercises}

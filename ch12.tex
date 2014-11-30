@@ -1,19 +1,17 @@
 %!TEX root = da-screen.tex
 
-We have reached the end of this book. In this chapter we will review what we have learned and have a brief look at what else is there in the field of distributed algorithms. The exercise form a small project in which we will analyse one graph problem\mydash edge dominating sets\mydash from the perspective of distributed algorithms.
+We have reached the end of this book. In this chapter we will review what we have learned, and we will also have a brief look at what else is there in the field of distributed algorithms. The exercises of this chapter form a small project in which we will analyse one graph problem\mydash edge dominating sets\mydash from the perspective of distributed algorithms, and apply many of the techniques that we have learned in this book.
 
 
 \section{What Have We Learned?}
 
-\paragraph{High-Level Skills.}
-
-By now, you have learned a new mindset\mydash an entirely new way to think about computation. You can reason about distributed systems, which has many challenges that we do not usually encounter in basic courses on algorithms:
+By now, you have learned a new mindset\mydash an entirely new way to think about computation. You can reason about distributed systems, which requires you to take into account many challenges that we do not encounter in basic courses on algorithms and data structures:
 \begin{itemize}
-    \item You can deal with \emph{unknown systems}: you can design algorithms that work correctly in any computer network, no matter how the computers are connected together, no matter how we choose the port numbers, and no matter how we choose the unique identifiers.
-    \item You can deal with \emph{partial information}: you can solve many problems in sublinear time, so that each node only sees a small part of the network, and nevertheless the nodes produce outputs that are globally consistent.
-    \item You can deal with \emph{parallelism}: fast distributed algorithms are also necessarily highly parallel algorithms, in which a large number of nodes operate simultaneously.
+    \item Dealing with \emph{unknown systems}: you can design algorithms that work correctly in any computer network, no matter how the computers are connected together, no matter how we choose the port numbers, and no matter how we choose the unique identifiers.
+    \item Dealing with \emph{partial information}: you can solve graph problems in sublinear time, so that each node only sees a small part of the network, and nevertheless the nodes produce outputs that are globally consistent.
+    \item Dealing with \emph{parallelism}: you can design highly parallelised algorithms, in which several nodes take steps simultaneously.
 \end{itemize}
-These skills are in no way specific to distributed algorithms\mydash they play a key role also in many other areas of modern computer science. For example, dealing with unknown systems is necessary if we want to design \emph{fault-tolerant} algorithms, dealing with partial information is the key element in e.g.\ \emph{online algorithms} and \emph{streaming algorithms}, and parallelism is of course the cornerstone of any algorithm that makes the most out of modern \emph{multicore CPUs}, \emph{GPUs}, and \emph{computing clusters}.
+These skills are in no way specific to distributed algorithms\mydash they play a key role also in many other areas of modern computer science. For example, dealing with unknown systems is necessary if we want to design \emph{fault-tolerant} algorithms, dealing with partial information is the key element in e.g.\ \emph{online algorithms} and \emph{streaming algorithms}, and parallelism is the cornerstone of any algorithm that makes the most out of modern \emph{multicore CPUs}, \emph{GPUs}, and \emph{computing clusters}.
 
 
 \paragraph{Learning Objectives.}
@@ -38,7 +36,7 @@ As the title of this book suggests, by now you should know precisely what is a \
 
 You have now learned how to \emph{design} a distributed algorithm in each of these models, how to \emph{prove} that the algorithm is correct, and how to \emph{analyse} the running time of the algorithm.
 
-We have seen many concrete examples of distributed algorithms, and in the exercises you have designed many more. At least, you should be familiar with the following algorithms that serve as building blocks:
+We have seen many concrete examples of distributed algorithms. At least, you should be familiar with the following key examples:
 \begin{itemize}
     \item Colouring paths in $O(\log^* n)$ rounds with deterministic algorithms in the $\LOCAL$ model (Section~\ref{sec:algo-p3cbit}).
     \item Colouring graphs in $O(\log n)$ rounds w.h.p.\ with randomised algorithms in the $\LOCAL$ model (Section~\ref{sec:bdrand}).
@@ -48,11 +46,11 @@ We have seen many concrete examples of distributed algorithms, and in the exerci
 \end{itemize}
 These algorithm highlight the key aspect of the models of computing, they illustrate important techniques for algorithm design and analysis, and they also serve as key building blocks that can be used as subroutines in many other algorithms.
 
-Indeed, by far the most important algorithm design technique is \emph{reductions}. To solve a problem $X$, you first show that given a solution to another problem $Y$, you can easily solve problem $X$, too. Then it is sufficient to find an algorithm for solving problem $Y$; in many cases, you can simply reuse an existing algorithm.
+The use of other algorithms as subroutines is one of the key algorithm design techniques in distributed computing. More formally, we employ \emph{reductions}: to solve a problem $X$, you first show that given a solution to another problem $Y$, you can easily solve problem $X$, too. Then it is sufficient to find an algorithm for solving problem $Y$; in many cases, you can simply reuse an existing algorithm.
 
-\emph{Graph colouring} is a prime example of the power of reductions: given an efficient distributed algorithm for graph colouring, we can also solve many other problems efficiently. In algorithm design, graph colouring helps with \emph{symmetry breaking} and a graph colouring makes it easier to \emph{coordinate} or \emph{schedule} the activities of the nodes in a conflict-free manner\mydash for example, we can proceed by colour classes, so that in step $i$ nodes of colour $i$ are active.
+\emph{Graph colouring} is a prime example of the power of reductions: given an efficient distributed algorithm for graph colouring, we can also solve many other problems efficiently. A graph colouring helps with \emph{symmetry breaking} and a graph colouring makes it easier to \emph{coordinate} or \emph{schedule} the activities of the nodes in a conflict-free manner\mydash for example, we can proceed by colour classes, so that in step $i$ nodes of colour $i$ are active.
 
-In the $\PN$ model, it is impossible to break symmetry with deterministic algorithms. Nevertheless, we can still use graph colourings in algorithm design: recall the vertex cover algorithm from Section~\ref{sec:vc3}, in which we were able to produce a $2$-colouring out of thin air, and exploit it in algorithm design.
+Note that in the $\PN$ model, it is impossible to find a graph colouring with a deterministic algorithm. Nevertheless, we can still use graph colourings in algorithm design even in this model: recall the vertex cover algorithm from Section~\ref{sec:vc3}, in which we were able to produce a $2$-colouring out of thin air, and exploit it in algorithm design.
 
 
 \paragraph{Objective 3: Lower Bounds.}
@@ -62,12 +60,12 @@ You can now also prove what \emph{cannot be computed} with distributed algorithm
     \item Covering maps can be used to show that many problems cannot be solved \emph{at all} in the $\PN$ model (Chapter~\ref{ch:covering-map}).
     \item Local neighbourhoods can be used to show that many problems cannot be solved \emph{efficiently} in any of the models (Chapters \ref{ch:intro-neg} and~\ref{ch:local-neighbourhoods}).
 \end{itemize}
-For many problems these two basic tools\mydash together with a bit of creativity in how to apply them\mydash are all that is needed. However, there are some problems that need a bit more heavyweight machinery. The key example is, again, graph colouring.
+For many problems these two basic tools\mydash together with a bit of creativity in how to apply them\mydash are all that is needed. However, there are some problems that need a more heavyweight machinery. The key example is, again, graph colouring.
 
 While it is possible to, e.g., find a $3$-colouring of a path in $O(\log^* n)$ rounds with deterministic $\LOCAL$-algorithms, this is not possible in $O(1)$ rounds. We have now seen \emph{two} different ways to prove this result; hopefully you are comfortable with at least one of the proofs:
 \begin{enumerate}
-    \item The fairly elementary but a bit technical proof that we presented in Section~\ref{sec:intro-neg-logstar}. This argument actually gives a tight result, showing that the problem cannot be solved in $o(\log^* n)$ rounds.
-    \item The proof that uses Ramsey's theorem from Chapter~\ref{ch:ramsey-app}. Here the proof itself is fairly easy, and it can be easily generalised to many other results. Unfortunately, it relies on Ramsey's theorem, which is again a bit tedious to prove. Moreover, our proof is a bit sloppy; we only showed that $O(1)$ rounds is not sufficient. To prove the stronger claim that $o(\log^* n)$ rounds is not sufficient requires more work.
+    \item Section~\ref{sec:intro-neg-logstar} gave a proof that is self-contained but a bit technical. This proof gives a tight result, showing that the problem cannot be solved in $o(\log^* n)$ rounds.
+    \item Chapter~\ref{ch:ramsey-app} showed how to prove the claim using Ramsey's theorem. The proof itself is fairly simple, and it can be easily generalised to many other results. Unfortunately, it relies on Ramsey's theorem, which is a bit tedious to prove. Moreover, our proof is a bit sloppy; we only showed that $O(1)$ rounds is not sufficient. To prove the stronger claim that $o(\log^* n)$ rounds is not sufficient requires more work if we want to use Ramsey's theorem.
 \end{enumerate}
 
 
@@ -75,26 +73,26 @@ While it is possible to, e.g., find a $3$-colouring of a path in $O(\log^* n)$ r
 
 The theory of distributed algorithms often relies heavily on graph theory. We use graph theory to define the problems that we want to solve, we use graph theory to define the model of computing that we use, and we also use graph theory in algorithm design and analysis, as well as in lower bound proofs.
 
-By now you should be familiar with the standard graph-theoretic terms that we introduced in Chapter~\ref{ch:graphs}, and you should be able to prove simple graph-theoretic results that e.g.\ show connections between different graph problems. This is after all what we will often need in reductions if we want to apply existing distributed algorithms in order to solve new problems.
+By now you should be familiar with the standard graph-theoretic terms that we introduced in Chapter~\ref{ch:graphs}, and you should be able to prove simple graph-theoretic results that e.g.\ show connections between different graph problems. This is often needed in reductions if we want to apply existing distributed algorithms in order to solve new problems.
 
-A typical example of a graph-theoretic statement that you should be able to easily prove is the connection between maximal matchings and approximate vertex covers (Exercise~\ref{ex:mmvc}). This immediately gives you a distributed algorithm that finds a \Apx{2} of a minimum vertex cover, provided that you have a distributed algorithm that finds a maximal matching\mydash and to find maximal matchings, you can once again resort to graph colourings. This kind of results can be of course used directly also outside the area of distributed algorithms.
+A typical example of a graph-theoretic statement that you should be able to easily prove is the connection between maximal matchings and approximate vertex covers (Exercise~\ref{ex:mmvc}). This immediately gives you a distributed algorithm that finds a \Apx{2} of a minimum vertex cover, provided that you have a distributed algorithm that finds a maximal matching\mydash and to find maximal matchings, you can once again resort to graph colourings. Such results have direct applications also outside the area of distributed algorithms.
 
 We have also encountered two concepts that go beyond elementary graph theory. The first one is the concept of covering maps (Chapter~\ref{ch:covering-map}); while we studied covering maps in the context of port-numbered networks, an analogous concept with similar properties can be defined for e.g.\ undirected or directed graphs. The second one is Ramsey's theorem; we presented Ramsey's theorem in a very general form, but the special case of $k = 2$ has many direct graph-theoretic applications. While the proof of Ramsey's theorem is a bit tedious in the general case, you should be able to prove it without much difficulty e.g.\ for the special case of $c = 2$ and $k = 2$.
 
 
 \section{What Else Exists?}
 
-Distributed computing is a vast topic and we have merely scratched the surface of it so far. This book has focused on what is often known as \emph{distributed graph algorithms}, to distinguish it from many other areas of distributed computing, and we have focused on the most basic models of distributed algorithms. There are many questions related to distributed computing that we have not addressed at all; here are a few examples.
+Distributed computing is a vast topic and we have merely scratched the surface so far. This book has focused on what is often known as \emph{distributed graph algorithms}, and we have only focused on the most basic models of distributed graph algorithms. There are many questions related to distributed computing that we have not addressed at all; here are a few examples.
 
 
 \paragraph{Fault-tolerant Algorithms.}
 
-The nodes may fail, and the communication links can be unreliable. We may e.g.\ want to tolerate \emph{Byzantine failures}, in which a small number of nodes may be controlled by an adversary. Or we may want to design \emph{self-stabilising algorithms}, in which the algorithm must work correctly, no matter what are the initial states of the nodes.
+In distributed systems, the nodes may fail and the communication links may be unreliable. We may e.g.\ want to tolerate \emph{Byzantine failures}, in which a small number of nodes may be controlled by an adversary. Or we may want to design \emph{self-stabilising algorithms}, in which the algorithm must work correctly, no matter what are the initial states of the nodes.
 
 
 \paragraph{Asynchronous Algorithms.}
 
-There is no global clock that guarantees that all nodes take steps simultaneously in parallel. Communication links may have unpredictable delays. This is not a major issue if we do not need to tolerate failures---we can apply efficient \emph{synchronisers}. However, if the nodes may fail, it becomes impossible to distinguish between e.g.\ a node behind a very slow links and a node that has stopped responding.
+In asynchronous networks, there is no global clock that guarantees that all nodes take steps simultaneously in parallel. Communication links may have unpredictable delays. This is not a major issue if we do not need to tolerate failures\mydash we can apply efficient \emph{synchronisers}. However, if the nodes may fail, it becomes impossible to distinguish between e.g.\ a node behind a very slow links and a node that has stopped responding.
 
 
 \paragraph{Shared Memory.}
@@ -104,17 +102,17 @@ Our model of computing can be seen as a \emph{message-passing system}: nodes sen
 
 \paragraph{Physical Models.}
 
-We have pretended that computers are connected to each other by physical wires. If we connect the nodes by wireless links, the physical properties of \emph{radio waves} (e.g., reflection, refraction, multipath propagation, attenuation, interference, and noise) give rise to new models and new algorithmic challenges. The \emph{physical locations} of the nodes as well as the properties of the environment become relevant.
+We have pretended that computers are connected to each other by physical wires. If we connect the nodes by wireless links, the \emph{physical properties of radio waves} (e.g., reflection, refraction, multipath propagation, attenuation, interference, and noise) give rise to new models and new algorithmic challenges. The \emph{physical locations} of the nodes as well as the properties of the environment become relevant.
 
 
 \paragraph{Robot Navigation.}
 
-In our model, nodes are active computational entities, and they cannot move around in the network\mydash they can only send information around in the network. Another possibility is to study computation with autonomous agents (``robots'') that can move around in the network. Typically, nodes are then passive entities, and the robots can communicate with each other by e.g.\ leaving some tokens in the nodes.
+In our model, the nodes are active computational entities, and they cannot move around in the network\mydash they can only send information around in the network. Another possibility is to study computation with autonomous agents (``robots'') that can move around in the network. Typically, the nodes are passive entities, and the robots can communicate with each other by e.g.\ leaving some tokens in the nodes.
 
 
 \paragraph{Nondeterministic Algorithms.}
 
-Just like we can study nondeterministic Turing machines, we can study nondeterministic distributed algorithms. In this setting, it is sufficient that there exists a \emph{proof} that can be verified efficiently in a distributed setting; we do not need to construct the proof efficiently.
+Just like we can study nondeterministic Turing machines, we can study nondeterministic distributed algorithms. In this setting, it is sufficient that there exists a \emph{certificate} that can be verified efficiently in a distributed setting; we do not need to construct the certificate efficiently.
 
 
 \paragraph{Complexity Measures.}
@@ -127,9 +125,9 @@ For us the main complexity measure has been the number of synchronous communicat
 For the general public, distributed computing often refers to large-scale high-performance computing in a computer network. This includes scientific computing on grids and clusters, and volunteer computing projects. Here a key question is how to partition the computation and the data set efficiently among multiple computers; this is closely related to similar questions in traditional \emph{parallel computing}.
 
 
-\paragraph{Practice of Networking.}
+\paragraph{Practical Aspects of Networking.}
 
-This book has focused on the theory of distributed algorithms. There is of course also the practical side. We need physical hardware to run our algorithms, and we need modulation techniques to transmit digital information over communication links. We need standards, communication protocols to make things work together, and good software engineering practices, good programming languages, and reusable libraries to keep the task of implementing algorithms manageable. In the real world, we will also need to worry about privacy and security.
+This book has focused on the theory of distributed algorithms. There is of course also the practical side. We need physical computers to run our algorithms, and we need networking hardware to transmit information between computers. We need modulation techniques, communication protocols, and standardisation to make things work together, and good software engineering practices, programming languages, and reusable libraries to keep the task of implementing algorithms manageable. In the real world, we will also need to worry about privacy and security. There is plenty of room for research in computer science, telecommunications engineering, and electrical engineering in all of these areas.
 
 
 \section{Research in Distributed Algorithms}
@@ -197,7 +195,7 @@ In the following exercises, we will study distributed approximation algorithms f
     \hint{Let $G = (V,E)$ be a $3$-regular graph. We say that a set $D \subseteq E$ is \emph{good} if it satisfies the following properties:
     \begin{enumerate}
         \item $D$ is an edge cover for $G$,
-        \item the subgraph induced by $D$ does not contain a path of length $3$.
+        \item the subgraph induced by $D$ does not contain a path of length~$3$.
     \end{enumerate}
     Put otherwise, $D$ induces a spanning subgraph that consists of node-disjoint stars. Prove that
     \begin{enumerate}

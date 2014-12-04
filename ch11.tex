@@ -84,7 +84,7 @@ We have shown that in the directed cycle $G_X$, there are two adjacent nodes, $x
 \begin{ex}[Ramsey and cycles]\label{ex:ramsey-cycle}
     You are given a constant $\ell = O(1)$. Let $A$ be any deterministic distributed algorithm in the $\LOCAL$ model such that:
     \begin{itemize}[noitemsep]
-        \item $\Input_A = \{1,2,\dotsc,c\}$ for a constant $c = O(1)$,
+        \item $\Output_A = \{1,2,\dotsc,c\}$ for a constant $c = O(1)$,
         \item the running time of $A$ is bounded by a constant $T = O(1)$.
     \end{itemize}
     Prove: There exists a cycle $G$ of diameter larger than $\ell$, and an assignment of unique identifiers in $G$ such that for some node $v$, all nodes in the radius-$\ell$ neighbourhood of $v$ output the same value.

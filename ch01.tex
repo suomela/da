@@ -51,7 +51,7 @@ There are plenty of examples of real-world networks with globally unique identif
 \end{center}
 With the help of unique identifiers, it is now easy to design an algorithm that colours a path. Indeed, the unique identifiers already form a colouring with a large number of colours! All that we need to do is to reduce the number of colours to $3$.
 
-We can use the following simple strategy. In each step, all ``local maxima'' will be active, i.e., nodes with colours larger than the colours of their neighbours:
+We can use the following simple strategy. In each step, a node is active if it is a ``local maximum'', i.e., its current colour is larger than the current colours of its neighbours:
 \begin{center}
     \includegraphics[page=\PIntroIdA]{figs.pdf}
 \end{center}

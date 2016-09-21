@@ -92,7 +92,7 @@ Let us fix some notation. Each node maintains a variable $c$ that contains its c
             \item Receive messages from all neighbours. \\
                   Let $M$ be the set of messages received.
             \item If $c \notin \{1,2,3\}$ and $c > \max M$: \\
-                  Let $c \gets \{1,2,3\} \setminus M$.
+                  Let $c \gets \min\,(\{1,2,3\} \setminus M)$.
         \end{itemize}
     \end{descriptionb}
     \algbottomrule

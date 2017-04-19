@@ -9,5 +9,5 @@ pipelines:
   default:
     - step:
         script:
-          - apt-get update && apt-get install -y latexmk
+          - apt-get update && apt-get install -y latexmk texlive-latex-recommended
           - latexmk

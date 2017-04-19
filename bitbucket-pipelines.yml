@@ -1,4 +1,4 @@
-image: schickling/latex
+image: blang/latex
 pipelines:
   default:
     - step:

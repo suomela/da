@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[charter]{mathdesign}
 \usepackage[UKenglish]{babel}
-\usepackage{amsmath,amsthm,booktabs,enumitem,graphicx,hyphenat,titlesec,titletoc,url,xcolor}
+\usepackage{alphalph,amsmath,amsthm,booktabs,enumitem,graphicx,hyphenat,titlesec,titletoc,url,xcolor}
 \usepackage{microtype}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{enotez}
@@ -177,9 +177,9 @@
     list-name = {Hints},
     backref = true,
     mark-cs = {\hintnumber},
-    counter-format = Alph,
     totoc = chapter
 }
+\def\theendnote{\AlphAlph{\value{endnote}}}
 
 \DeclareInstance{enotez-list}{custom}{list}
 {

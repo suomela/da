@@ -4,7 +4,7 @@ Distributed Algorithms
 Online textbook by Jukka Suomela.
 
 For more information, see:
-http://users.ics.aalto.fi/suomela/da/
+https://jukkasuomela.fi/da/
 
 
 License

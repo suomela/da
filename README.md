@@ -37,3 +37,11 @@ Clean up everything:
 
     rubber --clean da-*.tex
 
+
+Updates
+-------
+
+For a new version of this material, see:
+
+  - https://jukkasuomela.fi/da2020/
+  - https://github.com/suomela/da2020
